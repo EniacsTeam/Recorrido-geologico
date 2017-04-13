@@ -5,4 +5,4 @@ Proyecto realizado por el equipo Eniacs que servirá de guia geologica para las 
 ruta Archipiélago Murciélago.
 
 Integrantes:
-Kenneth Calvo / Johan Durán / Francisco Arroyo / David / Cesar / Marcelo / Yohel
+Kenneth Calvo / Johan Durán / Francisco Arroyo / David Chaves / Cesar Vargas / Marcelo Solórzano / Yohel Muñoz
