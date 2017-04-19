@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import org.osmdroid.views.MapView;
 
+public class MainActivity extends AppCompatActivity {
+    MapView mapView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        //Carga de archivo y mapa
+        mapView = (MapView) findViewById(R.id.map);
+        CopyFolder.copyAssets(getApplicationContext());
+        Mapa mapa = new Mapa(mapView);
+        mapa.setupMap(getApplicationContext());
+        mapa.findFiles(getApplicationContext());
     }
 
     @Override
