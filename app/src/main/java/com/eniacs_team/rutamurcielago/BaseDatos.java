@@ -45,7 +45,7 @@ public class BaseDatos extends SQLiteOpenHelper {
             Log.i("DatabaseMur", ID);
             Log.i("DatabaseMur", video);
         }
-        return 10;
+        return 1;
     }
 
     public void copyDataBase()
