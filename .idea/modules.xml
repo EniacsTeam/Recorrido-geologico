@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Recorrido-geologico.iml" filepath="$PROJECT_DIR$/Recorrido-geologico.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Recorrido-geologico.iml" filepath="$PROJECT_DIR$/Recorrido-geologico.iml" />
       <module fileurl="file://$PROJECT_DIR$/RutaMurcielago.iml" filepath="$PROJECT_DIR$/RutaMurcielago.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
