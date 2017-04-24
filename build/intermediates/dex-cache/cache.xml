@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fa44b1678ef52574f7b6bfa3f935201780613baf">
+        <dex dex="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_6b6d2147a20e5aeb2a250f9663e82167453a4d78\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_4ba24e07140d7366938315c454af325bf5e28ebb\classes.dex" />
+    </item>
+
+</items>
