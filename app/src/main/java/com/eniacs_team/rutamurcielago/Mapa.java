@@ -57,6 +57,9 @@ public class Mapa {
         mapView.setMaxZoomLevel(16);
         mapView.setMinZoomLevel(14);
 
+        //Desactivar botones de zoom nativos.
+        mapView.setBuiltInZoomControls(false);
+
         /*Limitar el area de movimiento del mapa*/
         mapView.setScrollableAreaLimitDouble(getBoundingBox());
 
