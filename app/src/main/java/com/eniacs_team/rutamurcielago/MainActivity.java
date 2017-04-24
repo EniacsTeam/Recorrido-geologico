@@ -38,15 +38,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Carga de archivo y mapa
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapView = (MapView) findViewById(R.id.map);
         CopyFolder.copyAssets(getApplicationContext());
         Mapa mapa = new Mapa(mapView);
         mapa.setupMap(getApplicationContext());
         mapa.findFiles(getApplicationContext());
-        mapa.setMainActivity(this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Ubicacion ubicacionListener = new Ubicacion(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mapa);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ubicacionListener);
     }
 
     @Override

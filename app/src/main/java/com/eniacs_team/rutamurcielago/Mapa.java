@@ -34,12 +34,9 @@ import java.util.Set;
  * Created by Johan Duran Cerdas on 19/4/2017.
  */
 
-public class Mapa implements LocationListener  {
+public class Mapa {
     MapView mapView;
-    private Location mLastLocation;
-    private Location mCurrentLocation;
-    MainActivity mainActivity;
-
+    Location murrentLocation;
     public static final GeoPoint pacific = new GeoPoint(11.028670, -85.704637);
 
     public Mapa(MapView map){
@@ -152,41 +149,6 @@ public void findFiles(Context context){
         Toast.makeText(context, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
     }
 }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-        Toast.makeText(mainActivity, "Latitud: "+mCurrentLocation.getLatitude()+" y Longitud: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        switch (status) {
-            case LocationProvider.AVAILABLE:
-                Log.d("debug", "LocationProvider.AVAILABLE");
-                break;
-            case LocationProvider.OUT_OF_SERVICE:
-                Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
-                break;
-            case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
-                break;
-        }
-    }
-    @Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(mainActivity, "Gps activado", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(mainActivity, "GPS desactivado", Toast.LENGTH_SHORT).show();
-    }
-
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-    }
-
 
 }
 /*
