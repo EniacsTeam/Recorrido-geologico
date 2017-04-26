@@ -94,7 +94,7 @@ public class Mapa extends Application {
         startMarker.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
         InfoWindow infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView);
         startMarker.setInfoWindow(infoWindow);
-        startMarker.setTitle("Title of the marker");
+        startMarker.setTitle("Marcador");
         mapView.getOverlays().add(startMarker);
 
         /*Evento asociado al zoom en el mapa*/
