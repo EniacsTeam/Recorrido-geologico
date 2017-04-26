@@ -163,7 +163,7 @@ public class Mapa extends Application {
                     /*En los proximos dos casos podemos volver a llamar cargar assets porque es posible que la persona lo borro.*/
             Toast.makeText(context, tiles.getAbsolutePath() + " No existe mapa, en el dispositivo, cargando desde internet", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, tiles.getAbsolutePath() + "El directorio no existe.", Toast.LENGTH_SHORT).show();
         }
     }
 
