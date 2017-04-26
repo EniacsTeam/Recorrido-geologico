@@ -1,8 +1,12 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.LocationProvider;
+import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.osmdroid.events.MapListener;
@@ -19,6 +23,10 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
 import java.io.File;
 import java.util.Set;
 
@@ -28,6 +36,7 @@ import java.util.Set;
 
 public class Mapa {
     MapView mapView;
+    Location murrentLocation;
     public static final GeoPoint pacific = new GeoPoint(11.028670, -85.704637);
 
     public Mapa(MapView map){
@@ -140,6 +149,7 @@ public void findFiles(Context context){
         Toast.makeText(context, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
     }
 }
+
 }
 /*
 Clase de https://mobiledevstories.wordpress.com/2014/03/01/osmdroid-bonus-pack-markers-with-clickable-infowindows/
