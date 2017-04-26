@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/bonuspack_bubble"
-    android:background="@drawable/prueba" >
+    android:background="@drawable/info_punto_interes" >
     <ImageView android:id="@+id/bubble_image"
         android:layout_width="65dp"
         android:layout_height="65dp"
@@ -53,13 +53,13 @@
             android:textSize="10dp"
             android:maxEms="17"
             android:text="Address"
+            android:layout_marginBottom="10dp"
             android:visibility="gone" />
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:paddingBottom="20dp"
-
             android:id="@+id/linea_centro"
             android:background="@android:color/darker_gray"/>
         <TextView

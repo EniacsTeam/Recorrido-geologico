@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
@@ -46,13 +47,11 @@ import static android.R.string.yes;
  */
 
 public class Mapa extends Application {
+    public static final GeoPoint pacific = new GeoPoint(11.028670, -85.704637);
     MapView mapView;
     Context mContext;
     Activity mActivity;
-    //Dialog dialogo;
-    AlertDialog dialog;
     CustomDialogClass dialogo;
-    public static final GeoPoint pacific = new GeoPoint(11.028670, -85.704637);
 
     public Mapa(MapView map, Activity activity) {
         this.mapView = map;
@@ -63,6 +62,9 @@ public class Mapa extends Application {
         /*En caso de error muestra este layout*/
         mapView.getTileProvider().setTileLoadFailureImage(context.getResources().getDrawable(R.drawable.notfound));
         this.mContext = context;
+
+
+
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
@@ -164,6 +166,8 @@ public class Mapa extends Application {
             Toast.makeText(context, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 //}
 
     //Clase de https://mobiledevstories.wordpress.com/2014/03/01/osmdroid-bonus-pack-markers-with-clickable-infowindows/
@@ -186,8 +190,9 @@ public class Mapa extends Application {
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
-            View viewLinea = (View) mView.findViewById(R.id.linea_centro);
-            viewLinea.setMinimumWidth(txtDescription.getWidth());
+            View viewLinea = mView.findViewById(R.id.linea_centro);
+
+            //viewLinea.setMinimumWidth(txtDescription.getWidth());
 
 
 
@@ -203,6 +208,10 @@ public class Mapa extends Application {
             });
             txtTitle.setText("Punto #1");
             txtDescription.setText("Esta formación se compone de intercalaciones de areniscas y lutitas de edad entre 60 y 40 millones de años");
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
+            lp.setMargins(0,20,15,0);
+            viewLinea.setLayoutParams(lp);
+
 
             layout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -247,4 +256,5 @@ public class Mapa extends Application {
             dismiss();
         }
     }
+
 }
