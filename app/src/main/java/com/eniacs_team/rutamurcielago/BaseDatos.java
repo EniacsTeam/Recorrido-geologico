@@ -54,7 +54,7 @@ public class BaseDatos extends SQLiteOpenHelper {
             }
             catch(IOException ex)
             {
-                Log.i("Base de datos", "Archivo no encontrado");
+                Log.i("Base de datos", "Archivo no encontrado.");
             }
         }
         return imagen;
