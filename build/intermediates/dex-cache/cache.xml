@@ -3,12 +3,12 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="8f9c39700b5885a288d3245aac075d2d33dd358f">
-        <dex dex="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_6b6d2147a20e5aeb2a250f9663e82167453a4d78\classes.dex" />
+        sha1="6c24b48348d5adad54d6f29ddd74b1aea0f4942a">
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b2a476231d3670de42641ed645614748ab48b1a4/classes.dex" />
     </item>
 
 </items>

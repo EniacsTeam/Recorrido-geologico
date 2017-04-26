@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         Mapa mapa = new Mapa(mapView, MainActivity.this);
         mapa.setupMap(getApplicationContext());
         mapa.findFiles(getApplicationContext());
-
+        BaseDatos base = new BaseDatos(getApplicationContext());
+        base.copyDataBase();
     }
 
     @Override
