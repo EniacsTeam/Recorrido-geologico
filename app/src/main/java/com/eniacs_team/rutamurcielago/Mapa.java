@@ -186,7 +186,7 @@ public class Mapa extends Application {
             ImageView img = (ImageView) mView.findViewById(R.id.bubble_image);
 
             BaseDatos base = new BaseDatos(mContext);
-            img.setImageDrawable(base.select(45));
+            img.setImageDrawable(base.selectImagen(30));
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
@@ -208,7 +208,7 @@ public class Mapa extends Application {
 
             });
             txtTitle.setText("Punto #1");
-            txtDescription.setText("Esta formación se compone de intercalaciones de areniscas y lutitas de edad entre 60 y 40 millones de años");
+            txtDescription.setText(base.selectDescripcion(1));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
             lp.setMargins(0,20,15,0);
             viewLinea.setLayoutParams(lp);

@@ -25,12 +25,12 @@ public class BaseDatos extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
-    public Drawable select(int id) {
+    public Drawable selectImagen(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String table = "Fotos";
         String[] columns = {"Descripcion", "Ruta"};
-        String selection = "IDLugar =?";
+        String selection = "IDFoto =?";
         String[] selectionArgs = {Integer.toString(id)};
         String groupBy = null;
         String having = null;
@@ -58,6 +58,27 @@ public class BaseDatos extends SQLiteOpenHelper {
             }
         }
         return imagen;
+    }
+
+    public String selectDescripcion(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "Lugares";
+        String[] columns = {"Descripcion"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+        String descripcion = null;
+
+        Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            descripcion = cursor.getString(0);
+        }
+        return descripcion;
     }
 
     public void copyDataBase()
