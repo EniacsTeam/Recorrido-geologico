@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Ruta Murcielago</string>
     <string name="action_settings">Settings</string>
+    <string name="nombre_punto">1. Nombre punto</string>
+    <string name="descripcion_punto"></string>
+    <string name="ver_mas"><u>Ver más</u></string>
+    <string name="aviso_ver_mas">¡Lo sentimos!</string>
+    <string name="aviso_texto">Necesitas estar cerca del punto de interés para poder acceder a más información</string>
+    <string name="aviso_aceptar">Aceptar</string>
 </resources>
