@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#f99d1c</color>
-    <color name="colorPrimaryDark">#f99d1c</color>
+    <color name="colorPrimary">#f37021</color>
+    <color name="colorPrimaryDark">#f37021</color>
     <color name="colorAccent">#6dc067</color>
     <color name="colorPrimaryLigth">#e5b365</color>
+
+
+    <color name="naranja_light">#e5b365</color>
+    <color name="naranja_medium">#f99d1c</color>
+    <color name="naranja_dark">#f37021</color>
+
+    <color name="verde">#8dc63f</color>
+    <color name="celeste">#bad2cd</color>
+    <color name="amarillo">#fdb912</color>
+
 </resources>

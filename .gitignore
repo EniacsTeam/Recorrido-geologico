@@ -1,5 +1,6 @@
 # Built application files
-/*/build/
+*.apk
+*.ap_
 
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
@@ -26,6 +27,18 @@ local.properties
 .idea/scopes/scope_settings.xml
 .idea/vcs.xml
 *.iml
+
+# Android Studio
+/*/build/
+/*/local.properties
+/*/out
+/*/*/build
+/*/*/production
+captures/
+.navigation/
+*.ipr
+*~
+*.swp
 
 # OS-specific files
 .DS_Store
