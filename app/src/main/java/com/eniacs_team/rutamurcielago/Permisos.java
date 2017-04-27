@@ -54,6 +54,7 @@ public class Permisos extends AppCompatActivity {
                 if (storage) {
                     //se crea bien
 
+
                 } else {
                     Toast.makeText(this, "Need your storage", Toast.LENGTH_SHORT).show();
                 }
