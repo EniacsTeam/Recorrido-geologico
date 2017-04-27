@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*Pido por el permiso de acceso al almacenamiento
+        Permisos permisos = new Permisos(MainActivity.this);
+        permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);*/
+
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
         //se copia el archivo de assets a /osmdroid
@@ -53,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
         //se inicializa la escucha del GPS
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Ubicacion ubicacionListener = new Ubicacion(mapView,this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-        }
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ubicacionListener);
+        }*/
+       if(this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+       {
+           mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ubicacionListener);
+       }
+
     }
 
     @Override

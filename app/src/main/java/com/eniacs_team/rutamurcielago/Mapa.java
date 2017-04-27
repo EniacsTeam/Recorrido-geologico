@@ -1,12 +1,19 @@
 package com.eniacs_team.rutamurcielago;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.osmdroid.events.MapListener;
@@ -22,6 +29,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import android.location.Location;
 import android.location.LocationListener;
@@ -45,13 +53,14 @@ public class Mapa {
     List<GeoPoint> locations;
     List<Marker> marcadores;
     Activity activity;
+    CustomDialogClass dialogo;
+    InfoWindow infoWindow;
 
     private OSMWorldPlugin mOSMapPlugin;
     private World mWorld;
 
     public Mapa(MapView map,Activity activity){
 
-    public Mapa(MapView map){
         this.mapView = map;
         this.locations=new ArrayList<>();
         this.marcadores=new ArrayList<>();
@@ -94,8 +103,10 @@ public class Mapa {
         /*Limitar el area de movimiento del mapa*/
         mapView.setScrollableAreaLimitDouble(getBoundingBox());
 
-        /*En caso de querer dar algun enfoque a un bounding utilizar:*/
-        //mapView.zoomToBoundingBox(getBoundingBox(),false);
+        infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView);
+
+        /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
+        dialogo = new CustomDialogClass(activity);
 
         // We create the world and fill the world
         mWorld = CustomWorldHelper.generateObjects(context);
@@ -116,18 +127,6 @@ public class Mapa {
         user.setName("User position");
         mWorld.addBeyondarObject(user);
 
-
-        /*Marcador de ejemplo. Crear metodo que haga esto.*/
-        Marker startMarker = new Marker(mapView);
-        startMarker.setPosition(new GeoPoint(11.028670, -85.704637));
-        Drawable marker=context.getResources().getDrawable(R.mipmap.marker);
-        startMarker.setIcon(marker);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-        /*InfoWindow infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView);
-        startMarker.setInfoWindow(infoWindow);*/
-        startMarker.setTitle("Title of the marker");
-        mapView.getOverlays().add(startMarker);
-
         /*Evento asociado al zoom en el mapa*/
         /*Se puede utilizar para limitar que ver o no dependiendo del zoom*/
         /*mapView.setMapListener(new MapListener() {
@@ -142,6 +141,7 @@ public class Mapa {
                 return true;
             }
         });*/
+
     }
 
 
@@ -207,8 +207,93 @@ public void agregarMarcadores(){
         marcador.setIcon(marker);
         marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
         marcador.setTitle("Title of the marker");
+        marcador.setInfoWindow(infoWindow);
         mapView.getOverlays().add(marcador);
     }
 }
+
+    private class MyInfoWindow extends InfoWindow {
+        public MyInfoWindow(int layoutResId, MapView mapView) {
+            super(layoutResId, mapView);
+        }
+
+        public void onClose() {
+        }
+
+        public void onOpen(Object arg0) {
+
+            LinearLayout layout = (LinearLayout) mView.findViewById(R.id.bonuspack_bubble);
+
+            ImageView img = (ImageView) mView.findViewById(R.id.bubble_image);
+
+            img.setImageResource(R.drawable.pt1);
+
+            TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
+            TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
+            TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
+            View viewLinea = mView.findViewById(R.id.linea_centro);
+
+
+
+            txtVerMas.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    dialogo.show();
+                    // dialog.show();
+                }
+
+
+            });
+            txtTitle.setText("Punto #1");
+            txtDescription.setText("Esta formación se compone de intercalaciones de areniscas y lutitas de edad entre 60 y 40 millones de años");
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
+            lp.setMargins(0,20,15,0);
+            viewLinea.setLayoutParams(lp);
+
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Override Marker's onClick behaviour here
+                }
+            });
+        }
+
+
+    }
+
+    public class CustomDialogClass extends Dialog implements
+            android.view.View.OnClickListener {
+
+        public Activity c;
+        public Button btnAceptar;
+
+        public CustomDialogClass(Activity a) {
+            super(a);
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialogo_ver_mas);
+            btnAceptar = (Button) findViewById(R.id.aceptar);
+            btnAceptar.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.aceptar:
+                    dismiss();
+                    break;
+                default:
+                    break;
+            }
+            dismiss();
+        }
+    }
 }
 
