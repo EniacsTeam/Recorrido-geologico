@@ -28,6 +28,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,72 +38,75 @@ import java.util.Set;
 
 public class Mapa {
     MapView mapView;
-    Location murrentLocation;
-    public static final GeoPoint pacific = new GeoPoint(11.028670, -85.704637);
+    public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
+    List<GeoPoint> locations;
+    List<Marker> marcadores;
+    Activity activity;
 
-    public Mapa(MapView map){
+
+
+    public Mapa(MapView map,Activity activity){
+
         this.mapView = map;
+        this.locations=new ArrayList<>();
+        this.marcadores=new ArrayList<>();
+        this.activity=activity;
+
+        double []latitude ={10.95124,10.94081,10.94075,10.96712,10.91338,10.92449,10.92599,10.92792,10.91753,
+                10.93645,10.9502,10.95016,10.94015,10.93171,10.911,10.89343,10.89263,10.89428,10.884,10.88,
+                10.85402,10.848,10.8537,10.85516,10.85607,10.85919};
+        double []longitud ={-85.70945,-85.77404,-85.80209,-85.80062,-85.80195,-85.81871,-85.81824,
+                -85.81947,-85.78693,-85.81037,-85.875,-85.88396,-85.87438,-85.87749,-85.911,-85.94944,
+                -85.93188,-85.92604,-85.8998,-85.8791,-85.85996,-85.8591,-85.90864,-85.90895,-85.9103 -85.93745};
+
+        for(int i=0;i<longitud.length;i++){
+            locations.add(i, new GeoPoint(latitude[i],longitud[i]));
+            marcadores.add(i,new Marker(map));
+        }
+
     }
 
-    public void setupMap(Context context){
+    public void setupMap(){
         /*En caso de error muestra este layout*/
-        mapView.getTileProvider().setTileLoadFailureImage(context.getResources().getDrawable(R.drawable.notfound));
+        mapView.getTileProvider().setTileLoadFailureImage(activity.getResources().getDrawable(R.drawable.notfound));
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
-        mapView.setBuiltInZoomControls(true);
+        //mapView.setBuiltInZoomControls(true);
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
-        mapViewController.setZoom(14);
-        mapViewController.animateTo(pacific);
-        mapView.setMaxZoomLevel(16);
-        mapView.setMinZoomLevel(14);
+        mapViewController.setZoom(13);
+        mapViewController.animateTo(routeCenter);
+        mapView.setMinZoomLevel(12);
+        mapView.setMaxZoomLevel(15);
 
         /*Limitar el area de movimiento del mapa*/
         mapView.setScrollableAreaLimitDouble(getBoundingBox());
 
-        /*En caso de querer dar algun enfoque a un bounding utilizar:*/
-        //mapView.zoomToBoundingBox(getBoundingBox(),false);
-
-
-        /*Marcador de ejemplo. Crear metodo que haga esto.*/
-        Marker startMarker = new Marker(mapView);
-        startMarker.setPosition(new GeoPoint(11.028670, -85.704637));
-        Drawable marker=context.getResources().getDrawable(R.mipmap.marker);
-        startMarker.setIcon(marker);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-        /*InfoWindow infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView);
-        startMarker.setInfoWindow(infoWindow);*/
-        startMarker.setTitle("Title of the marker");
-        mapView.getOverlays().add(startMarker);
-
         /*Evento asociado al zoom en el mapa*/
         /*Se puede utilizar para limitar que ver o no dependiendo del zoom*/
-        mapView.setMapListener(new MapListener() {
+        /*mapView.setMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
-                /*Aca van las acciones al mover el mapa con dedo*/
+                *//*Aca van las acciones al mover el mapa con dedo*//*
                 return true;
             }
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                //event.getZoomLevel();
-                /*En caso de hacer zoom enfocar nuevamente el punto*/
-                mapViewController.animateTo(pacific);
                 return true;
             }
-        });
+        });*/
     }
 
 
 
     /*Define el bounding box se pueden definir distintos para cada zoom, lat,lon, lat,lon*/
     private BoundingBox getBoundingBox() {
-        return new BoundingBox(11.049064, -85.739971, 11.024071, -85.687384);
+            return new BoundingBox(10.97422, -85.67276, 10.79958, -85.979);
     }
 
 
@@ -109,14 +114,14 @@ public class Mapa {
 
 
 
-public void findFiles(Context context){
+public void findFiles(){
     /*Se busca el archivo dentro del path*/
     File tiles = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/tiles.zip");
     if (tiles.exists()) {
                     try {
                         //Se crea y utiliza en archivo
                         File[] file=new File[]{tiles};
-                        OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(context),file);
+                        OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(activity),file);
 
                         //Se asigna el proveedor de tiles
                         mapView.setTileProvider(tileProvider);
@@ -144,37 +149,24 @@ public void findFiles(Context context){
                         ex.printStackTrace();
                     }
                     /*En los proximos dos casos podemos volver a llamar cargar assets porque es posible que la persona lo borro.*/
-        Toast.makeText(context, tiles.getAbsolutePath() + " No existe mapa, en el dispositivo, cargando desde internet", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, tiles.getAbsolutePath() + " No existe mapa, en el dispositivo, cargando desde internet", Toast.LENGTH_SHORT).show();
     } else {
-        Toast.makeText(context, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
     }
 }
 
+public void agregarMarcadores(){
+
+    /*Se crea un marcador para cada punto en el mapa*/
+    for (int i =0;i<locations.size();i++){
+    Marker marcador = marcadores.get(i);
+        marcador.setPosition(locations.get(i));
+        Drawable marker=activity.getResources().getDrawable(R.mipmap.marker);
+        marcador.setIcon(marker);
+        marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
+        marcador.setTitle("Title of the marker");
+        mapView.getOverlays().add(marcador);
+    }
 }
-/*
-Clase de https://mobiledevstories.wordpress.com/2014/03/01/osmdroid-bonus-pack-markers-with-clickable-infowindows/
-Sirve para crear un infowindow
-private class MyInfoWindow extends InfoWindow {
-    public MyInfoWindow(int layoutResId, MapView mapView) {
-        super(layoutResId, mapView);
-    }
-    public void onClose() {
-    }
+}
 
-    public void onOpen(Object arg0) {
-        LinearLayout layout = (LinearLayout) mView.findViewById(R.id.bubble_layout);
-        Button btnMoreInfo = (Button) mView.findViewById(R.id.bubble_moreinfo);
-        TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
-        TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
-        TextView txtSubdescription = (TextView) mView.findViewById(R.id.bubble_subdescription);
-
-        txtTitle.setText("Title of my marker");
-        txtDescription.setText("Click here to view details!");
-        txtSubdescription.setText("You can also edit the subdescription");
-        layout.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Override Marker's onClick behaviour here
-            }
-        });
-    }
-}*/

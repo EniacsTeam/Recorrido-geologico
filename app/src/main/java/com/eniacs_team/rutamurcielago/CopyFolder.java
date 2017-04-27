@@ -1,5 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
@@ -18,13 +19,13 @@ import static android.content.ContentValues.TAG;
 
 public class CopyFolder {
 
-    public static void copyAssets(Context context) {
+    public static void copyAssets(Activity activity) {
 
         InputStream in = null;
         OutputStream out = null;
         try {
 
-            in = context.getAssets().open("tiles.zip");
+            in = activity.getAssets().open("tiles.zip");
 
             Log.i(TAG, ": " + Environment.getExternalStorageDirectory());
             File dir = new File(Environment.getExternalStorageDirectory(),
