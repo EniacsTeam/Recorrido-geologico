@@ -22,8 +22,11 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
+
+    //Se ocupan en el onResume
     Ubicacion ubicacionListener;
     LocationManager mlocManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
