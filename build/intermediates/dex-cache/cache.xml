@@ -2,13 +2,166 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\Xinia\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.1\support-annotations-25.3.1.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="54cf8100ce853add24a26d9e8fb1bfb0977a9b83">
-        <dex dex="C:\Users\Francisco\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_6b6d2147a20e5aeb2a250f9663e82167453a4d78\classes.dex" />
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\support-annotations-25.3.1_b2f12e4f5979437adaafe7708ea1f1732994a0c6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\b133d7b0ba3035698d4d414149d5a0edf7825246\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c14d049dc46260da1c76a9d18672d0636c5964a0">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_7bedac9d48f515b462d30a2f38beae5b8b62102d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\libs\beyondar-radar-plugin-v0.9.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="25ce04f5845c01910b0f3600914c0c8e8e4f37c2">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-radar-plugin-v0.9.1_62caaad21998136b246bca7f6bcbb21bf6acb814.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\eac9610f73b9f4d205562c0d24004dcc70d46ebe\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_bc6a36c28d476ee677856cce526c3bf611333225.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\f958005801a7e14331667bc87ff0c4b06ea08cf2\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_231a51212dfff46676af0dd8079b894edb5f1713.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\dfe720b7bd4846912350e7567be6e0321f7e4819\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_475d606c8e8893871bb61f7c28e9fe101a135d3f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\444af6a154c24b7f1eeb1508cee11bd87a99a285\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_aae9ef879dbef5ec3b5b1ff2da9c86a7f700a2c8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\320b06a221cc0b85728be2e02a1067fd9968ed8b\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_cc8a90e635d5300c43553a799235a0fe3816d8ce.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\eda4914b2bc107bbc27ab4a772e00cd26fcbf71d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_9c681adf00000bf08755fc5699d7503cef4774fe.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\3ad95bdd641d2c0a51237f96a9356c17976cc8b9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_bf77fff0d3aea451870426644f7435e4cba65316.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\7620135f187867bd08973a0b623ffc8997d2999e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_4351f9f38d9daf8b1c3e8cb8045ce96749a41a8d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\1d96d3d79095a4089ade73defd4ebac0e4165f17\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f2b64f6a762f61a2379d6a79af03e2ee56eefe0b">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_1c4ea05a7f30c015f4255a52ed6a341d89350835.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\5dfced1a2d2b752297af7c3692b89c141f864d6f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_3c62b85c40970e4f3ad55aafb66352bacba1e2ea.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\d6a42e169b0a9917808ee3beec07ae6a093b9727\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_fe970d6526861682d5a3c7619f86c2e2ea9a9da3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.0-alpha9\constraint-layout-solver-1.0.0-alpha9.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6a908fd0803cc5f65b007101002aec06dc7544da">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.0-alpha9_6f7e3ce7b58c0fbf6f524d0ce5dcb22793eaa760.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\libs\beyondar-v0.9.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-v0.9.3_c9dd6e44fcfbb5aa7f7d0e75c71a6696da0c0d07.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\2397c6bd41c1bef8fc7b70c8fbbde1c3510984d4\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_3b59d12d14bb550d34abad1082bd8150991d5be4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Xinia\.android\build-cache\d6dbe14c64032ffdb1399f8ba2ee259d1beeb836\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="C:\Users\Xinia\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_c04ba6174e1df68c8457caa0247ed29c106d33c5.jar" />
     </item>
 
 </items>
