@@ -40,6 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.beyondar.android.world.GeoObject;
+import com.beyondar.android.world.World;
+
 /**
  * Created by Johan Duran Cerdas on 19/4/2017.
  */
@@ -53,7 +56,8 @@ public class Mapa {
     CustomDialogClass dialogo;
     InfoWindow infoWindow;
 
-
+    private OSMWorldPlugin mOSMapPlugin;
+    private World mWorld;
 
     public Mapa(MapView map,Activity activity){
 
@@ -93,6 +97,9 @@ public class Mapa {
         mapView.setMinZoomLevel(12);
         mapView.setMaxZoomLevel(15);
 
+        //Desactivar botones de zoom nativos.
+        mapView.setBuiltInZoomControls(false);
+
         /*Limitar el area de movimiento del mapa*/
         mapView.setScrollableAreaLimitDouble(getBoundingBox());
 
@@ -100,6 +107,25 @@ public class Mapa {
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
         dialogo = new CustomDialogClass(activity);
+
+        // We create the world and fill the world
+        mWorld = CustomWorldHelper.generateObjects(context);
+
+        // As we want to use GoogleMaps, we are going to create the plugin and
+        // attach it to the World
+        mOSMapPlugin = new OSMWorldPlugin(context);
+        // Then we need to set the map in to the GoogleMapPlugin
+        mOSMapPlugin.setOSMap(mapView);
+        // Now that we have the plugin created let's add it to our world.
+        // NOTE: It is better to load the plugins before start adding object in to the world.
+        mWorld.addPlugin(mOSMapPlugin);
+
+        // Lets add the user position
+        GeoObject user = new GeoObject(1000l);
+        user.setGeoPosition(mWorld.getLatitude(), mWorld.getLongitude());
+        user.setImageResource(R.drawable.chibi);
+        user.setName("User position");
+        mWorld.addBeyondarObject(user);
 
         /*Evento asociado al zoom en el mapa*/
         /*Se puede utilizar para limitar que ver o no dependiendo del zoom*/
