@@ -109,11 +109,11 @@ public class Mapa {
         dialogo = new CustomDialogClass(activity);
 
         // We create the world and fill the world
-        mWorld = CustomWorldHelper.generateObjects(context);
+        mWorld = CustomWorldHelper.generateObjects(activity);
 
         // As we want to use GoogleMaps, we are going to create the plugin and
         // attach it to the World
-        mOSMapPlugin = new OSMWorldPlugin(context);
+        mOSMapPlugin = new OSMWorldPlugin(activity);
         // Then we need to set the map in to the GoogleMapPlugin
         mOSMapPlugin.setOSMap(mapView);
         // Now that we have the plugin created let's add it to our world.
