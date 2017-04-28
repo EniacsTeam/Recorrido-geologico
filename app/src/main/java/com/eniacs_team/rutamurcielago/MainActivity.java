@@ -14,12 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.osmdroid.views.MapView;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
-
+    Ubicacion ubicacionListener;
+    LocationManager mlocManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +58,10 @@ public class MainActivity extends AppCompatActivity {
         //se agregan los marcadores del mapa
         mapa.agregarMarcadores();
         //se inicializa la escucha del GPS
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Ubicacion ubicacionListener = new Ubicacion(mapView,this);
+
+
+        mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab));
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         }*/
@@ -86,5 +92,34 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // estos metodos se pueden eliminar si no hacen nada.
+    @Override protected void onResume() {
+        super.onResume();
+        if (!mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            ubicacionListener.mostrarMsjGpsDesactivado();
+        }
+       // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onPause() {
+       // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+        super.onPause();
+    }
+
+    @Override protected void onStop() {
+       // Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+        super.onStop();
+    }
+
+    @Override protected void onRestart() {
+        super.onRestart();
+       // Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onDestroy() {
+       // Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+        super.onDestroy();
     }
 }
