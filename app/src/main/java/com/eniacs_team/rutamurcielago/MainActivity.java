@@ -49,14 +49,23 @@ public class MainActivity extends AppCompatActivity {
         Permisos permisos = new Permisos(MainActivity.this);
         permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);*/
 
+        BaseDatos base = new BaseDatos(getApplicationContext());
+
+        //Carga de la base de datos, quitar el comentario si se modifico el archivo en assets
+        base.copyDataBase();
+
+
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
-        //se copia el archivo de assets a /osmdroid
-        CopyFolder.copyAssets(this);
+        //se copia el archivo de assets a /osmdroid si no ha sido copiado
+        if (base.selectEstadoMapa() == 0){
+            CopyFolder.copyAssets(this);
+            base.actualizarEstadoMapa();
+        }
         //se le pasa el mapa y actividad a la clase encargada de controlarlo
         Mapa mapa = new Mapa(mapView,this);
         //se inicializa el mapa. Zoom, bounding box etc
-        mapa.setupMap();
+        mapa.setupMap(getApplicationContext());
         //se inserta el mapa offline dentro del mapview
         mapa.findFiles();
         //se agregan los marcadores del mapa
@@ -69,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         }*/
-       if(this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-       {
-           mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ubicacionListener);
-       }
+        if(this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ubicacionListener);
+        }
 
     }
 
@@ -104,26 +113,26 @@ public class MainActivity extends AppCompatActivity {
         if (!mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             ubicacionListener.mostrarMsjGpsDesactivado();
         }
-       // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
     @Override protected void onPause() {
-       // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
         super.onPause();
     }
 
     @Override protected void onStop() {
-       // Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
         super.onStop();
     }
 
     @Override protected void onRestart() {
         super.onRestart();
-       // Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
     }
 
     @Override protected void onDestroy() {
-       // Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 }
