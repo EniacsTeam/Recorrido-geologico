@@ -41,14 +41,20 @@ public class MainActivity extends AppCompatActivity {
         Permisos permisos = new Permisos(MainActivity.this);
         permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);
 
+        //Carga de la base de datos
+        BaseDatos base = new BaseDatos(getApplicationContext());
+        //base.copyDataBase();
+
         //Carga de archivo y mapa
         mapView = (MapView) findViewById(R.id.map);
-        CopyFolder.copyAssets(getApplicationContext());
+        if (base.selectEstadoMapa() == 0){
+            CopyFolder.copyAssets(getApplicationContext());
+            base.actualizarEstadoMapa();
+        }
+
         Mapa mapa = new Mapa(mapView, MainActivity.this);
         mapa.setupMap(getApplicationContext());
         mapa.findFiles(getApplicationContext());
-        BaseDatos base = new BaseDatos(getApplicationContext());
-        base.copyDataBase();
     }
 
     @Override

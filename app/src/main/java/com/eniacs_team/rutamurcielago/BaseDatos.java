@@ -1,5 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Base de datos --- Clase que gestiona las consultas a la base de datos
+ * @author    ENIACS
+ */
 public class BaseDatos extends SQLiteOpenHelper {
     private Context context;
 
@@ -24,42 +29,56 @@ public class BaseDatos extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-
+    /**
+     * Devuelve la primera imagen de un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return imagen como Drawable
+     */
     public Drawable selectImagen(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String table = "Fotos";
         String[] columns = {"Descripcion", "Ruta"};
-        String selection = "IDFoto =?";
+        String selection = "IDLugar =?";
         String[] selectionArgs = {Integer.toString(id)};
         String groupBy = null;
         String having = null;
         String orderBy = null;
-        String limit = null;
+        String limit = "1";
+
         Drawable imagen = null;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                String descripcion = cursor.getString(0);
+                String ruta = cursor.getString(1);
 
-        Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            String descripcion = cursor.getString(0);
-            String ruta = cursor.getString(1);
-            Log.i("Base de datos", descripcion);
-            Log.i("Base de datos", ruta);
-
-            try
-            {
-                InputStream ims = context.getAssets().open(ruta);
-                imagen = Drawable.createFromStream(ims, null);
-                ims.close();
-            }
-            catch(IOException ex)
-            {
-                Log.i("Base de datos", "Archivo no encontrado.");
+                try
+                {
+                    InputStream ims = context.getAssets().open(ruta);
+                    imagen = Drawable.createFromStream(ims, null);
+                    ims.close();
+                }
+                catch(IOException ex)
+                {
+                    Log.i("Base de datos", "Archivo no encontrado.");
+                }
             }
         }
+
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+
         return imagen;
     }
-
+    /**
+     * Devuelve la descripcion de un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return descripcion como String
+     */
     public String selectDescripcion(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -72,15 +91,69 @@ public class BaseDatos extends SQLiteOpenHelper {
         String orderBy = null;
         String limit = null;
         String descripcion = null;
-
-        Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            descripcion = cursor.getString(0);
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                descripcion = cursor.getString(0);
+            }
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
         }
         return descripcion;
     }
 
+    /**
+     * Verifica si el mapa ya ha sido cargadp
+     * @return estado como entero
+     */
+    public int selectEstadoMapa() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "MapaCargado";
+        String[] columns = {"Estado"};
+        String selection = "Condicion =?";
+        String[] selectionArgs = {"1"};
+        int estado = 0;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                estado = Integer.parseInt(cursor.getString(0));
+            }
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        return estado;
+    }
+
+    /**
+     * Actualiza el estado del mapa cuando lo carga
+     */
+    public void actualizarEstadoMapa() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "MapaCargado";
+        String selection = "Condicion =?";
+        String[] selectionArgs = {"1"};
+        ContentValues estado = new ContentValues();
+        estado.put("Estado","1");
+        try {
+            db.update(table, estado, selection, selectionArgs);
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "Error al insertar en la base");
+        }
+        Log.i("Base de datos", "Se actualizo un valor en la base de datos");
+    }
+
+    /**
+     * Carga la base de datos inicial
+     * Solo se requiere ejecutar la primera vez que se abre el programa
+     */
     public void copyDataBase()
     {
         Log.i("Database", "Se inicia la copia de la base de datos");

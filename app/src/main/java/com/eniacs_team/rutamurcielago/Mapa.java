@@ -186,7 +186,7 @@ public class Mapa extends Application {
             ImageView img = (ImageView) mView.findViewById(R.id.bubble_image);
 
             BaseDatos base = new BaseDatos(mContext);
-            img.setImageDrawable(base.selectImagen(30));
+            img.setImageDrawable(base.selectImagen(2));
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
