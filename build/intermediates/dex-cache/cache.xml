@@ -2,22 +2,31 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\beyondar-v0.9.3.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/libs/beyondar-v0.9.3.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
-        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-v0.9.3_03af6cbb41d91c7cce2317426d25707b5d2fff3b.jar" />
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/2/beyondar-v0.9.3_4613baac2323b0337770edf22dba378a4d88c9f2/classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\beyondar-radar-plugin-v0.9.1.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/libs/beyondar-radar-plugin-v0.9.1.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="25ce04f5845c01910b0f3600914c0c8e8e4f37c2">
-        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-radar-plugin-v0.9.1_1c5c261df5f0c68cbcb7300a231981ed0de123ed.jar" />
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/2/beyondar-radar-plugin-v0.9.1_1c0d8b8dad5104fd03510fb2109fe87500f3b77a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fd62f2a2e1dfb1f15fd8bcfd2d12b4cce532086a">
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b2a476231d3670de42641ed645614748ab48b1a4/classes.dex" />
     </item>
 
 </items>

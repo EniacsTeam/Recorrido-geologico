@@ -1,11 +1,12 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.content.Intent;
 import android.Manifest;
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -15,11 +16,17 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.preference.PreferenceManager;
+
 import org.osmdroid.views.MapView;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
+
+    //Se ocupan en el onResume
+    Ubicacion ubicacionListener;
+    LocationManager mlocManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,40 +35,60 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final Intent intent = new Intent(this, CameraOSMaps.class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(intent);
             }
         });
 
-        /*Pido por el permiso de acceso al almacenamiento*/
+        /*Pido por el permiso de acceso al almacenamiento
         Permisos permisos = new Permisos(MainActivity.this);
-        permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);
+        permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);*/
 
-        //Carga de la base de datos
         BaseDatos base = new BaseDatos(getApplicationContext());
+
+        //Carga de la base de datos, quitar el comentario si se modifico el archivo en assets
         //base.copyDataBase();
 
-        //Carga de archivo y mapa
+
+        //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
+        //se copia el archivo de assets a /osmdroid si no ha sido copiado
         if (base.selectEstadoMapa() == 0){
-            CopyFolder.copyAssets(getApplicationContext());
+            CopyFolder.copyAssets(this);
             base.actualizarEstadoMapa();
         }
-
-        Mapa mapa = new Mapa(mapView, MainActivity.this);
+        //se le pasa el mapa y actividad a la clase encargada de controlarlo
+        Mapa mapa = new Mapa(mapView,this);
+        //se inicializa el mapa. Zoom, bounding box etc
         mapa.setupMap(getApplicationContext());
-        mapa.findFiles(getApplicationContext());
+        //se inserta el mapa offline dentro del mapview
+        mapa.findFiles();
+        //se agregan los marcadores del mapa
+        mapa.agregarMarcadores();
+        //se inicializa la escucha del GPS
+
+
+        mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab));
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+        }*/
+        if(this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ubicacionListener);
+        }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
     }
 
@@ -80,4 +107,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // estos metodos se pueden eliminar si no hacen nada.
+    @Override protected void onResume() {
+        super.onResume();
+        if (!mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            ubicacionListener.mostrarMsjGpsDesactivado();
+        }
+        // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onPause() {
+        // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+        super.onPause();
+    }
+
+    @Override protected void onStop() {
+        // Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+        super.onStop();
+    }
+
+    @Override protected void onRestart() {
+        super.onRestart();
+        // Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override protected void onDestroy() {
+        // Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+        super.onDestroy();
+    }
 }
