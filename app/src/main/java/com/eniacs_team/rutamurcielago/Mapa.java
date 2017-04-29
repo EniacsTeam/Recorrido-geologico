@@ -49,6 +49,7 @@ import com.beyondar.android.world.World;
 
 public class Mapa {
     MapView mapView;
+    Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
     List<GeoPoint> locations;
     List<Marker> marcadores;
@@ -80,9 +81,10 @@ public class Mapa {
 
     }
 
-    public void setupMap(){
+    public void setupMap(Context context){
         /*En caso de error muestra este layout*/
         mapView.getTileProvider().setTileLoadFailureImage(activity.getResources().getDrawable(R.drawable.notfound));
+        this.mContext = context;
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
@@ -102,8 +104,6 @@ public class Mapa {
 
         /*Limitar el area de movimiento del mapa*/
         mapView.setScrollableAreaLimitDouble(getBoundingBox());
-
-        infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView);
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
         dialogo = new CustomDialogClass(activity);
@@ -135,7 +135,6 @@ public class Mapa {
                 *//*Aca van las acciones al mover el mapa con dedo*//*
                 return true;
             }
-
             @Override
             public boolean onZoom(ZoomEvent event) {
                 return true;
@@ -148,7 +147,7 @@ public class Mapa {
 
     /*Define el bounding box se pueden definir distintos para cada zoom, lat,lon, lat,lon*/
     private BoundingBox getBoundingBox() {
-            return new BoundingBox(10.97422, -85.67276, 10.79958, -85.979);
+        return new BoundingBox(10.97422, -85.67276, 10.79958, -85.979);
     }
 
 
@@ -156,65 +155,69 @@ public class Mapa {
 
 
 
-public void findFiles(){
+    public void findFiles(){
     /*Se busca el archivo dentro del path*/
-    File tiles = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/tiles.zip");
-    if (tiles.exists()) {
-                    try {
-                        //Se crea y utiliza en archivo
-                        File[] file=new File[]{tiles};
-                        OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(activity),file);
+        File tiles = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/tiles.zip");
+        if (tiles.exists()) {
+            try {
+                //Se crea y utiliza en archivo
+                File[] file=new File[]{tiles};
+                OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(activity),file);
 
-                        //Se asigna el proveedor de tiles
-                        mapView.setTileProvider(tileProvider);
+                //Se asigna el proveedor de tiles
+                mapView.setTileProvider(tileProvider);
 
                         /*Se obtienen los archivos dentro de la carpeta*/
-                        String source = "";
-                        IArchiveFile[] archives = tileProvider.getArchives();
+                String source = "";
+                IArchiveFile[] archives = tileProvider.getArchives();
                         /*En caso de no tener se utiliza proveedor por internet*/
-                        if (archives.length > 0) {
-                            Set<String> tileSources = archives[0].getTileSources();
-                            if (!tileSources.isEmpty()) {
-                                source = tileSources.iterator().next();
-                                mapView.setTileSource(FileBasedTileSource.getSource(source));
-                            } else {/*En caso de no existir archivo utiliza uno proporcionado por internet*/
-                                mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
-                            }
-
-                        } else {
-                            mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
-                        }
-
-                        mapView.invalidate();
-                        return;
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                if (archives.length > 0) {
+                    Set<String> tileSources = archives[0].getTileSources();
+                    if (!tileSources.isEmpty()) {
+                        source = tileSources.iterator().next();
+                        mapView.setTileSource(FileBasedTileSource.getSource(source));
+                    } else {/*En caso de no existir archivo utiliza uno proporcionado por internet*/
+                        mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
                     }
-                    /*En los proximos dos casos podemos volver a llamar cargar assets porque es posible que la persona lo borro.*/
-        Toast.makeText(activity, tiles.getAbsolutePath() + " No existe mapa, en el dispositivo, cargando desde internet", Toast.LENGTH_SHORT).show();
-    } else {
-        Toast.makeText(activity, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
-    }
-}
 
-public void agregarMarcadores(){
+                } else {
+                    mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
+                }
+
+                mapView.invalidate();
+                return;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+                    /*En los proximos dos casos podemos volver a llamar cargar assets porque es posible que la persona lo borro.*/
+            Toast.makeText(activity, tiles.getAbsolutePath() + " No existe mapa, en el dispositivo, cargando desde internet", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(activity, tiles.getAbsolutePath() + "El directorio no existe", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void agregarMarcadores(){
 
     /*Se crea un marcador para cada punto en el mapa*/
-    for (int i =0;i<locations.size();i++){
-    Marker marcador = marcadores.get(i);
-        marcador.setPosition(locations.get(i));
-        Drawable marker=activity.getResources().getDrawable(R.mipmap.marker);
-        marcador.setIcon(marker);
-        marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-        marcador.setTitle("Title of the marker");
-        marcador.setInfoWindow(infoWindow);
-        mapView.getOverlays().add(marcador);
+        for (int i = 0;i<locations.size();i++){
+            Marker marcador = marcadores.get(i);
+            marcador.setPosition(locations.get(i));
+            Drawable marker=activity.getResources().getDrawable(R.mipmap.marker);
+            marcador.setIcon(marker);
+            marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
+            marcador.setTitle("Title of the marker");
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView,i+1);
+            marcador.setInfoWindow(infoWindow);
+            mapView.getOverlays().add(marcador);
+
+        }
     }
-}
 
     private class MyInfoWindow extends InfoWindow {
-        public MyInfoWindow(int layoutResId, MapView mapView) {
+        int puntoCargado;
+        public MyInfoWindow(int layoutResId, MapView mapView,int puntoCargar) {
             super(layoutResId, mapView);
+            puntoCargado = puntoCargar;
         }
 
         public void onClose() {
@@ -226,7 +229,8 @@ public void agregarMarcadores(){
 
             ImageView img = (ImageView) mView.findViewById(R.id.bubble_image);
 
-            img.setImageResource(R.drawable.pt1);
+            BaseDatos base = new BaseDatos(mContext);
+            img.setImageDrawable(base.selectImagen(puntoCargado));
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
@@ -245,8 +249,8 @@ public void agregarMarcadores(){
 
 
             });
-            txtTitle.setText("Punto #1");
-            txtDescription.setText("Esta formación se compone de intercalaciones de areniscas y lutitas de edad entre 60 y 40 millones de años");
+            txtTitle.setText("Punto #"+puntoCargado);
+            txtDescription.setText(base.selectDescripcion(puntoCargado));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
             lp.setMargins(0,20,15,0);
             viewLinea.setLayoutParams(lp);
@@ -296,4 +300,3 @@ public void agregarMarcadores(){
         }
     }
 }
-
