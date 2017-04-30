@@ -8,6 +8,7 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -59,8 +60,12 @@ public class Mapa {
 
     private OSMWorldPlugin mOSMapPlugin;
     private World mWorld;
+    Marker marcador_anterior;
+    Marker marcador_actual;
 
-    public Mapa(MapView map,Activity activity){
+    Marker.OnMarkerClickListener markerClickListener;
+
+    public Mapa(final MapView map, final Activity activity){
 
         this.mapView = map;
         this.locations=new ArrayList<>();
@@ -78,6 +83,26 @@ public class Mapa {
             locations.add(i, new GeoPoint(latitude[i],longitud[i]));
             marcadores.add(i,new Marker(map));
         }
+
+        markerClickListener = new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                if(marcador_anterior == null)
+                {
+                    marcador_anterior = new Marker(map);
+                    marcador_actual = marker;
+                    marker.showInfoWindow();
+                }
+                else
+                {
+                    marcador_anterior = marcador_actual;
+                    marcador_anterior.closeInfoWindow();
+                    marcador_actual = marker;
+                    marcador_actual.showInfoWindow();
+                }
+                return false;
+            }
+        };
 
     }
 
@@ -208,10 +233,13 @@ public class Mapa {
             marcador.setTitle("Title of the marker");
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView,i+1);
             marcador.setInfoWindow(infoWindow);
+            marcador.setOnMarkerClickListener(markerClickListener);
             mapView.getOverlays().add(marcador);
 
         }
     }
+
+
 
     private class MyInfoWindow extends InfoWindow {
         int puntoCargado;
@@ -244,7 +272,6 @@ public class Mapa {
                 @Override
                 public void onClick(View v) {
                     dialogo.show();
-                    // dialog.show();
                 }
 
 
@@ -262,7 +289,6 @@ public class Mapa {
                 }
             });
         }
-
 
     }
 
