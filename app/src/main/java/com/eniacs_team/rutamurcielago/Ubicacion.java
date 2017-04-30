@@ -38,7 +38,7 @@ public class Ubicacion implements LocationListener {
         this.mainActivity = main;
         this.markerLocation = new Marker(map);
         markerLocation.setPosition(routeCenter);
-        Drawable marker=main.getResources().getDrawable(R.mipmap.marker);
+        Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
         markerLocation.setIcon(marker);
         markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
         markerLocation.setTitle("My location");

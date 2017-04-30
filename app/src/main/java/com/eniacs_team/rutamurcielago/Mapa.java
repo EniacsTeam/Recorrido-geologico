@@ -202,7 +202,7 @@ public class Mapa {
         for (int i = 0;i<locations.size();i++){
             Marker marcador = marcadores.get(i);
             marcador.setPosition(locations.get(i));
-            Drawable marker=activity.getResources().getDrawable(R.mipmap.marker);
+            Drawable marker=activity.getResources().getDrawable(R.drawable.ic_marker_naranja);
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
