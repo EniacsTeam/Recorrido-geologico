@@ -1,11 +1,14 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +18,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.osmdroid.views.MapView;
@@ -41,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+                //startActivity(intent);
+                requestPermission("android.permission.CAMERA",1);
             }
         });
 
@@ -134,5 +141,84 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onDestroy() {
         // Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
         super.onDestroy();
+    }
+    public void requestPermission(String permiso, int permissionRequestCode) {
+        //Preguntar por permiso
+        if(askPermissions())
+        {
+            ActivityCompat.requestPermissions(this, new String[]{permiso}, permissionRequestCode);
+        }
+    }
+
+    private boolean askPermissions(){
+
+        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
+
+    }
+
+    /**
+     * Verifica que tenga los permisos apropiados para acceder a la ubicación de usuario.
+     *
+     * @param  requestCode  codigo del permiso
+     * @param  permissions  los permisos que se solicitan
+     * @param  grantResults  indica si permiso es concedido o no
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        final Intent intent = new Intent(this, CameraOSMaps.class);
+        switch (requestCode) {
+            /*WRITE_EXTERNAL_STORAGE*/
+            case 1:
+                //markAsAsked(permissions[0]); //Marco que he preguntado por este permiso anteriormente
+                Boolean camera = this.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+                if (camera) {
+                    //se crea bien
+                    startActivity(intent);
+                    // close splash activity
+                } else {
+                    //Toast.makeText(this, "Need your storage", Toast.LENGTH_SHORT).show();
+                    MainActivity.CustomDialogClass dialogo = new CustomDialogClass(this);
+                    dialogo.show();
+                }
+                break;
+
+        }
+    }
+
+    public class CustomDialogClass extends Dialog implements
+            android.view.View.OnClickListener {
+
+        public Activity c;
+        public Button btnAceptar;
+        public TextView txt;
+
+        public CustomDialogClass(Activity a) {
+            super(a);
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialogo_ver_mas);
+            txt = (TextView) findViewById(R.id.texto_dialogo);
+            txt.setText("Se necesita acceso a la cámara para el uso de Realidad Aumentada");
+            btnAceptar = (Button) findViewById(R.id.aceptar);
+            btnAceptar.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.aceptar:
+                    dismiss();
+                    break;
+                default:
+                    break;
+            }
+            dismiss();
+        }
     }
 }
