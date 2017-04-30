@@ -156,21 +156,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\kenca\.android\build-cache\868a13a226987a4a46493ab17d9edcd8c7cf770f\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
-        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_66d20fd300aeb02fa35af56af5034f7f842a8ee9.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\libs\beyondar-v0.9.3.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
         <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-v0.9.3_70a85f2ccf7d275421d591167766a523b1704da2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\kenca\.android\build-cache\868a13a226987a4a46493ab17d9edcd8c7cf770f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_66d20fd300aeb02fa35af56af5034f7f842a8ee9.jar" />
     </item>
     <item
         is-multidex="true"

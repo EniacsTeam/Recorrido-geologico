@@ -64,6 +64,7 @@ public class Mapa {
     Marker marcador_actual;
 
     Marker.OnMarkerClickListener markerClickListener;
+    MapView.OnClickListener mapViewListener;
 
     public Mapa(final MapView map, final Activity activity){
 
@@ -93,17 +94,23 @@ public class Mapa {
                     marcador_actual = marker;
                     marker.showInfoWindow();
                 }
-                else
+                else if (marker != marcador_actual)
                 {
                     marcador_anterior = marcador_actual;
                     marcador_anterior.closeInfoWindow();
                     marcador_actual = marker;
                     marcador_actual.showInfoWindow();
+                }else{
+                    if (marcador_actual.isInfoWindowShown()){
+                        marcador_actual.closeInfoWindow();
+                    }else{
+                        marker.showInfoWindow();
+                    }
+
                 }
                 return false;
             }
         };
-
     }
 
     public void setupMap(Context context){
