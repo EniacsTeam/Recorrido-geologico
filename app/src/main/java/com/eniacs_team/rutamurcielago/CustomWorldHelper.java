@@ -5,11 +5,22 @@ import android.content.Context;
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
 
+/**
+ * Clase ayudante para crear el mundo de realidad aumentada el cual poseera objetos georeferenciados.
+ *
+ * @author EniacsTeam
+ */
 @SuppressLint("SdCardPath")
 public class CustomWorldHelper {
 
     public static World sharedWorld;
 
+    /**
+     * Si no existe un mundo lo crea, genera objetos georeferenciados y los introduce dentro de dicho mundo.
+     *
+     * @param context contexto del estado actual de la aplicacion
+     * @return el mundo de realidad aumentada
+     */
     public static World generateObjects(Context context) {
         if (sharedWorld != null) {
             return sharedWorld;

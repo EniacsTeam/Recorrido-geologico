@@ -122,7 +122,6 @@ public class Mapa {
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
-        //mapView.setBuiltInZoomControls(true);
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
@@ -141,23 +140,23 @@ public class Mapa {
         dialogo = new CustomDialogClass(activity);
 
         // We create the world and fill the world
-        mWorld = CustomWorldHelper.generateObjects(activity);
+        //mWorld = CustomWorldHelper.generateObjects(activity);
 
         // As we want to use GoogleMaps, we are going to create the plugin and
         // attach it to the World
-        mOSMapPlugin = new OSMWorldPlugin(activity);
+        //mOSMapPlugin = new OSMWorldPlugin(activity);
         // Then we need to set the map in to the GoogleMapPlugin
-        mOSMapPlugin.setOSMap(mapView);
+        //mOSMapPlugin.setOSMap(mapView);
         // Now that we have the plugin created let's add it to our world.
         // NOTE: It is better to load the plugins before start adding object in to the world.
-        mWorld.addPlugin(mOSMapPlugin);
+        //mWorld.addPlugin(mOSMapPlugin);
 
         // Lets add the user position
-        GeoObject user = new GeoObject(1000l);
+        /*GeoObject user = new GeoObject(1000l);
         user.setGeoPosition(mWorld.getLatitude(), mWorld.getLongitude());
         user.setImageResource(R.drawable.chibi);
         user.setName("User position");
-        mWorld.addBeyondarObject(user);
+        mWorld.addBeyondarObject(user);*/
 
         /*Evento asociado al zoom en el mapa*/
         /*Se puede utilizar para limitar que ver o no dependiendo del zoom*/
