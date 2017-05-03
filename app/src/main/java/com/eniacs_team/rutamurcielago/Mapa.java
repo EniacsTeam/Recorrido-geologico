@@ -168,7 +168,7 @@ public class Mapa {
      * @return
      */
     private BoundingBox getBoundingBox() {
-        return new BoundingBox(10.97422, -85.67276, 10.79958, -85.979);
+        return new BoundingBox(11.070415, -85.610989, 10.633659, -86.026581);
     }
 
 
@@ -268,10 +268,8 @@ public class Mapa {
 
             LinearLayout layout = (LinearLayout) mView.findViewById(R.id.bonuspack_bubble);
 
-            ImageView img = (ImageView) mView.findViewById(R.id.bubble_image);
 
             BaseDatos base = new BaseDatos(mContext);
-            img.setImageDrawable(base.selectImagen(puntoCargado));
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
