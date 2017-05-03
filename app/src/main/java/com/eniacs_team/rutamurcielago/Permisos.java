@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 /**
- * Created by Francisco on 4/25/2017.
+ * Esta clase es para pedir permisos de android. Contiene distintos metodos para solicitar permisos
+ * y permitir su correcto funcionamiento en la aplicacion
+ * @author  EniacsTeam
  */
 
 public class Permisos extends AppCompatActivity {
