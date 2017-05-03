@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Esta clase representa un mapa de OpenStreet Maps. Contiene distintos metodos para su correcto funcionamiento en la aplicacion
+ * Esta clase representa un mapa de OpenStreet Maps. Contiene distintos metodos para su correcto funcionamiento en la aplicacion.
+ *
  * @author  EniacsTeam
  */
 
