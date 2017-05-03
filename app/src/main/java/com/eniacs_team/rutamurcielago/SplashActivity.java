@@ -43,12 +43,22 @@ public class SplashActivity extends AppCompatActivity {
         {
             ActivityCompat.requestPermissions(this, permiso, permissionRequestCode);
         }
+        else
+        {
+            //se crea bien
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            // close splash activity
+            finish();
+        }
     }
 
     private boolean askPermissions(){
 
-        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
-
+        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1)
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
