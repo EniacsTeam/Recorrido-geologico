@@ -55,6 +55,7 @@ public class Mapa {
     Marker marcador_actual;
 
     Marker.OnMarkerClickListener markerClickListener;
+    MapView.OnClickListener mapViewListener;
 
     /**
      * Constructor de la clase mapa
@@ -84,20 +85,29 @@ public class Mapa {
         markerClickListener = new Marker.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker, MapView mapView) {
-                if (marcador_anterior == null) {
+                if(marcador_anterior == null)
+                {
                     marcador_anterior = new Marker(map);
                     marcador_actual = marker;
                     marker.showInfoWindow();
-                } else {
+                }
+                else if (marker != marcador_actual)
+                {
                     marcador_anterior = marcador_actual;
                     marcador_anterior.closeInfoWindow();
                     marcador_actual = marker;
                     marcador_actual.showInfoWindow();
+                }else{
+                    if (marcador_actual.isInfoWindowShown()){
+                        marcador_actual.closeInfoWindow();
+                    }else{
+                        marker.showInfoWindow();
+                    }
+
                 }
                 return false;
             }
         };
-
     }
 
     /**
@@ -114,7 +124,6 @@ public class Mapa {
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
-        //mapView.setBuiltInZoomControls(true);
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
@@ -133,23 +142,23 @@ public class Mapa {
         dialogo = new CustomDialogClass(activity);
 
         // We create the world and fill the world
-        mWorld = CustomWorldHelper.generateObjects(activity);
+        //mWorld = CustomWorldHelper.generateObjects(activity);
 
         // As we want to use GoogleMaps, we are going to create the plugin and
         // attach it to the World
-        mOSMapPlugin = new OSMWorldPlugin(activity);
+        //mOSMapPlugin = new OSMWorldPlugin(activity);
         // Then we need to set the map in to the GoogleMapPlugin
-        mOSMapPlugin.setOSMap(mapView);
+        //mOSMapPlugin.setOSMap(mapView);
         // Now that we have the plugin created let's add it to our world.
         // NOTE: It is better to load the plugins before start adding object in to the world.
-        mWorld.addPlugin(mOSMapPlugin);
+        //mWorld.addPlugin(mOSMapPlugin);
 
         // Lets add the user position
-        GeoObject user = new GeoObject(1000l);
+        /*GeoObject user = new GeoObject(1000l);
         user.setGeoPosition(mWorld.getLatitude(), mWorld.getLongitude());
         user.setImageResource(R.drawable.chibi);
         user.setName("User position");
-        mWorld.addBeyondarObject(user);
+        mWorld.addBeyondarObject(user);*/
 
     }
 
@@ -216,7 +225,7 @@ public class Mapa {
         for (int i = 0; i < locations.size(); i++) {
             Marker marcador = marcadores.get(i);
             marcador.setPosition(locations.get(i));
-            Drawable marker = activity.getResources().getDrawable(R.mipmap.marker);
+            Drawable marker=activity.getResources().getDrawable(R.drawable.ic_marker_naranja);
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");

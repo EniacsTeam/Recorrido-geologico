@@ -20,9 +20,12 @@ import org.osmdroid.views.overlay.Marker;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 /**
- * Created by acer main on 24/04/2017.
+ * Created by César Vargas on 24/04/2017.
  */
 
+/**
+ * Esta clase se encarga de obtener la ubicación del usuario
+ */
 public class Ubicacion implements LocationListener {
 
   //   private Location mLastLocation;
@@ -34,11 +37,17 @@ public class Ubicacion implements LocationListener {
     int i=0;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
+    /**
+     * Constructor de clase, Se inicializan variables globales.
+     * @param map
+     * @param main: Activity main
+     * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
+     */
     public Ubicacion (MapView map,MainActivity main,View v){
         this.mainActivity = main;
         this.markerLocation = new Marker(map);
         markerLocation.setPosition(routeCenter);
-        Drawable marker=main.getResources().getDrawable(R.mipmap.marker);
+        Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
         markerLocation.setIcon(marker);
         markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
         markerLocation.setTitle("My location");
@@ -49,6 +58,11 @@ public class Ubicacion implements LocationListener {
 
     }
 
+    /**
+     *  Este método lo que hace es crear el Snackbar que se muestra si el gps esta desactivado
+     * @param v : contiene la información ( layout, drawing, focus change, scrolling, etc..)
+     *          para poder imprimir en pantalla el snackbar
+     */
     public void gpsActivo(View v){
         snackbar = Snackbar
                 .make(v, "Se necesita activar el GPS!", Snackbar.LENGTH_INDEFINITE)
@@ -64,6 +78,10 @@ public class Ubicacion implements LocationListener {
         snackbar.setActionTextColor(this.mainActivity.getResources().getColor(R.color.naranja_dark));
 
     }
+
+    /**
+     * Hace visible el snackbar de gps desactivado
+     */
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
     }
@@ -73,18 +91,32 @@ public class Ubicacion implements LocationListener {
         //Toast.makeText(mainActivity, "Latitud: "+mCurrentLocation.getLatitude()+" y Longitud: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Se ejecuta cuando se desactiva el GPS
+     * @param provider: proveedor de GPS
+     */
     @Override
     public void onProviderDisabled(String provider) {
        // Toast.makeText(mainActivity, "GPS desactivado", Toast.LENGTH_SHORT).show();
         snackbar.show();
     }
 
+    /**
+     * Se ejecuta cuando se Activa el GPS
+     * @param provider : proveedor de GPS
+     */
     @Override
     public void onProviderEnabled(String provider) {
        // Toast.makeText(mainActivity, "Gps activado", Toast.LENGTH_SHORT).show();
         snackbar.dismiss();
     }
 
+    /**
+     * Se ejecuta cuando el status del GPS cambia, puede estar disponible, fuera de servicio o temporalmente no disponible
+     * @param provider: proveedor de GPS
+     * @param status : AVAILABLE, OUT_OF_SERVICE or TEMPORARILY_UNAVAILABLE
+     * @param extras
+     */
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         switch (status) {

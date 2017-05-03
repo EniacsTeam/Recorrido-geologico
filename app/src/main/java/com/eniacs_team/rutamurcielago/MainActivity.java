@@ -114,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // estos metodos se pueden eliminar si no hacen nada.
+    /**
+     * Se ejecuta cuando se vuelve a activar la activity
+     */
     @Override protected void onResume() {
         super.onResume();
         if (!mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -123,25 +125,6 @@ public class MainActivity extends AppCompatActivity {
         // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
-    @Override protected void onPause() {
-        // Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
-        super.onPause();
-    }
-
-    @Override protected void onStop() {
-        // Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
-        super.onStop();
-    }
-
-    @Override protected void onRestart() {
-        super.onRestart();
-        // Toast.makeText(this, "onRestart", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override protected void onDestroy() {
-        // Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
-        super.onDestroy();
-    }
     public void requestPermission(String permiso, int permissionRequestCode) {
         //Preguntar por permiso
         if(askPermissions())

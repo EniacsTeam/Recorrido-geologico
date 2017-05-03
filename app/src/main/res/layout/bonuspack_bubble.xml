@@ -61,7 +61,7 @@
             android:layout_marginTop="10dp"
             android:paddingBottom="20dp"
             android:id="@+id/linea_centro"
-            android:background="@android:color/darker_gray"/>
+            android:background="@color/colorPrimary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
             android:paddingTop="10dp"
             android:id="@+id/ver_mas"
             android:paddingBottom="10dp"
-            android:textColor="#0000EE"
+            android:textColor="@color/colorPrimaryDark"
             />
     </LinearLayout>
 </LinearLayout>
