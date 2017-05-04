@@ -187,7 +187,7 @@ public class Mapa {
      * @return
      */
     private BoundingBox getBoundingBox() {
-        return new BoundingBox(11.060150, -85.620312, 10.765595, -86.091224);
+        return new BoundingBox(11.062255, -85.587361, 10.765595, -86.091224);
     }
 
 
