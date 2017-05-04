@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ZoomButtonsController;
 
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
 
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.modules.IArchiveFile;
 import org.osmdroid.tileprovider.modules.OfflineTileProvider;
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource;
@@ -160,6 +164,20 @@ public class Mapa {
         user.setImageResource(R.drawable.chibi);
         user.setName("User position");
         mWorld.addBeyondarObject(user);*/
+        mapView.setMapListener(new MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                return true;
+            }
+
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                return true;
+            }
+        });
+
 
     }
 
