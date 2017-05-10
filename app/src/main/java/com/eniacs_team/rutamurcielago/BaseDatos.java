@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -22,6 +23,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     public BaseDatos(Context context) {
         super(context, "IslaMurcielagoDB", null, 1);
         this.context=context;
+        cargarBase();
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -29,6 +31,38 @@ public class BaseDatos extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
+
+    public void cargarBase(){
+        boolean existeBase = existenciaBase();
+
+        if(!existeBase){
+            Log.d("Database", "Creando base");
+            this.getReadableDatabase();
+            this.close();
+            copiarBase();
+        }
+    }
+
+    private boolean existenciaBase(){
+        String DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        String DB_NAME = "IslaMurcielagoDB";
+        SQLiteDatabase checkDB = null;
+
+        try{
+            String myPath = DB_PATH + DB_NAME;
+            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+
+        }catch(SQLiteException e){
+            Log.e("Database", "No existe la base");
+        }
+
+        if(checkDB != null){
+            checkDB.close();
+        }
+        return checkDB != null ? true : false;
+    }
+
+
     /**
      * Devuelve la primera imagen de un punto dado
      * @param id El identificador del lugar de consulta
@@ -142,21 +176,20 @@ public class BaseDatos extends SQLiteOpenHelper {
         estado.put("Estado","1");
         try {
             db.update(table, estado, selection, selectionArgs);
+            Log.i("Base de datos", "Se actualizo un valor en la base de datos");
         }
         catch(Exception e)
         {
             Log.i("Base de datos", "Error al insertar en la base");
         }
-        Log.i("Base de datos", "Se actualizo un valor en la base de datos");
     }
 
     /**
      * Carga la base de datos inicial
      * Solo se requiere ejecutar la primera vez que se abre el programa
      */
-    public void copyDataBase()
+    public void copiarBase()
     {
-        Log.i("Database", "Se inicia la copia de la base de datos");
         byte[] buffer = new byte[1024];
         OutputStream myOutput = null;
         int length;
@@ -164,7 +197,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         try
         {
             String package_name = context.getPackageName();
-            String DB_PATH = "/data/data/"+package_name+"/databases/";
+            String DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
             String DB_NAME = "IslaMurcielagoDB";
             myInput = context.getAssets().open(DB_NAME);
             myOutput =new FileOutputStream(DB_PATH+ DB_NAME);
@@ -179,6 +212,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         }
         catch(IOException e)
         {
+            Log.i("Database", "Error en la copia de la base de datos");
             e.printStackTrace();
         }
     }
