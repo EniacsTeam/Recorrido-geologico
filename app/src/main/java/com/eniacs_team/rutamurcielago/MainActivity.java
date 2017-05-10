@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,12 +19,15 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.osmdroid.views.MapView;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-
+/**
+ * Esta clase se encarga de inicializar el mapa y su base de datos asociada, ademas crea un enlace a la actividad encargada
+ * de realidad aumentada.
+ *
+ * @author  EniacsTeam
+ */
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
 
@@ -99,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Maneja el la seleccion de una opcion dentro del menu de opciones.
+     *
+     * @param item el item seleccionado dentro del menu
+     * @return falso para permitir continuar procesamiento de menu, verdadero para terminarlo aqui.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -125,6 +132,12 @@ public class MainActivity extends AppCompatActivity {
         // Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Metodo encargado de mostrar los dialogos de solicitud de permisos si es necesario.
+     *
+     * @param permiso hilera de permisos por pedir
+     * @param permissionRequestCode resultado de obtencion de permisos
+     */
     public void requestPermission(String permiso, int permissionRequestCode) {
         //Preguntar por permiso
         if(askPermissions())
@@ -133,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo encargado de cerciorarse si es o no necesaria la solicitud dinamica de permisos.
+     *
+     * @return verdadero si android del dispositivo es mayor a Lollipop, en caso contrario falso
+     */
     private boolean askPermissions(){
 
         return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
@@ -168,6 +186,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Clase para controlar el dialogo que indica que el usuario no acepto el permiso de camara necesario para el funcionamiento
+     * de la realidad aumentada.
+     *
+     * @author  EniacsTeam
+     */
     public class CustomDialogClass extends Dialog implements
             android.view.View.OnClickListener {
 

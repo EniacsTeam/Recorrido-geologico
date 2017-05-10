@@ -1,8 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,19 +10,14 @@ import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
-
 /**
- * Created by César Vargas on 24/04/2017.
- */
-
-/**
- * Esta clase se encarga de obtener la ubicación del usuario
+ * Esta clase se encarga de obtener la ubicación del usuario.
+ *
+ * @author  EniacsTeam
  */
 public class Ubicacion implements LocationListener {
 

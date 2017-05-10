@@ -196,13 +196,13 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
             @Override
             public void onMenuOpened(FloatingActionMenu menu) {
 
-
+                Toast.makeText(getApplicationContext(), "Menu abierto", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMenuClosed(FloatingActionMenu menu) {
 
-
+                Toast.makeText(getApplicationContext(), "Menu cerrado", Toast.LENGTH_SHORT).show();
             }
         });
     }

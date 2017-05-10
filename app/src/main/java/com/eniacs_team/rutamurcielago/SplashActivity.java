@@ -21,11 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by kenca on 18/04/2017.
+ * Clase que muestra un splash mientras carga la aplicación y solicita los permisos requeridos por el mapa.
+ *
+ * @author  EniacsTeam
  */
-
-
-/*Clase que tiene el splash mientras carga la aplicación.*/
 public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,12 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo encargado de mostrar los dialogos de solicitud de permisos si es necesario.
+     *
+     * @param permiso hilera de permisos por pedir
+     * @param permissionRequestCode resultado de obtencion de permisos
+     */
     public void requestPermission(String permiso[], int permissionRequestCode) {
         //Preguntar por permiso
         if(askPermissions())
@@ -52,6 +57,11 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo encargado de cerciorarse si es o no necesaria la solicitud dinamica de permisos.
+     *
+     * @return verdadero si android del dispositivo es mayor a Lollipop, en caso contrario falso
+     */
     private boolean askPermissions(){
 
         if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -91,6 +101,12 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Clase para controlar el dialogo que indica que el usuario no acepto un permiso necesario para el funcionamiento de
+     * la apllicacion.
+     *
+     * @author  EniacsTeam
+     */
     public class CustomDialogClass extends Dialog implements
             android.view.View.OnClickListener {
 

@@ -14,11 +14,17 @@ import java.io.OutputStream;
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by Johan Duran Cerdas on 19/4/2017.
+ * Clase responsable de copiar el mapa de assets a almacenamiento externo si es posible.
+ *
+ * @author  EniacsTeam
  */
-
 public class CopyFolder {
 
+    /**
+     * Aprovecha el almacenamiento externo para copiar tiles proveniente de los assets.
+     *
+     * @param activity actividad que posee los assets
+     */
     public static void copyAssets(Activity activity) {
 
         InputStream in = null;
@@ -48,6 +54,13 @@ public class CopyFolder {
         }
     }
 
+    /**
+     * Copia bytes de una entrada a una salida.
+     *
+     * @param in flujo de entrada
+     * @param out flujo de salida
+     * @throws IOException si ocurre un error de E/S
+     */
     private static void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;

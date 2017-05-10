@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ZoomButtonsController;
 
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
 
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.modules.IArchiveFile;
 import org.osmdroid.tileprovider.modules.OfflineTileProvider;
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource;
@@ -35,7 +39,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Esta clase representa un mapa de OpenStreet Maps. Contiene distintos metodos para su correcto funcionamiento en la aplicacion
+ * Esta clase representa un mapa de OpenStreet Maps. Contiene distintos metodos para su correcto funcionamiento en la aplicacion.
+ *
  * @author  EniacsTeam
  */
 
@@ -159,6 +164,20 @@ public class Mapa {
         user.setImageResource(R.drawable.chibi);
         user.setName("User position");
         mWorld.addBeyondarObject(user);*/
+        mapView.setMapListener(new MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                return true;
+            }
+
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                return true;
+            }
+        });
+
 
     }
 
@@ -168,7 +187,7 @@ public class Mapa {
      * @return
      */
     private BoundingBox getBoundingBox() {
-        return new BoundingBox(10.97422, -85.67276, 10.79958, -85.979);
+        return new BoundingBox(11.062255, -85.587361, 10.765595, -86.091224);
     }
 
 
@@ -268,10 +287,8 @@ public class Mapa {
 
             LinearLayout layout = (LinearLayout) mView.findViewById(R.id.bonuspack_bubble);
 
-            ImageView img = (ImageView) mView.findViewById(R.id.bubble_image);
 
             BaseDatos base = new BaseDatos(mContext);
-            img.setImageDrawable(base.selectImagen(puntoCargado));
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
