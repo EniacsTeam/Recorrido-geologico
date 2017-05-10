@@ -1,33 +1,58 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
 import com.beyondar.android.world.World;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
+import static android.R.id.button1;
+import static android.R.id.button2;
+import static android.R.id.button3;
 
 /**
  * Esta actividad proporciona una camara de realidad aumentada que permite sobreponer elementos digitales sobre el mundo real.
  *
  * @author EniacsTeam
  */
-public class CameraOSMaps extends FragmentActivity implements OnClickListener{
+public class CameraOSMaps extends FragmentActivity implements OnClickListener {
 
     private BeyondarFragmentSupport mBeyondarFragment;
     private World mWorld;
-
     private Button mShowMap;
 
     private AnimationDrawable mouthAnimation;
     private ImageButton charButton;
+
+    private SubActionButton btn_video;
+    private SubActionButton btn_audio;
+    private SubActionButton btn_imagen;
+    private SubActionButton btn_archivo;
 
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
@@ -62,12 +87,13 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener{
         mShowMap = (Button) findViewById(R.id.showMapButton);
         mShowMap.setOnClickListener(this);
 
-        charButton = (ImageButton) findViewById(R.id.imageButton);
+        /*charButton = (ImageButton) findViewById(R.id.imageButton);
         charButton.setOnClickListener(this);
 
         ImageView mouthImage = (ImageView) findViewById(R.id.imageView);
         mouthImage.setBackgroundResource(R.drawable.mouth_anim);
-        mouthAnimation = (AnimationDrawable) mouthImage.getBackground();
+        mouthAnimation = (AnimationDrawable) mouthImage.getBackground();*/
+        crearFab();
     }
 
     /**
@@ -82,9 +108,103 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener{
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-        else if (v == charButton) {
+       /* else if (v == charButton) {
             mouthAnimation.start();
-        }
+        }*/
+
+    }
+
+    /**
+     * Metodo encargado de crear fab.
+     */
+    private void crearFab() {
+        // Create an icon
+        ImageView icon = new ImageView(this);
+        icon.setImageResource(R.mipmap.menu);
+
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(icon)
+                .build();
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+
+        //Pongo tamano de cada sub boton
+        FloatingActionButton.LayoutParams layoutParams = new FloatingActionButton.LayoutParams(180, 180);
+        itemBuilder.setLayoutParams(layoutParams);
+
+        // repeat many times:
+        ImageView itemIcon1 = new ImageView(this);
+        itemIcon1.setImageResource(R.mipmap.video);
+
+        ImageView itemIcon2 = new ImageView(this);
+        itemIcon2.setImageResource(R.mipmap.audio);
+
+        ImageView itemIcon3 = new ImageView(this);
+        itemIcon3.setImageResource(R.mipmap.imagen);
+
+        ImageView itemIcon4 = new ImageView(this);
+        itemIcon4.setImageResource(R.mipmap.archivo);
+
+
+        //Creo botones
+        btn_video = itemBuilder.setContentView(itemIcon1).build();
+        btn_audio = itemBuilder.setContentView(itemIcon2).build();
+        btn_imagen = itemBuilder.setContentView(itemIcon3).build();
+        btn_archivo = itemBuilder.setContentView(itemIcon4).build();
+
+        //Creo listener para los botones
+        OnClickListener btn_Listener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == btn_video) {
+                    Toast.makeText(getApplicationContext(), "Toque video", Toast.LENGTH_SHORT).show();
+                }
+
+                if (v == btn_audio) {
+                    Toast.makeText(getApplicationContext(), "Toque audio", Toast.LENGTH_SHORT).show();
+                }
+
+                if (v == btn_imagen) {
+                    Toast.makeText(getApplicationContext(), "Toque imagen", Toast.LENGTH_SHORT).show();
+                }
+
+                if (v == btn_archivo) {
+                    Toast.makeText(getApplicationContext(), "Toque archivo", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        };
+
+        //Adjunto listener a los botones
+        btn_video.setOnClickListener(btn_Listener);
+        btn_audio.setOnClickListener(btn_Listener);
+        btn_imagen.setOnClickListener(btn_Listener);
+        btn_archivo.setOnClickListener(btn_Listener);
+
+
+        //attach the sub buttons to the main button
+        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(btn_video)
+                .addSubActionView(btn_audio)
+                .addSubActionView(btn_imagen)
+                .addSubActionView(btn_archivo)
+                .attachTo(actionButton)
+                .setRadius(280)
+                .build();
+
+        actionMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
+            @Override
+            public void onMenuOpened(FloatingActionMenu menu) {
+
+
+            }
+
+            @Override
+            public void onMenuClosed(FloatingActionMenu menu) {
+
+
+            }
+        });
     }
 
 

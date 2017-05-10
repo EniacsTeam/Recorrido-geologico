@@ -16,14 +16,14 @@
         android:layout_gravity="bottom|start"
         android:text="Show map" />
 
-    <ImageButton
+  <!--  <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/character"
         android:background="@null"
         android:layout_gravity="bottom|end"/>
-
+!-->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
