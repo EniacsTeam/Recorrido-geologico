@@ -48,6 +48,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
     private BaseDatos baseDatos;
     private AnimationDrawable mouthAnimation;
     private ImageButton charButton;
+    private int idPunto = 1;
 
     private FloatingActionButton actionButton;
     private SubActionButton btn_video;
@@ -197,31 +198,31 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
         FloatingActionMenu actionMenu;
 
         //Pregunto si hay videos y audio en la base para agregarlos o no al fab
-        if(baseDatos.existenciaPunto(idPunto, Video) == 0 && (baseDatos.existenciaPunto(idPunto, Audio) == 0) )
+        if(baseDatos.existenciaPunto(idPunto, "Video") == 0 && (baseDatos.existenciaPunto(idPunto, "Audio") == 0) )
         {
 
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_imagen)
                     .attachTo(actionButton)
-                    .setRadius(280)
+                    .setRadius(180)
                     .build();
 
         }
 
         //Pregunto si hay audios en la base para agregarlo o no al fab
-        else if(baseDatos.existenciaPunto(idPunto, Audio) == 0)
+        else if(baseDatos.existenciaPunto(idPunto, "Audio") == 0)
         {
             //attach the sub buttons to the main button
              actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_video)
                     .addSubActionView(btn_imagen)
                     .attachTo(actionButton)
-                    .setRadius(280)
+                    .setRadius(200)
                     .build();
         }
         //Pregunto si hay videos en la base para agregarlo o no al fab
-        else if(baseDatos.existenciaPunto(idPunto, Video) == 0)
+        else if(baseDatos.existenciaPunto(idPunto, "Video") == 0)
         {
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
@@ -229,7 +230,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
                     .addSubActionView(btn_audio)
                     .addSubActionView(btn_imagen)
                     .attachTo(actionButton)
-                    .setRadius(280)
+                    .setRadius(260)
                     .build();
         }
         else

@@ -59,10 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         BaseDatos base = new BaseDatos(getApplicationContext());
 
-        //Carga de la base de datos, quitar el comentario si se modifico el archivo en assets
-        base.copyDataBase();
-
-
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
         //se copia el archivo de assets a /osmdroid si no ha sido copiado

@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -312,6 +311,10 @@ public class Mapa {
             });
             txtTitle.setText("Punto #" + puntoCargado);
             txtDescription.setText(base.selectDescripcion(puntoCargado));
+
+            base.existenciaPunto(puntoCargado,"Descripcion");
+            base.existenciaPunto(puntoCargado,"Video");
+
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);
             viewLinea.setLayoutParams(lp);
