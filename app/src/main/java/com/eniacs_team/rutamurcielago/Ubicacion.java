@@ -121,7 +121,7 @@ public class Ubicacion implements LocationListener {
     /**
      * Se ejecuta cuando el status del GPS cambia, puede estar disponible, fuera de servicio o temporalmente no disponible
      * @param provider: proveedor de GPS
-     * @param status : AVAILABLE, OUT_OF_SERVICE or TEMPORARILY_UNAVAILABLE
+     * @param status : AVAILABLE, OUT_OF_SERVICE or TEMPORARILY_UNAVAILABLEa
      * @param extras
      */
     @Override
