@@ -14,6 +14,8 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.util.ArrayList;
+
 /**
  * Esta clase se encarga de obtener la ubicación del usuario.
  *
@@ -27,6 +29,9 @@ public class Ubicacion implements LocationListener {
     Marker markerLocation;
     Location mCurrentLocation;
     Snackbar snackbar;
+    MapView map;
+    ArrayList<Location>locations;
+    int[] distancias;
     int i=0;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
@@ -37,6 +42,18 @@ public class Ubicacion implements LocationListener {
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
     public Ubicacion (MapView map,MainActivity main,View v){
+        this.locations = new ArrayList<>();
+        double[] latitude = DatosGeo.latitudes();
+        double[] longitud =DatosGeo.longitudes();
+        this.distancias=DatosGeo.radios();
+        for (int i = 0; i < longitud.length; i++) {
+            Location l=new Location(String.valueOf(i));
+            l.setLatitude(latitude[i]);
+            l.setLongitude(longitud[i]);
+            locations.add(i,l);
+        }
+
+        this.map = map;
         this.mainActivity = main;
         this.markerLocation = new Marker(map);
         markerLocation.setPosition(routeCenter);
@@ -44,7 +61,7 @@ public class Ubicacion implements LocationListener {
         markerLocation.setIcon(marker);
         markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
         markerLocation.setTitle("My location");
-        map.getOverlays().add(markerLocation);
+        this.map.getOverlays().add(markerLocation);
 
         gpsActivo(v);
 
@@ -81,6 +98,9 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         markerLocation.setPosition(new GeoPoint(location));
+        int marcador = distanciaEntrePuntos(location);
+        //si title de marcador_actual = marcador(int) no hacer nada: caso contario desabilitarlo y habilitar marcador con title = marcador(int)
+        //ademas si es marcador 4-7 los pegados se debe hacer zoom a ese espacio aumentar a zoom 16 y
         //Toast.makeText(mainActivity, "Latitud: "+mCurrentLocation.getLatitude()+" y Longitud: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
     }
 
@@ -123,6 +143,15 @@ public class Ubicacion implements LocationListener {
                // Toast.makeText(mainActivity, "LocationProvider.TEMPORARILY_UNAVAILABLE", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    public int distanciaEntrePuntos(Location current){
+        for(int i=0;i<locations.size();i++){
+            if(current.distanceTo(locations.get(i))<distancias[i]){
+                return i;
+            }
+        }
+        return -1;
     }
 }
 

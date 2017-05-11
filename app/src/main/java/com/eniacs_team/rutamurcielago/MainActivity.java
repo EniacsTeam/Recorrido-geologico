@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         //se le pasa el mapa y actividad a la clase encargada de controlarlo
         Mapa mapa = new Mapa(mapView,this);
         //se inicializa el mapa. Zoom, bounding box etc
-        mapa.setupMap(getApplicationContext());
+        mapa.setupMap();
         //se inserta el mapa offline dentro del mapview
-        mapa.findFiles();
+        mapa.findMapFiles();
         //se agregan los marcadores del mapa
         mapa.agregarMarcadores();
         //se inicializa la escucha del GPS

@@ -75,16 +75,13 @@ public class Mapa {
         this.marcadores = new ArrayList<>();
         this.activity = activity;
 
-        double[] latitude = {10.95124, 10.94081, 10.94075, 10.96712, 10.91338, 10.92449, 10.92599, 10.92792, 10.91753,
-                10.93645, 10.9502, 10.95016, 10.94015, 10.93171, 10.911, 10.89343, 10.89263, 10.89428, 10.884, 10.88,
-                10.85402, 10.848, 10.8537, 10.85516, 10.85607, 10.85919};
-        double[] longitud = {-85.70945, -85.77404, -85.80209, -85.80062, -85.80195, -85.81871, -85.81824,
-                -85.81947, -85.78693, -85.81037, -85.875, -85.88396, -85.87438, -85.87749, -85.911, -85.94944,
-                -85.93188, -85.92604, -85.8998, -85.8791, -85.85996, -85.8591, -85.90864, -85.90895, -85.9103 - 85.93745};
+        double[] latitude = DatosGeo.latitudes();
+        double[] longitud =DatosGeo.longitudes();
 
         for (int i = 0; i < longitud.length; i++) {
             locations.add(i, new GeoPoint(latitude[i], longitud[i]));
             marcadores.add(i, new Marker(map));
+            marcadores.get(i).setTitle(String.valueOf(i));
         }
 
         markerClickListener = new Marker.OnMarkerClickListener() {
@@ -120,10 +117,10 @@ public class Mapa {
      *
      * @param context es el contexto donde se creo el mapa
      */
-    public void setupMap(Context context) {
+    public void setupMap() {
         /*En caso de error muestra este layout*/
         mapView.getTileProvider().setTileLoadFailureImage(activity.getResources().getDrawable(R.drawable.notfound));
-        this.mContext = context;
+        this.mContext = activity;
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
@@ -135,13 +132,13 @@ public class Mapa {
         mapViewController.setZoom(13);
         mapViewController.animateTo(routeCenter);
         mapView.setMinZoomLevel(12);
-        mapView.setMaxZoomLevel(15);
+        mapView.setMaxZoomLevel(16);
 
         //Desactivar botones de zoom nativos.
         mapView.setBuiltInZoomControls(false);
 
         /*Limitar el area de movimiento del mapa*/
-        mapView.setScrollableAreaLimitDouble(getBoundingBox());
+        mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
         dialogo = new CustomDialogClass(activity);
@@ -167,34 +164,30 @@ public class Mapa {
         mapView.setMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
-                mapView.setScrollableAreaLimitDouble(getBoundingBox());
                 return true;
             }
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                if(event.getZoomLevel()!=16){
+                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
+                }else{
+                    mapViewController.animateTo(new GeoPoint(10.925547, -85.818351));
+                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(2));
+                }
                 return true;
             }
         });
 
-
     }
 
-    /**
-     * Metodo que define el bounding box. Se pueden definir distintos para cada zoom, lat,lon, lat,lon
-     *
-     * @return
-     */
-    private BoundingBox getBoundingBox() {
-        return new BoundingBox(11.062255, -85.587361, 10.765595, -86.091224);
-    }
+
 
 
     /**
      * Metodo que busca el mapa descargado en el telefono para poder cargarlo a la aplicacion
      */
-    public void findFiles() {
+    public void findMapFiles() {
     /*Se busca el archivo dentro del path*/
         File tiles = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/tiles.zip");
         if (tiles.exists()) {
