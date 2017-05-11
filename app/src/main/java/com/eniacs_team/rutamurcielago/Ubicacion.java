@@ -42,16 +42,10 @@ public class Ubicacion implements LocationListener {
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
     public Ubicacion (MapView map,MainActivity main,View v){
-        this.locations = new ArrayList<>();
+        this.locations = DatosGeo.getLocations();
         double[] latitude = DatosGeo.latitudes();
         double[] longitud =DatosGeo.longitudes();
         this.distancias=DatosGeo.radios();
-        for (int i = 0; i < longitud.length; i++) {
-            Location l=new Location(String.valueOf(i));
-            l.setLatitude(latitude[i]);
-            l.setLongitude(longitud[i]);
-            locations.add(i,l);
-        }
 
         this.map = map;
         this.mainActivity = main;
