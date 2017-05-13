@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
         mapa.findMapFiles();
         //se agregan los marcadores del mapa
         mapa.agregarMarcadores();
+
+
         //se inicializa la escucha del GPS
-
-
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab));
+        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab),mapa);
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         }*/

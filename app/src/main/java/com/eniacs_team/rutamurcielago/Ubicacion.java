@@ -16,6 +16,8 @@ import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
 
+import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
+
 /**
  * Esta clase se encarga de obtener la ubicación del usuario.
  *
@@ -32,7 +34,9 @@ public class Ubicacion implements LocationListener {
     MapView map;
     ArrayList<Location>locations;
     int[] distancias;
-    int i=0;
+    Mapa mapa;
+    int puntocercano =-1;
+
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
     /**
@@ -41,11 +45,12 @@ public class Ubicacion implements LocationListener {
      * @param main: Activity main
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
-    public Ubicacion (MapView map,MainActivity main,View v){
+    public Ubicacion (final MapView map,final MainActivity main,final View v, final Mapa mapa){
         this.locations = DatosGeo.getLocations();
         double[] latitude = DatosGeo.latitudes();
         double[] longitud =DatosGeo.longitudes();
         this.distancias=DatosGeo.radios();
+        this.mapa= mapa;
 
         this.map = map;
         this.mainActivity = main;
@@ -89,10 +94,39 @@ public class Ubicacion implements LocationListener {
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
     }
+
+
     @Override
     public void onLocationChanged(Location location) {
         markerLocation.setPosition(new GeoPoint(location));
         int marcador = distanciaEntrePuntos(location);
+        Marker marker;
+        if (marcador == -1){
+            if (puntocercano!= -1){
+                marker= mapa.marcadores.get(puntocercano);
+                marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                mapa.marcadores.set(puntocercano, marker);
+            }
+        }else{
+            if (puntocercano != marcador) {
+                if (puntocercano!= -1) {
+                    marker = mapa.marcadores.get(puntocercano);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                    mapa.marcadores.set(puntocercano, marker);
+
+                    marker = mapa.marcadores.get(marcador);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    mapa.marcadores.set(marcador, marker);
+                    puntocercano = marcador;
+                }else {
+                    marker = mapa.marcadores.get(marcador);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    mapa.marcadores.set(marcador, marker);
+                }
+            }
+        }
+        puntocercano = marcador;
+
         //si title de marcador_actual = marcador(int) no hacer nada: caso contario desabilitarlo y habilitar marcador con title = marcador(int)
         //ademas si es marcador 4-7 los pegados se debe hacer zoom a ese espacio aumentar a zoom 16 y
         //Toast.makeText(mainActivity, "Latitud: "+mCurrentLocation.getLatitude()+" y Longitud: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
