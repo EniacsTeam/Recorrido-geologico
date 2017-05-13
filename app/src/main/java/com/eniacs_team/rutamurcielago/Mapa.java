@@ -113,32 +113,8 @@ public class Mapa {
     }
 
     /**
-     * Calcula las distancia entre dos coordenadas
-     * @param lat1
-     * @param lng1
-     * @param lat2
-     * @param lng2
-     * @return
-     */
-    private double dist(double lat1, double lng1, double lat2, double lng2) {
-        //double radioTierra = 3958.75;//en millas
-        double radioTierra = 6371;//en kilómetros
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-        double sindLat = Math.sin(dLat / 2);
-        double sindLng = Math.sin(dLng / 2);
-        double va1 = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-        double va2 = 2 * Math.asin(Math.sqrt(va1));
-        double distancia = radioTierra * va2;
-
-        return distancia;
-    }
-
-    /**
      * Metodo para configurar el mapa
      *
-     * @param context es el contexto donde se creo el mapa
      */
     public void setupMap() {
         /*En caso de error muestra este layout*/
@@ -267,6 +243,7 @@ public class Mapa {
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
+            marcadores.set(i,marcador);
             mapView.getOverlays().add(marcador);
 
         }
