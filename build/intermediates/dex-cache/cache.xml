@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
         <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_c7d35571dc5a0efd0ae9a386f9a4ba88464b800e/classes.dex" />
     </item>
     <item
@@ -34,7 +34,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="fd62f2a2e1dfb1f15fd8bcfd2d12b4cce532086a">
+        sha1="a62f4878e2338abfe6bd0fedf867c07d2dffa6dc">
         <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b2a476231d3670de42641ed645614748ab48b1a4/classes.dex" />
     </item>
 

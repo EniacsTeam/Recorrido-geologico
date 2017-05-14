@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Base de datos --- Clase que gestiona las consultas a la base de datos
@@ -102,11 +104,11 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
-     * Devuelve la primera imagen de un punto dado
+     * Devuelve las imagenes disponibles para un punto dado
      * @param id El identificador del lugar de consulta
-     * @return imagen como Drawable
+     * @return imagen como array de Drawable
      */
-    public Drawable selectImagen(int id) {
+    public Map selectImagen(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String table = "Fotos";
@@ -116,27 +118,33 @@ public class BaseDatos extends SQLiteOpenHelper {
         String groupBy = null;
         String having = null;
         String orderBy = null;
-        String limit = "1";
+        String limit = null;
 
-        Drawable imagen = null;
+        Map<Drawable,String> imagenes = new HashMap<Drawable, String>();
+
         try {
             Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                String descripcion = cursor.getString(0);
-                String ruta = cursor.getString(1);
 
-                try
-                {
-                    InputStream ims = context.getAssets().open(ruta);
-                    imagen = Drawable.createFromStream(ims, null);
-                    ims.close();
-                }
-                catch(IOException ex)
-                {
-                    Log.i("Base de datos", "Archivo no encontrado.");
-                }
+            if (cursor.moveToFirst()) {
+                do {
+                    String descripcion = cursor.getString(0);
+                    String ruta = cursor.getString(1);
+
+                    try
+                    {
+                        InputStream ims = context.getAssets().open(ruta);
+                        imagenes.put(Drawable.createFromStream(ims, null),descripcion);
+                        ims.close();
+                    }
+                    catch(IOException ex)
+                    {
+                        Log.i("Base de datos", "Archivo no encontrado.");
+                    }
+
+                } while (cursor.moveToNext());
             }
+            cursor.close();
+            db.close();
         }
 
         catch(Exception e)
@@ -144,7 +152,7 @@ public class BaseDatos extends SQLiteOpenHelper {
             Log.i("Base de datos", "No hay datos en la base");
         }
 
-        return imagen;
+        return imagenes;
     }
 
     /**

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.osmdroid.views.MapView;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Esta clase se encarga de inicializar el mapa y su base de datos asociada, ademas crea un enlace a la actividad encargada
@@ -58,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
         permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);*/
 
         BaseDatos base = new BaseDatos(getApplicationContext());
+        Map imagenes = base.selectImagen(4);
+
+        Iterator<Map.Entry<Drawable, String>> it = imagenes.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Drawable, String> par = it.next();
+            Log.i("Base de datos", par.getValue());
+        }
 
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
