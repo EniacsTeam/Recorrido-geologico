@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +32,11 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +50,10 @@ import java.util.Set;
  */
 
 public class Mapa {
+    private MyLocationNewOverlay mLocationOverlay;
+    private CompassOverlay mCompassOverlay;
+    protected ImageButton btCenterMap;
+
     MapView mapView;
     Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -126,7 +135,30 @@ public class Mapa {
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
+        mapView.setTilesScaledToDpi(true);
 
+        this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
+                mapView);
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity),
+                mapView);
+        mapView.getOverlays().add(this.mLocationOverlay);
+        mapView.getOverlays().add(this.mCompassOverlay);
+        mLocationOverlay.enableMyLocation();
+        mLocationOverlay.enableFollowLocation();
+        mLocationOverlay.setOptionsMenuEnabled(true);
+        mCompassOverlay.enableCompass();
+/*        btCenterMap = (ImageButton) view.findViewById(R.id.ic_center_map);
+
+        btCenterMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "centerMap clicked ");
+                if (currentLocation != null) {
+                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+                    mMapView.getController().animateTo(myPosition);
+                }
+            }
+        });*/
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
         mapViewController.setZoom(13);
@@ -178,6 +210,7 @@ public class Mapa {
                 return true;
             }
         });
+
 
     }
 
