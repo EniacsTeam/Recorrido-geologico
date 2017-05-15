@@ -17,9 +17,12 @@ import android.widget.Toast;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.media.CamcorderProfile.get;
 
 /**
  * Esta clase se encarga de obtener la ubicación del usuario.
@@ -41,7 +44,7 @@ public class Ubicacion implements LocationListener {
     int marcadorActual=-1;
     Location currentLocation;
     ImageButton btCenterMap;
-
+    InfoWindow defaultInfo;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
     /**
@@ -58,6 +61,7 @@ public class Ubicacion implements LocationListener {
         this.mainActivity = main;
         this.markerLocation = new Marker(map);
         markerLocation.setPosition(routeCenter);
+
         Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
         markerLocation.setIcon(marker);
         markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
@@ -105,26 +109,53 @@ public class Ubicacion implements LocationListener {
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
     }
+
     @Override
     public void onLocationChanged(Location location) {
-        currentLocation=location;
         markerLocation.setPosition(new GeoPoint(location));
         int marcador = distanciaEntrePuntos(location);
-        if(marcadorActual==-1){
-            marcadorActual=marcador;
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(true);
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(1);
-            Toast.makeText(mainActivity, "Se encuentra cercano a un punto.", Toast.LENGTH_LONG).show();
+        Marker marker;
+        if (marcador == -1){
+            if (marcadorActual!= -1){
+                marker= marcadores.get(marcadorActual);
+                marker.setInfoWindow(defaultInfo);
+                marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                marcadores.set(marcadorActual, marker);
+            }
+        }else{
+            if (marcadorActual!= marcador) {
+                if (marcadorActual!= -1) {
+                    marker = marcadores.get(marcadorActual);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                    marker.setInfoWindow(defaultInfo);
+                    marcadores.set(marcadorActual, marker);
+                    marker = marcadores.get(marcador);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    defaultInfo = marker.getInfoWindow();
 
-            //Mostrar ventana entrando en punto
-        }else if(marcador!=marcadorActual){
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(false);
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(0);
-            marcadores.get(marcador).getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(true);
-            marcadores.get(marcador).getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(1);
-            Toast.makeText(mainActivity, "Se encuentra cercano a un punto.", Toast.LENGTH_LONG).show();
-            marcadorActual=marcador;
+                    marker.getInfoWindow().getView().findViewById(R.id.ver_mas).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
+                                    Intent intent = new Intent(MenuMultimediaMapa.class, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("id", marcadorActual);
+                                    mainActivity.startActivity(intent);
+                                    //dialogo.show();
+                                }
+                            }
+                    );
+                    marcadores.set(marcador, marker);
+                    marcadorActual= marcador;
+                }else {
+                    marker = marcadores.get(marcador);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    marcadores.set(marcador, marker);
+                }
+            }
         }
+        marcadorActual = marcador;
 
         //si title de marcador_actual = marcador(int) no hacer nada: caso contario desabilitarlo y habilitar marcador con title = marcador(int)
         //ademas si es marcador 4-7 los pegados se debe hacer zoom a ese espacio aumentar a zoom 16 y

@@ -275,6 +275,7 @@ public class Mapa {
     }
 
 
+
     /**
      * Clase para generar la ventana de informacion para cada punto de interes
      */
