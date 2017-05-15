@@ -1,13 +1,17 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.location.Location;
+
 import org.osmdroid.util.BoundingBox;
+
+import java.util.ArrayList;
 
 /**
  * Created by Johan Duran Cerdas on 10/5/2017.
  */
 
 public class DatosGeo {
-	int cantidadElementos=26;
+	static int cantidadElementos=26;
     public static double[] latitudes(){
         double[] latitude = {10.95124, 10.94081, 10.94075, 10.96712, 10.91338, 10.92449, 10.92599, 10.92792, 10.91753,
                 10.93645, 10.9502, 10.95016, 10.94015, 10.93171, 10.911, 10.89343, 10.89263, 10.89428, 10.884, 10.88,
@@ -37,7 +41,7 @@ public class DatosGeo {
             l.setLongitude(longitud[i]);
             locations.add(i,l);
         }
-        rturn locations;
+        return locations;
     }
 
     /**

@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +32,11 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +50,10 @@ import java.util.Set;
  */
 
 public class Mapa {
+    private MyLocationNewOverlay mLocationOverlay;
+    private CompassOverlay mCompassOverlay;
+    protected ImageButton btCenterMap;
+
     MapView mapView;
     Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -115,7 +124,7 @@ public class Mapa {
     /**
      * Metodo para configurar el mapa
      *
-     * @param context es el contexto donde se creo el mapa
+     * param context es el contexto donde se creo el mapa
      */
     public void setupMap() {
         /*En caso de error muestra este layout*/
@@ -126,6 +135,18 @@ public class Mapa {
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
+        mapView.setTilesScaledToDpi(true);
+
+        this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
+                mapView);
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity),
+                mapView);
+        mapView.getOverlays().add(this.mLocationOverlay);
+        mapView.getOverlays().add(this.mCompassOverlay);
+        mLocationOverlay.enableMyLocation();
+        mLocationOverlay.enableFollowLocation();
+        mLocationOverlay.setOptionsMenuEnabled(true);
+        mCompassOverlay.enableCompass();
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
@@ -179,6 +200,7 @@ public class Mapa {
             }
         });
 
+
     }
 
 
@@ -231,7 +253,7 @@ public class Mapa {
     /**
      * Metodo que agrega los marcadores al mapa
      */
-    public void agregarMarcadores() {
+    public List<Marker> agregarMarcadores() {
 
     /*Se crea un marcador para cada punto en el mapa*/
         for (int i = 0; i < locations.size(); i++) {
@@ -244,9 +266,12 @@ public class Mapa {
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
+            marcador.getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(0);
+            marcador.getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(false);
             mapView.getOverlays().add(marcador);
-
+            marcadores.set(i,marcador);
         }
+        return marcadores;
     }
 
 
