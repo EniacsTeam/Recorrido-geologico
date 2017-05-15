@@ -11,11 +11,13 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.TextView;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
 
+import static android.os.Build.VERSION_CODES.M;
 import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 
 /**
@@ -99,7 +101,10 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         markerLocation.setPosition(new GeoPoint(location));
+        MapController mapController=(MapController) map.getController();
         int marcador = distanciaEntrePuntos(location);
+        mapController.animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
+
         Marker marker;
         if (marcador == -1){
             if (puntocercano!= -1){
@@ -175,6 +180,7 @@ public class Ubicacion implements LocationListener {
 
     public int distanciaEntrePuntos(Location current){
         for(int i=0;i<locations.size();i++){
+
             if(current.distanceTo(locations.get(i))<distancias[i]){
                 return i;
             }

@@ -245,7 +245,6 @@ public class Mapa {
             marcador.setOnMarkerClickListener(markerClickListener);
             marcadores.set(i,marcador);
             mapView.getOverlays().add(marcador);
-
         }
     }
 
@@ -298,6 +297,8 @@ public class Mapa {
                  */
                 @Override
                 public void onClick(View v) {
+
+
                     dialogo.show();
                 }
 
