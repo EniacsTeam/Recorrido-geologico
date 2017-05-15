@@ -1,7 +1,7 @@
 package com.eniacs_team.rutamurcielago;
 
 /**
- * Created by kenca on 14/05/2017.
+ * Clase que contiene la información de cada cardView del RecyclerView.
  */
 
 public class listItemMenuMultimedia {
