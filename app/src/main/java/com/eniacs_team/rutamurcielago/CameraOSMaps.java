@@ -34,6 +34,7 @@ import org.osmdroid.views.overlay.Marker;
 import static android.R.id.button1;
 import static android.R.id.button2;
 import static android.R.id.button3;
+import static android.R.id.inputExtractEditText;
 
 /**
  * Esta actividad proporciona una camara de realidad aumentada que permite sobreponer elementos digitales sobre el mundo real.
@@ -55,6 +56,14 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
     private SubActionButton btn_audio;
     private SubActionButton btn_imagen;
     private SubActionButton btn_animacion;
+
+    private ImageView videoIcon;
+    private ImageView audioIcon;
+    private ImageView imagenIcon;
+    private ImageView animacionIcon;
+    private ImageView muteIcon;
+
+    private boolean audio_bool = true;
 
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
@@ -111,7 +120,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
      * Metodo encargado de crear fab.
      */
     private void crearFab() {
-        boolean boolAudio = true;
+        final boolean boolAudio = true;
         boolean boolVideo = true;
 
         // Create an icon
@@ -129,24 +138,27 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
         itemBuilder.setLayoutParams(layoutParams);
 
         // repeat many times:
-        ImageView itemIcon1 = new ImageView(this);
-        itemIcon1.setImageResource(R.mipmap.video);
+        videoIcon = new ImageView(this);
+        videoIcon.setImageResource(R.mipmap.video);
 
-        ImageView itemIcon2 = new ImageView(this);
-        itemIcon2.setImageResource(R.mipmap.audio);
+        audioIcon = new ImageView(this);
+        audioIcon.setImageResource(R.mipmap.audio);
 
-        ImageView itemIcon3 = new ImageView(this);
-        itemIcon3.setImageResource(R.mipmap.imagen);
+        imagenIcon = new ImageView(this);
+        imagenIcon.setImageResource(R.mipmap.imagen);
 
-        ImageView itemIcon4 = new ImageView(this);
-        itemIcon4.setImageResource(R.mipmap.percy);
+        animacionIcon = new ImageView(this);
+        animacionIcon.setImageResource(R.mipmap.percy);
+
+        muteIcon = new ImageView(this);
+        muteIcon.setImageResource(R.mipmap.mute);
 
 
         //Creo botones
-        btn_video = itemBuilder.setContentView(itemIcon1).build();
-        btn_audio = itemBuilder.setContentView(itemIcon2).build();
-        btn_imagen = itemBuilder.setContentView(itemIcon3).build();
-        btn_animacion = itemBuilder.setContentView(itemIcon4).build();
+        btn_video = itemBuilder.setContentView(videoIcon).build();
+        btn_audio = itemBuilder.setContentView(audioIcon).build();
+        btn_imagen = itemBuilder.setContentView(imagenIcon).build();
+        btn_animacion = itemBuilder.setContentView(animacionIcon).build();
 
         //Se agregan los botones al fab y verifica que agrega y que no
         fabBuilder();
@@ -160,7 +172,29 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
                 }
 
                 if (v == btn_audio) {
+                    ImageView intermedio = new ImageView(CameraOSMaps.this);
+                    if(audio_bool)
+                    {
+                        //reproduzco
+                        intermedio.setImageResource(R.mipmap.audio);
+                        audioIcon.setImageDrawable(intermedio.getDrawable());
+                        audio_bool = false;
+                    }
+                    else
+                    {
+                        //cambio icono y stop audio
+                        audioIcon.setImageDrawable(muteIcon.getDrawable());
+                        audio_bool = true;
+                    }
+
                     Toast.makeText(getApplicationContext(), "Toque audio", Toast.LENGTH_SHORT).show();
+                   /* if(itemIcon2 != null)
+                    {
+                        itemIcon2.setImageDrawable(itemIcon5.getDrawable());
+                    }
+                    //btn_audio.setContentView(itemIcon5);
+                    */
+
                 }
 
                 if (v == btn_imagen) {
@@ -259,6 +293,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
                 Toast.makeText(getApplicationContext(), "Menu cerrado", Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
     }
