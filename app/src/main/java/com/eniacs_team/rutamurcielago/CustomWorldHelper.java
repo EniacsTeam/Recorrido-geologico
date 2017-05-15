@@ -36,7 +36,7 @@ public class CustomWorldHelper {
         go1.setGeoPosition(10.936514d, -85.782079d);
         go1.setImageResource(R.drawable.github_logo);
         go1.setName("GitHub Logo");
-
+        
         // Also possible to get images from the SDcard
         /*GeoObject go3 = new GeoObject(3l);
         go3.setGeoPosition(41.90550959641445d, 2.565873388087619d);

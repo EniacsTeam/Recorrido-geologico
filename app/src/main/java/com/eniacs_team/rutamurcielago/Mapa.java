@@ -3,13 +3,14 @@ package com.eniacs_team.rutamurcielago;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,11 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +50,10 @@ import java.util.Set;
  */
 
 public class Mapa {
+    private MyLocationNewOverlay mLocationOverlay;
+    private CompassOverlay mCompassOverlay;
+    protected ImageButton btCenterMap;
+
     MapView mapView;
     Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -75,16 +84,13 @@ public class Mapa {
         this.marcadores = new ArrayList<>();
         this.activity = activity;
 
-        double[] latitude = {10.95124, 10.94081, 10.94075, 10.96712, 10.91338, 10.92449, 10.92599, 10.92792, 10.91753,
-                10.93645, 10.9502, 10.95016, 10.94015, 10.93171, 10.911, 10.89343, 10.89263, 10.89428, 10.884, 10.88,
-                10.85402, 10.848, 10.8537, 10.85516, 10.85607, 10.85919};
-        double[] longitud = {-85.70945, -85.77404, -85.80209, -85.80062, -85.80195, -85.81871, -85.81824,
-                -85.81947, -85.78693, -85.81037, -85.875, -85.88396, -85.87438, -85.87749, -85.911, -85.94944,
-                -85.93188, -85.92604, -85.8998, -85.8791, -85.85996, -85.8591, -85.90864, -85.90895, -85.9103 - 85.93745};
+        double[] latitude = DatosGeo.latitudes();
+        double[] longitud =DatosGeo.longitudes();
 
         for (int i = 0; i < longitud.length; i++) {
             locations.add(i, new GeoPoint(latitude[i], longitud[i]));
             marcadores.add(i, new Marker(map));
+            marcadores.get(i).setTitle(String.valueOf(i));
         }
 
         markerClickListener = new Marker.OnMarkerClickListener() {
@@ -118,30 +124,45 @@ public class Mapa {
     /**
      * Metodo para configurar el mapa
      *
-     * @param context es el contexto donde se creo el mapa
+<<<<<<< HEAD
+=======
+     * param context es el contexto donde se creo el mapa
+>>>>>>> 7dd21c9aa9dd4852f39af0d0fb3864a6ee065a60
      */
-    public void setupMap(Context context) {
+    public void setupMap() {
         /*En caso de error muestra este layout*/
         mapView.getTileProvider().setTileLoadFailureImage(activity.getResources().getDrawable(R.drawable.notfound));
-        this.mContext = context;
+        this.mContext = activity;
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
+        mapView.setTilesScaledToDpi(true);
+
+        this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
+                mapView);
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity),
+                mapView);
+        mapView.getOverlays().add(this.mLocationOverlay);
+        mapView.getOverlays().add(this.mCompassOverlay);
+        mLocationOverlay.enableMyLocation();
+        mLocationOverlay.enableFollowLocation();
+        mLocationOverlay.setOptionsMenuEnabled(true);
+        mCompassOverlay.enableCompass();
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
         mapViewController.setZoom(13);
         mapViewController.animateTo(routeCenter);
         mapView.setMinZoomLevel(12);
-        mapView.setMaxZoomLevel(15);
+        mapView.setMaxZoomLevel(16);
 
         //Desactivar botones de zoom nativos.
         mapView.setBuiltInZoomControls(false);
 
         /*Limitar el area de movimiento del mapa*/
-        mapView.setScrollableAreaLimitDouble(getBoundingBox());
+        mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
         dialogo = new CustomDialogClass(activity);
@@ -167,13 +188,17 @@ public class Mapa {
         mapView.setMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
-                mapView.setScrollableAreaLimitDouble(getBoundingBox());
                 return true;
             }
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                if(event.getZoomLevel()!=16){
+                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
+                }else{
+                    mapViewController.animateTo(new GeoPoint(10.925547, -85.818351));
+                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(2));
+                }
                 return true;
             }
         });
@@ -181,20 +206,13 @@ public class Mapa {
 
     }
 
-    /**
-     * Metodo que define el bounding box. Se pueden definir distintos para cada zoom, lat,lon, lat,lon
-     *
-     * @return
-     */
-    private BoundingBox getBoundingBox() {
-        return new BoundingBox(11.062255, -85.587361, 10.765595, -86.091224);
-    }
+
 
 
     /**
      * Metodo que busca el mapa descargado en el telefono para poder cargarlo a la aplicacion
      */
-    public void findFiles() {
+    public void findMapFiles() {
     /*Se busca el archivo dentro del path*/
         File tiles = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/tiles.zip");
         if (tiles.exists()) {
@@ -238,7 +256,7 @@ public class Mapa {
     /**
      * Metodo que agrega los marcadores al mapa
      */
-    public void agregarMarcadores() {
+    public List<Marker> agregarMarcadores() {
 
     /*Se crea un marcador para cada punto en el mapa*/
         for (int i = 0; i < locations.size(); i++) {
@@ -251,10 +269,13 @@ public class Mapa {
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
-            mapView.getOverlays().add(marcador);
 
+            mapView.getOverlays().add(marcador);
+            marcadores.set(i,marcador);
         }
+        return marcadores;
     }
+
 
 
     /**
@@ -305,22 +326,15 @@ public class Mapa {
                  */
                 @Override
                 public void onClick(View v) {
-                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
-                    Intent intent = new Intent(mContext, MenuMultimediaMapa.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("id", puntoCargado);
-                    mContext.startActivity(intent);
-                    //dialogo.show();
+
+
+                    dialogo.show();
                 }
 
 
             });
             txtTitle.setText("Punto #" + puntoCargado);
             txtDescription.setText(base.selectDescripcion(puntoCargado));
-
-            base.existenciaPunto(puntoCargado,"Descripcion");
-            base.existenciaPunto(puntoCargado,"Video");
-
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);
             viewLinea.setLayoutParams(lp);
