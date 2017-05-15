@@ -126,6 +126,7 @@ public class Ubicacion implements LocationListener {
         markerLocation.setPosition(new GeoPoint(location));
         MapController mapController=(MapController) map.getController();
         int marcador = distanciaEntrePuntos(location);
+        mapController.animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
         Marker marker;
         if (marcador == -1){
             if (marcadorActual!= -1){

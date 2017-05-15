@@ -270,8 +270,6 @@ public class Mapa {
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
 
-            marcador.getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(0);
-            marcador.getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(false);
             mapView.getOverlays().add(marcador);
             marcadores.set(i,marcador);
         }
