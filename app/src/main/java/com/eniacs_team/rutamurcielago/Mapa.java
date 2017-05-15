@@ -3,6 +3,7 @@ package com.eniacs_team.rutamurcielago;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -304,7 +305,12 @@ public class Mapa {
                  */
                 @Override
                 public void onClick(View v) {
-                    dialogo.show();
+                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
+                    Intent intent = new Intent(mContext, MenuMultimediaMapa.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("id", puntoCargado);
+                    mContext.startActivity(intent);
+                    //dialogo.show();
                 }
 
 

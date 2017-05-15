@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             CopyFolder.copyAssets(this);
             base.actualizarEstadoMapa();
         }
+        base.cargarBase();
         //se le pasa el mapa y actividad a la clase encargada de controlarlo
         Mapa mapa = new Mapa(mapView,this);
         //se inicializa el mapa. Zoom, bounding box etc
