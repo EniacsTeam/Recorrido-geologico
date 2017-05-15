@@ -124,7 +124,7 @@ public class Mapa {
     /**
      * Metodo para configurar el mapa
      *
-     * @param context es el contexto donde se creo el mapa
+     * param context es el contexto donde se creo el mapa
      */
     public void setupMap() {
         /*En caso de error muestra este layout*/
@@ -147,18 +147,7 @@ public class Mapa {
         mLocationOverlay.enableFollowLocation();
         mLocationOverlay.setOptionsMenuEnabled(true);
         mCompassOverlay.enableCompass();
-/*        btCenterMap = (ImageButton) view.findViewById(R.id.ic_center_map);
 
-        btCenterMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "centerMap clicked ");
-                if (currentLocation != null) {
-                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-                    mMapView.getController().animateTo(myPosition);
-                }
-            }
-        });*/
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
         mapViewController.setZoom(13);
@@ -264,7 +253,7 @@ public class Mapa {
     /**
      * Metodo que agrega los marcadores al mapa
      */
-    public void agregarMarcadores() {
+    public List<Marker> agregarMarcadores() {
 
     /*Se crea un marcador para cada punto en el mapa*/
         for (int i = 0; i < locations.size(); i++) {
@@ -277,9 +266,12 @@ public class Mapa {
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
+            marcador.getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(0);
+            marcador.getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(false);
             mapView.getOverlays().add(marcador);
-
+            marcadores.set(i,marcador);
         }
+        return marcadores;
     }
 
 
