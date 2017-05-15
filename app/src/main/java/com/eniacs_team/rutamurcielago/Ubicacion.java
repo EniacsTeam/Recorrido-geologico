@@ -47,8 +47,6 @@ public class Ubicacion implements LocationListener {
      */
     public Ubicacion (final MapView map,final MainActivity main,final View v, final Mapa mapa){
         this.locations = DatosGeo.getLocations();
-        double[] latitude = DatosGeo.latitudes();
-        double[] longitud =DatosGeo.longitudes();
         this.distancias=DatosGeo.radios();
         this.mapa= mapa;
 
