@@ -150,8 +150,23 @@ public class Ubicacion implements LocationListener {
                     marcadorActual= marcador;
                 }else {
                     marker = marcadores.get(marcador);
+                    defaultInfo = marker.getInfoWindow();
+                    marker.getInfoWindow().getView().findViewById(R.id.ver_mas).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
+                                    Intent intent = new Intent(MenuMultimediaMapa.class MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("id", marcadorActual);
+                                    mainActivity.startActivity(intent);
+                                    //dialogo.show();
+                                }
+                            }
+                    );
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
                     marcadores.set(marcador, marker);
+
                 }
             }
         }
