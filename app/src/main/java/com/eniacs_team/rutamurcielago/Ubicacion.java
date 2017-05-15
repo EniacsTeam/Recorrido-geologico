@@ -138,7 +138,7 @@ public class Ubicacion implements LocationListener {
                                 @Override
                                 public void onClick(View v) {
                                     //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
-                                    Intent intent = new Intent(MenuMultimediaMapa.class, MainActivity.class);
+                                    Intent intent = new Intent( MainActivity.class,MenuMultimediaMapa.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra("id", marcadorActual);
                                     mainActivity.startActivity(intent);
@@ -156,7 +156,7 @@ public class Ubicacion implements LocationListener {
                                 @Override
                                 public void onClick(View v) {
                                     //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
-                                    Intent intent = new Intent(MenuMultimediaMapa.class MainActivity.class);
+                                    Intent intent = new Intent( MainActivity.class,MenuMultimediaMapa.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.putExtra("id", marcadorActual);
                                     mainActivity.startActivity(intent);
