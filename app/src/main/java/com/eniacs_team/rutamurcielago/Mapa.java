@@ -327,9 +327,6 @@ public class Mapa implements MapEventsReceiver {
             txtTitle.setText("Punto #" + puntoCargado);
             txtDescription.setText(base.selectDescripcion(puntoCargado));
 
-            base.existenciaPunto(puntoCargado,"Descripcion");
-            base.existenciaPunto(puntoCargado,"Video");
-
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);
             viewLinea.setLayoutParams(lp);
