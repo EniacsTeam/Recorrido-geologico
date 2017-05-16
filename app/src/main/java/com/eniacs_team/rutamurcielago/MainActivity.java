@@ -63,13 +63,6 @@ public class MainActivity extends AppCompatActivity {
         permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);*/
 
         BaseDatos base = new BaseDatos(getApplicationContext());
-        Map imagenes = base.selectImagen(4);
-
-        Iterator<Map.Entry<Drawable, String>> it = imagenes.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Drawable, String> par = it.next();
-            Log.i("Base de datos", par.getValue());
-        }
 
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
