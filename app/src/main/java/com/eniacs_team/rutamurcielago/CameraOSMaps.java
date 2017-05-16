@@ -3,11 +3,14 @@ package com.eniacs_team.rutamurcielago;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Point;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -31,9 +34,13 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import static android.R.id.button1;
 import static android.R.id.button2;
 import static android.R.id.button3;
+import static android.R.id.input;
 import static android.R.id.inputExtractEditText;
 
 /**
@@ -63,7 +70,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
     private ImageView animacionIcon;
     private ImageView muteIcon;
 
-    private boolean audio_bool = true;
+    private static boolean audio_bool = true;
+    private static MediaPlayer mPlayer;
 
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
@@ -83,6 +91,25 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
         mWorld = CustomWorldHelper.generateObjects(this);
 
         mBeyondarFragment.setWorld(mWorld);
+
+        //Creo reproductor de audio
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
+            //Listener para que se borre cuando termine de reproducirse audio
+            MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mPlayer.release();
+                    mPlayer = null;
+                }
+            };
+            mPlayer.setOnCompletionListener(onCompletionListener);
+        }
+
+        if (savedInstanceState != null) {
+            audio_bool = savedInstanceState.getBoolean("Bool_audio", false);
+        }
+
     }
 
     /**
@@ -116,13 +143,26 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        // Make sure to call the super method so that the states of our views are saved
+        savedInstanceState.putBoolean("Bool_audio", audio_bool);
+        super.onSaveInstanceState(savedInstanceState);
+        // Save our own state now
+    }
+
+    @Override
+    public void onBackPressed() {
+        mPlayer.release();
+        mPlayer = null;
+        audio_bool = true;
+        super.onBackPressed();
+    }
+
     /**
      * Metodo encargado de crear fab.
      */
     private void crearFab() {
-        final boolean boolAudio = true;
-        boolean boolVideo = true;
-
         // Create an icon
         ImageView icon = new ImageView(this);
         icon.setImageResource(R.mipmap.menu);
@@ -156,7 +196,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
 
         //Creo botones
         btn_video = itemBuilder.setContentView(videoIcon).build();
-        btn_audio = itemBuilder.setContentView(audioIcon).build();
+        if (!audio_bool) {
+            audioIcon = muteIcon;
+            btn_audio = itemBuilder.setContentView(audioIcon).build();
+        } else {
+            btn_audio = itemBuilder.setContentView(audioIcon).build();
+        }
         btn_imagen = itemBuilder.setContentView(imagenIcon).build();
         btn_animacion = itemBuilder.setContentView(animacionIcon).build();
 
@@ -173,27 +218,22 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
 
                 if (v == btn_audio) {
                     ImageView intermedio = new ImageView(CameraOSMaps.this);
-                    if(audio_bool)
-                    {
+                    if (audio_bool) {
                         //reproduzco
-                        intermedio.setImageResource(R.mipmap.audio);
+                        int id = R.raw.audio1;
+                        mPlayer = MediaPlayer.create(CameraOSMaps.this, id);
+                        mPlayer.start();
+                        intermedio.setImageResource(R.mipmap.mute);
                         audioIcon.setImageDrawable(intermedio.getDrawable());
                         audio_bool = false;
-                    }
-                    else
-                    {
+                    } else {
                         //cambio icono y stop audio
-                        audioIcon.setImageDrawable(muteIcon.getDrawable());
+                        mPlayer.release();
+                        mPlayer = null;
+                        intermedio.setImageResource(R.mipmap.audio);
+                        audioIcon.setImageDrawable(intermedio.getDrawable());
                         audio_bool = true;
                     }
-
-                    Toast.makeText(getApplicationContext(), "Toque audio", Toast.LENGTH_SHORT).show();
-                   /* if(itemIcon2 != null)
-                    {
-                        itemIcon2.setImageDrawable(itemIcon5.getDrawable());
-                    }
-                    //btn_audio.setContentView(itemIcon5);
-                    */
 
                 }
 
@@ -214,26 +254,16 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
         btn_imagen.setOnClickListener(btn_Listener);
         btn_animacion.setOnClickListener(btn_Listener);
 
-
-
-
-
-
-
-
     }
 
     /**
      * Metodo encargado de agregar los botones al fab
-     *
      */
-    private void fabBuilder()
-    {
+    private void fabBuilder() {
         FloatingActionMenu actionMenu;
 
         //Pregunto si hay videos y audio en la base para agregarlos o no al fab
-        if(baseDatos.existenciaPunto(idPunto, "Video") == 0 && (baseDatos.existenciaPunto(idPunto, "Audio") == 0) )
-        {
+        if (baseDatos.existenciaPunto(idPunto, "Video") == 0 && (baseDatos.existenciaPunto(idPunto, "Audio") == 0)) {
 
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
@@ -245,10 +275,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
         }
 
         //Pregunto si hay audios en la base para agregarlo o no al fab
-        else if(baseDatos.existenciaPunto(idPunto, "Audio") == 0)
-        {
+        else if (baseDatos.existenciaPunto(idPunto, "Audio") == 0) {
             //attach the sub buttons to the main button
-             actionMenu = new FloatingActionMenu.Builder(this)
+            actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_video)
                     .addSubActionView(btn_imagen)
                     .attachTo(actionButton)
@@ -256,8 +285,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
                     .build();
         }
         //Pregunto si hay videos en la base para agregarlo o no al fab
-        else if(baseDatos.existenciaPunto(idPunto, "Video") == 0)
-        {
+        else if (baseDatos.existenciaPunto(idPunto, "Video") == 0) {
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_animacion)
@@ -266,9 +294,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
                     .attachTo(actionButton)
                     .setRadius(260)
                     .build();
-        }
-        else
-        {
+        } else {
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_animacion)
@@ -295,10 +321,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener {
         });
 
 
-
     }
-
-
 
 
 }
