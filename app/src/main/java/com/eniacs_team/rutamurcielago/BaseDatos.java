@@ -178,13 +178,50 @@ public class BaseDatos extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 descripcion = cursor.getString(0);
             }
+            cursor.close();
+            db.close();
         }
         catch(Exception e)
         {
             Log.i("Base de datos", "No hay datos en la base");
         }
+
         return descripcion;
     }
+
+    /**
+     * Devuelve el audio para un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return ruta como String
+     */
+    public String selectAudio(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "Lugares";
+        String[] columns = {"Audio"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+        String audio = null;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                audio = cursor.getString(0);
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        return audio;
+    }
+
 
     /**
      * Verifica si el mapa ya ha sido cargado
@@ -203,6 +240,8 @@ public class BaseDatos extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 estado = Integer.parseInt(cursor.getString(0));
             }
+            cursor.close();
+            db.close();
         }
         catch(Exception e)
         {
@@ -234,6 +273,8 @@ public class BaseDatos extends SQLiteOpenHelper {
                     estado = 1;
                 }
             }
+            cursor.close();
+            db.close();
         }
         catch(Exception e)
         {
