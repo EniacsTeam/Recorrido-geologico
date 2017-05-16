@@ -125,6 +125,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         }
         else if (v == mShowMap) {
             Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         }

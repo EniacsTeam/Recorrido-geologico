@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +35,11 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +54,11 @@ import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWind
  * @author  EniacsTeam
  */
 
-public class Mapa implements MapEventsReceiver {
+public class Mapa implements MapEventsReceiver{
+    private MyLocationNewOverlay mLocationOverlay;
+    private CompassOverlay mCompassOverlay;
+    protected ImageButton btCenterMap;
+
     MapView mapView;
     Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -89,6 +99,7 @@ public class Mapa implements MapEventsReceiver {
         for (int i = 0; i < longitud.length; i++) {
             locations.add(i, new GeoPoint(latitude[i], longitud[i]));
             marcadores.add(i, new Marker(map));
+            marcadores.get(i).setTitle(String.valueOf(i));
         }
 
         markerClickListener = new Marker.OnMarkerClickListener() {
@@ -128,32 +139,43 @@ public class Mapa implements MapEventsReceiver {
     /**
      * Metodo para configurar el mapa
      *
-     * @param context es el contexto donde se creo el mapa
      */
-    public void setupMap(Context context) {
+    public void setupMap() {
         /*En caso de error muestra este layout*/
         mapView.getTileProvider().setTileLoadFailureImage(activity.getResources().getDrawable(R.drawable.notfound));
-        this.mContext = context;
+        this.mContext = activity;
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         mapView.setUseDataConnection(true);
+        mapView.setTilesScaledToDpi(true);
+
+        this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
+                mapView);
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity),
+                mapView);
+        mapView.getOverlays().add(this.mLocationOverlay);
+        mapView.getOverlays().add(this.mCompassOverlay);
+        mLocationOverlay.enableMyLocation();
+        mLocationOverlay.enableFollowLocation();
+        mLocationOverlay.setOptionsMenuEnabled(true);
+        mCompassOverlay.enableCompass();
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
         mapViewController.setZoom(13);
         mapViewController.animateTo(routeCenter);
         mapView.setMinZoomLevel(12);
-        mapView.setMaxZoomLevel(15);
+        mapView.setMaxZoomLevel(16);
 
         //Desactivar botones de zoom nativos.
         mapView.setBuiltInZoomControls(false);
 
         /*Limitar el area de movimiento del mapa*/
-        mapView.setScrollableAreaLimitDouble(getBoundingBox());
+        mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
 
-        mapEventsOverlay = new MapEventsOverlay(context,this);
+        mapEventsOverlay = new MapEventsOverlay(mContext,this);
         mapView.getOverlays().add(0, mapEventsOverlay);
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
@@ -162,13 +184,17 @@ public class Mapa implements MapEventsReceiver {
         mapView.setMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
-                mapView.setScrollableAreaLimitDouble(getBoundingBox());
                 return true;
             }
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                mapView.setScrollableAreaLimitDouble(getBoundingBox());
+                if(event.getZoomLevel()!=16){
+                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
+                }else{
+                    mapViewController.animateTo(new GeoPoint(10.925547, -85.818351));
+                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(2));
+                }
                 return true;
             }
         });
@@ -176,20 +202,13 @@ public class Mapa implements MapEventsReceiver {
 
     }
 
-    /**
-     * Metodo que define el bounding box. Se pueden definir distintos para cada zoom, lat,lon, lat,lon
-     *
-     * @return
-     */
-    private BoundingBox getBoundingBox() {
-        return new BoundingBox(11.062255, -85.587361, 10.765595, -86.091224);
-    }
+
 
 
     /**
      * Metodo que busca el mapa descargado en el telefono para poder cargarlo a la aplicacion
      */
-    public void findFiles() {
+    public void findMapFiles() {
     /*Se busca el archivo dentro del path*/
         File tiles = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/osmdroid/tiles.zip");
         if (tiles.exists()) {
@@ -233,7 +252,7 @@ public class Mapa implements MapEventsReceiver {
     /**
      * Metodo que agrega los marcadores al mapa
      */
-    public void agregarMarcadores() {
+    public List<Marker> agregarMarcadores() {
 
     /*Se crea un marcador para cada punto en el mapa*/
         for (int i = 0; i < locations.size(); i++) {
@@ -243,12 +262,14 @@ public class Mapa implements MapEventsReceiver {
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
-            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1);
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1,false, mContext,dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
-            mapView.getOverlays().add(marcador);
 
+            mapView.getOverlays().add(marcador);
+            marcadores.set(i,marcador);
         }
+        return marcadores;
     }
 
     @Override
@@ -266,12 +287,15 @@ public class Mapa implements MapEventsReceiver {
     }
 
 
+
     /**
      * Clase para generar la ventana de informacion para cada punto de interes
      */
-    private class MyInfoWindow extends InfoWindow {
+    public static class MyInfoWindow extends InfoWindow {
         int puntoCargado;
-
+        boolean tipo;
+        Context mContext;
+        CustomDialogClass dialogo;
         /**
          * Constructor de la ventana de informacion
          *
@@ -279,9 +303,13 @@ public class Mapa implements MapEventsReceiver {
          * @param mapView     es el mapa
          * @param puntoCargar es el punto de interes asociado a la ventana
          */
-        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar) {
+        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar,boolean tipo, Context context,
+                            CustomDialogClass dialogo) {
             super(layoutResId, mapView);
             puntoCargado = puntoCargar;
+            this.tipo = tipo;
+            this.mContext= context;
+            this.dialogo= dialogo;
         }
 
         public void onClose() {
@@ -314,12 +342,14 @@ public class Mapa implements MapEventsReceiver {
                  */
                 @Override
                 public void onClick(View v) {
-                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
-                    Intent intent = new Intent(mContext, MenuMultimediaMapa.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("id", puntoCargado);
-                    mContext.startActivity(intent);
-                    //dialogo.show();
+                    if(tipo){
+                        Intent intent = new Intent( mContext,MenuMultimediaMapa.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("id", puntoCargado);
+                        mContext.startActivity(intent);
+                    }else{
+                        dialogo.show();
+                    }
                 }
 
 
@@ -339,7 +369,7 @@ public class Mapa implements MapEventsReceiver {
      * Clase para controlar el dialogo que indica que el usuario esta fuera del rango del
      * punto de interes
      */
-    public class CustomDialogClass extends Dialog implements
+    public static class CustomDialogClass extends Dialog implements
             android.view.View.OnClickListener {
 
         public Activity c;
