@@ -40,18 +40,16 @@ public class Ubicacion implements LocationListener {
   //   private Location mLastLocation;
   //  private Location mCurrentLocation;
     MainActivity mainActivity;
-    Marker markerLocation;
+   // Marker markerLocation;
     Snackbar snackbar;
     MapView map;
     List<Marker> marcadores;
     ArrayList<Location> locations;
     int[] distancias;
 
-    int i=0;
     int marcadorActual=-1;
     Location currentLocation;
     ImageButton btCenterMap;
-    InfoWindow defaultInfo;
     Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
@@ -70,14 +68,14 @@ public class Ubicacion implements LocationListener {
         this.marcadores=markers;
         this.map = map;
         this.mainActivity = main;
-        this.markerLocation = new Marker(map);
-        markerLocation.setPosition(routeCenter);
+       // this.markerLocation = new Marker(map);
+        //markerLocation.setPosition(routeCenter);
 
-        Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
-        markerLocation.setIcon(marker);
-        markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-        markerLocation.setTitle("My location");
-        this.map.getOverlays().add(markerLocation);
+       // Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
+       // markerLocation.setIcon(marker);
+       // markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
+       // markerLocation.setTitle("My location");
+       // this.map.getOverlays().add(markerLocation);
         gpsActivo(v);
         this.btCenterMap = (ImageButton) center;
 
@@ -123,15 +121,16 @@ public class Ubicacion implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        markerLocation.setPosition(new GeoPoint(location));
+       // markerLocation.setPosition(new GeoPoint(location));
         MapController mapController=(MapController) map.getController();
         int marcador = distanciaEntrePuntos(location);
         mapController.animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
         Marker marker;
+        Mapa.CustomDialogClass dialogo = new Mapa.CustomDialogClass(mainActivity);
         if (marcador == -1){
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
-                marker.setInfoWindow(defaultInfo);
+                marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual,false,mContext,dialogo));
                 marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
                 marcadores.set(marcadorActual, marker);
             }
@@ -140,43 +139,17 @@ public class Ubicacion implements LocationListener {
                 if (marcadorActual!= -1) {
                     marker = marcadores.get(marcadorActual);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
-                    marker.setInfoWindow(defaultInfo);
+                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual,false,mContext,dialogo));
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
-                    defaultInfo = marker.getInfoWindow();
 
-                    marker.getInfoWindow().getView().findViewById(R.id.ver_mas).setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
-                                    Intent intent = new Intent( mContext,MenuMultimediaMapa.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("id", marcadorActual);
-                                    mainActivity.startActivity(intent);
-                                    //dialogo.show();
-                                }
-                            }
-                    );
+                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador,true, mContext, dialogo));
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
                 }else {
                     marker = marcadores.get(marcador);
-                    defaultInfo = marker.getInfoWindow();
-                    marker.getInfoWindow().getView().findViewById(R.id.ver_mas).setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //Aquí va el calculo de distancia para ver si puedo ensñar la información del punto.
-                                    Intent intent = new Intent( mContext,MenuMultimediaMapa.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("id", marcadorActual);
-                                    mainActivity.startActivity(intent);
-                                    //dialogo.show();
-                                }
-                            }
-                    );
+                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador,true, mContext ,dialogo));
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
                     marcadores.set(marcador, marker);
 
@@ -231,14 +204,23 @@ public class Ubicacion implements LocationListener {
         }
     }
 
+    /**
+     * Ahorita devuelve el punto más cercano dentro de los rangos
+     * @param current
+     * @return
+     */
     public int distanciaEntrePuntos(Location current){
+        float menorDist= Float.MAX_VALUE;
+        int ret= -1;
         for(int i=0;i<locations.size();i++){
-
             if(current.distanceTo(locations.get(i))<distancias[i]){
-                return i;
+                if (current.distanceTo(locations.get(i))<menorDist) {
+                    menorDist = current.distanceTo(locations.get(i));
+                    ret = i;
+                }
             }
         }
-        return -1;
+        return ret;
     }
 }
 

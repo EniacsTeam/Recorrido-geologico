@@ -3,6 +3,7 @@ package com.eniacs_team.rutamurcielago;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -124,10 +125,6 @@ public class Mapa {
     /**
      * Metodo para configurar el mapa
      *
-<<<<<<< HEAD
-=======
-     * param context es el contexto donde se creo el mapa
->>>>>>> 7dd21c9aa9dd4852f39af0d0fb3864a6ee065a60
      */
     public void setupMap() {
         /*En caso de error muestra este layout*/
@@ -266,7 +263,7 @@ public class Mapa {
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
-            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1);
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1,false, mContext,dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
 
@@ -281,9 +278,11 @@ public class Mapa {
     /**
      * Clase para generar la ventana de informacion para cada punto de interes
      */
-    private class MyInfoWindow extends InfoWindow {
+    public static class MyInfoWindow extends InfoWindow {
         int puntoCargado;
-
+        boolean tipo;
+        Context mContext;
+        CustomDialogClass dialogo;
         /**
          * Constructor de la ventana de informacion
          *
@@ -291,9 +290,13 @@ public class Mapa {
          * @param mapView     es el mapa
          * @param puntoCargar es el punto de interes asociado a la ventana
          */
-        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar) {
+        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar,boolean tipo, Context context,
+                            CustomDialogClass dialogo) {
             super(layoutResId, mapView);
             puntoCargado = puntoCargar;
+            this.tipo = tipo;
+            this.mContext= context;
+            this.dialogo= dialogo;
         }
 
         public void onClose() {
@@ -326,9 +329,14 @@ public class Mapa {
                  */
                 @Override
                 public void onClick(View v) {
-
-
-                    dialogo.show();
+                    if(tipo){
+                        Intent intent = new Intent( mContext,MenuMultimediaMapa.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("id", puntoCargado);
+                        mContext.startActivity(intent);
+                    }else{
+                        dialogo.show();
+                    }
                 }
 
 
@@ -347,7 +355,7 @@ public class Mapa {
      * Clase para controlar el dialogo que indica que el usuario esta fuera del rango del
      * punto de interes
      */
-    public class CustomDialogClass extends Dialog implements
+    public static class CustomDialogClass extends Dialog implements
             android.view.View.OnClickListener {
 
         public Activity c;

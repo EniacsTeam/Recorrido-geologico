@@ -36,7 +36,7 @@ public class DatosGeo {
 		ArrayList<Location>locations = new ArrayList<>();
         double[] latitude = DatosGeo.latitudes();
         double[] longitud =DatosGeo.longitudes();
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < cantidadElementos; i++) {
             Location l=new Location(String.valueOf(i));
             l.setLatitude(latitude[i]);
             l.setLongitude(longitud[i]);
