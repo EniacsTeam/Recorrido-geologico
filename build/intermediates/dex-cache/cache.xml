@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/libs/beyondar-radar-plugin-v0.9.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="25ce04f5845c01910b0f3600914c0c8e8e4f37c2">
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/2/beyondar-radar-plugin-v0.9.1_1c0d8b8dad5104fd03510fb2109fe87500f3b77a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_c7d35571dc5a0efd0ae9a386f9a4ba88464b800e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/libs/beyondar-v0.9.3.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/2/beyondar-v0.9.3_4613baac2323b0337770edf22dba378a4d88c9f2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="a62f4878e2338abfe6bd0fedf867c07d2dffa6dc">
+        <dex dex="/Users/davidchaves/StudioProjects/Recorrido-geologico/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b2a476231d3670de42641ed645614748ab48b1a4/classes.dex" />
+    </item>
+
+</items>
