@@ -18,6 +18,7 @@ import android.widget.ZoomButtonsController;
 import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
 
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
@@ -30,6 +31,7 @@ import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
@@ -38,13 +40,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
+
 /**
  * Esta clase representa un mapa de OpenStreet Maps. Contiene distintos metodos para su correcto funcionamiento en la aplicacion.
  *
  * @author  EniacsTeam
  */
 
-public class Mapa {
+public class Mapa implements MapEventsReceiver {
     MapView mapView;
     Context mContext;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -59,8 +63,11 @@ public class Mapa {
     Marker marcador_anterior;
     Marker marcador_actual;
 
+    boolean isMarker = true;
+
     Marker.OnMarkerClickListener markerClickListener;
     MapView.OnClickListener mapViewListener;
+    MapEventsOverlay mapEventsOverlay;
 
     /**
      * Constructor de la clase mapa
@@ -74,13 +81,10 @@ public class Mapa {
         this.locations = new ArrayList<>();
         this.marcadores = new ArrayList<>();
         this.activity = activity;
+        marcador_actual = null;
 
-        double[] latitude = {10.95124, 10.94081, 10.94075, 10.96712, 10.91338, 10.92449, 10.92599, 10.92792, 10.91753,
-                10.93645, 10.9502, 10.95016, 10.94015, 10.93171, 10.911, 10.89343, 10.89263, 10.89428, 10.884, 10.88,
-                10.85402, 10.848, 10.8537, 10.85516, 10.85607, 10.85919};
-        double[] longitud = {-85.70945, -85.77404, -85.80209, -85.80062, -85.80195, -85.81871, -85.81824,
-                -85.81947, -85.78693, -85.81037, -85.875, -85.88396, -85.87438, -85.87749, -85.911, -85.94944,
-                -85.93188, -85.92604, -85.8998, -85.8791, -85.85996, -85.8591, -85.90864, -85.90895, -85.9103 - 85.93745};
+        double[] latitude = DatosGeo.latitudes();;
+        double[] longitud = DatosGeo.longitudes();
 
         for (int i = 0; i < longitud.length; i++) {
             locations.add(i, new GeoPoint(latitude[i], longitud[i]));
@@ -90,22 +94,28 @@ public class Mapa {
         markerClickListener = new Marker.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker, MapView mapView) {
+                isMarker = true;
                 if(marcador_anterior == null)
                 {
                     marcador_anterior = new Marker(map);
                     marcador_actual = marker;
+                    marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marker.showInfoWindow();
                 }
                 else if (marker != marcador_actual)
                 {
                     marcador_anterior = marcador_actual;
                     marcador_anterior.closeInfoWindow();
+                    marcador_anterior.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
                     marcador_actual = marker;
+                    marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marcador_actual.showInfoWindow();
                 }else{
                     if (marcador_actual.isInfoWindowShown()){
                         marcador_actual.closeInfoWindow();
+                        marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
                     }else{
+                        marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                         marker.showInfoWindow();
                     }
 
@@ -143,27 +153,12 @@ public class Mapa {
         /*Limitar el area de movimiento del mapa*/
         mapView.setScrollableAreaLimitDouble(getBoundingBox());
 
+        mapEventsOverlay = new MapEventsOverlay(context,this);
+        mapView.getOverlays().add(0, mapEventsOverlay);
+
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
         dialogo = new CustomDialogClass(activity);
 
-        // We create the world and fill the world
-        //mWorld = CustomWorldHelper.generateObjects(activity);
-
-        // As we want to use GoogleMaps, we are going to create the plugin and
-        // attach it to the World
-        //mOSMapPlugin = new OSMWorldPlugin(activity);
-        // Then we need to set the map in to the GoogleMapPlugin
-        //mOSMapPlugin.setOSMap(mapView);
-        // Now that we have the plugin created let's add it to our world.
-        // NOTE: It is better to load the plugins before start adding object in to the world.
-        //mWorld.addPlugin(mOSMapPlugin);
-
-        // Lets add the user position
-        /*GeoObject user = new GeoObject(1000l);
-        user.setGeoPosition(mWorld.getLatitude(), mWorld.getLongitude());
-        user.setImageResource(R.drawable.chibi);
-        user.setName("User position");
-        mWorld.addBeyondarObject(user);*/
         mapView.setMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
@@ -254,6 +249,20 @@ public class Mapa {
             mapView.getOverlays().add(marcador);
 
         }
+    }
+
+    @Override
+    public boolean singleTapConfirmedHelper(GeoPoint p) {
+        if (!isMarker) {
+            InfoWindow.closeAllInfoWindowsOn(mapView);
+            marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+        }
+        isMarker = false;
+        return true;
+    }
+    @Override
+    public boolean longPressHelper(GeoPoint p) {
+        return false;
     }
 
 
