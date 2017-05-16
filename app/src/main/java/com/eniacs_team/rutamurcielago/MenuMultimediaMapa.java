@@ -5,11 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity para generar el menú de datos multimedia disponibles en un sitio.
+ */
 public class MenuMultimediaMapa extends AppCompatActivity {
     
     private RecyclerView recyclerView;
@@ -22,6 +26,10 @@ public class MenuMultimediaMapa extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_multimedia_mapa);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         
         recyclerView = (RecyclerView) findViewById(R.id.menumultimediamaparv);
         recyclerView.setHasFixedSize(true);
@@ -42,6 +50,9 @@ public class MenuMultimediaMapa extends AppCompatActivity {
         
     }
 
+    /**
+     * Método que genera el recycler view con respecto a los datos que se encuentran en la base de datos.
+     */
     private void loadRecyclerViewData() {
 
         //if(baseDatos.existenciaPunto(id, "Imagen") == 1){
@@ -58,7 +69,7 @@ public class MenuMultimediaMapa extends AppCompatActivity {
             listItemns.add(item1);
 
         //}
-        //if(baseDatos.existenciaPunto(id, "Audio") == 1){
+        // if(baseDatos.existenciaPunto(id, "Audio") == 1){
             listItemMenuMultimedia item2 = new listItemMenuMultimedia(
                     "Audio", String.valueOf(id)
             );
@@ -85,6 +96,24 @@ public class MenuMultimediaMapa extends AppCompatActivity {
         }
 
 
+
+    }
+
+
+    /**
+     * Método para tomar la accion de un item, en este caso para devolverse a la activity anterior.
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 }
