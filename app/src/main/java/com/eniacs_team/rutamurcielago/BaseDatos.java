@@ -2,6 +2,8 @@ package com.eniacs_team.rutamurcielago;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -192,9 +194,9 @@ public class BaseDatos extends SQLiteOpenHelper {
     /**
      * Devuelve el audio para un punto dado
      * @param id El identificador del lugar de consulta
-     * @return ruta como String
+     * @return descriptor como AssetFileDescriptor
      */
-    public String selectAudio(int id) {
+    public AssetFileDescriptor selectAudio(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String table = "Lugares";
@@ -205,12 +207,17 @@ public class BaseDatos extends SQLiteOpenHelper {
         String having = null;
         String orderBy = null;
         String limit = null;
-        String audio = null;
+
+        String rutaAudio = null;
+        AssetFileDescriptor descriptor = null;
+        AssetManager assetManager = context.getAssets();
+
         try {
             Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
             if (cursor != null) {
                 cursor.moveToFirst();
-                audio = cursor.getString(0);
+                rutaAudio = cursor.getString(0);
+                descriptor = assetManager.openFd(rutaAudio);
             }
             cursor.close();
             db.close();
@@ -219,7 +226,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         {
             Log.i("Base de datos", "No hay datos en la base");
         }
-        return audio;
+        return descriptor;
     }
 
 
