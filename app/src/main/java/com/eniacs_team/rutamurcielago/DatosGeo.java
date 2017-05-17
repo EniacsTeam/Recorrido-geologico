@@ -6,9 +6,11 @@ import org.osmdroid.util.BoundingBox;
 
 import java.util.ArrayList;
 
+
 public class DatosGeo {
 
     static int cantidadElementos=26;
+
     public static double[] latitudes(){
         double[] latitude = {10.95124, 10.94081, 10.94075, 10.96712, 10.91338, 10.92449, 10.92599, 10.92792, 10.91753,
                 10.93645, 10.9502, 10.95016, 10.94015, 10.93171, 10.911, 10.89343, 10.89263, 10.89428, 10.884, 10.88,
@@ -29,10 +31,12 @@ public class DatosGeo {
     }
 
     public static ArrayList<Location> getLocations(){
-        ArrayList<Location>locations = new ArrayList<>();
+
+		ArrayList<Location>locations = new ArrayList<>();
         double[] latitude = DatosGeo.latitudes();
         double[] longitud =DatosGeo.longitudes();
         for (int i = 0; i < cantidadElementos; i++) {
+
             Location l=new Location(String.valueOf(i));
             l.setLatitude(latitude[i]);
             l.setLongitude(longitud[i]);
