@@ -130,7 +130,7 @@ public class Ubicacion implements LocationListener {
         if (marcador == -1){
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
-                marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual,false,mContext,dialogo));
+                marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
                 marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
                 marcadores.set(marcadorActual, marker);
             }
@@ -139,17 +139,18 @@ public class Ubicacion implements LocationListener {
                 if (marcadorActual!= -1) {
                     marker = marcadores.get(marcadorActual);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
-                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual,false,mContext,dialogo));
+                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
 
-                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador,true, mContext, dialogo));
+                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext, dialogo));
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
+
                 }else {
                     marker = marcadores.get(marcador);
-                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador,true, mContext ,dialogo));
+                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext ,dialogo));
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
                     marcadores.set(marcador, marker);
 
