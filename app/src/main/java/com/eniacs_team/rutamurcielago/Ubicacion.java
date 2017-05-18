@@ -51,6 +51,7 @@ public class Ubicacion implements LocationListener {
     Location currentLocation;
     ImageButton btCenterMap;
     Context mContext;
+    View v;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
     /**
@@ -65,6 +66,7 @@ public class Ubicacion implements LocationListener {
         this.locations = DatosGeo.getLocations();
         this.distancias=DatosGeo.radios();
 
+        this.v= v;
         this.marcadores=markers;
         this.map = map;
         this.mainActivity = main;
@@ -130,27 +132,40 @@ public class Ubicacion implements LocationListener {
         if (marcador == -1){
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
-                marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
-                marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+               // marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
+
+                Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                ma.setTipo(false); marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
                 marcadores.set(marcadorActual, marker);
             }
         }else{
             if (marcadorActual!= marcador) {
+                BaseDatos base = new BaseDatos(mContext);
+                Snackbar s = Snackbar
+                        .make(v, "Esta cerca de "+base.selectDescripcion(marcador+1)+", seleccione el punto azul para más información.", Snackbar.LENGTH_LONG);
+                s.show();
                 if (marcadorActual!= -1) {
                     marker = marcadores.get(marcadorActual);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
-                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
+                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
+                    Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma.setTipo(false);
+
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
 
-                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext, dialogo));
+                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext, dialogo));
+                    ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma.setTipo(true);
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
 
                 }else {
                     marker = marcadores.get(marcador);
-                    marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext ,dialogo));
+                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext ,dialogo));
+                    Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma.setTipo(true);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
                     marcadores.set(marcador, marker);
 

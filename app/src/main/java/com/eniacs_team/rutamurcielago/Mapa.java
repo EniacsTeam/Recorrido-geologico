@@ -298,7 +298,8 @@ public class Mapa implements MapEventsReceiver{
     /**
      * Clase para generar la ventana de informacion para cada punto de interes
      */
-    public static class MyInfoWindow extends InfoWindow {
+
+    public class MyInfoWindow extends InfoWindow {
         int puntoCargado;
         boolean tipo;
         Context mContext;
@@ -321,6 +322,10 @@ public class Mapa implements MapEventsReceiver{
         }
 
         public void onClose() {
+        }
+
+        public void setTipo(boolean t){
+            tipo=t;
         }
 
         /**
