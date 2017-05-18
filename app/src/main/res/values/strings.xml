@@ -7,4 +7,5 @@
     <string name="aviso_ver_mas">¡Lo sentimos!</string>
     <string name="aviso_texto">Necesitas estar cerca del punto de interés para poder acceder a más información</string>
     <string name="aviso_aceptar">Aceptar</string>
+    <string name="No_multimedia">No existe datos multimedia para este sitio!</string>
 </resources>

@@ -9,21 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back"
+        android:background="@null"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="top|start"/>
+
     <Button
-        android:id="@+id/showMapButton"
+        android:id="@+id/showGalleryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
-        android:text="Show map" />
+        android:text="Show gallery" />
 
-  <!--  <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/character"
-        android:background="@null"
-        android:layout_gravity="bottom|end"/>
--->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
