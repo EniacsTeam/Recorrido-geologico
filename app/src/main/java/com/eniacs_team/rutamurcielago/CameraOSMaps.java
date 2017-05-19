@@ -348,7 +348,6 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     stopAudio();
-                    mPlayer = null;
                     audio_bool = true;
                 }
             };
