@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
 import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
  * @author EniacsTeam
  */
 
-public class CameraOSMaps extends FragmentActivity implements OnClickListener, OnClickBeyondarObjectListener{
+public class CameraOSMaps extends FragmentActivity implements OnClickListener, OnClickBeyondarObjectListener {
 
     private BeyondarFragmentSupport mBeyondarFragment;
     private World mWorld;
@@ -37,7 +38,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private BaseDatos baseDatos;
     private Button mShowGallery;
 
-    private int idPunto = 1;
+    private int idPunto = -1;
 
     private FloatingActionButton actionButton;
     private SubActionButton btn_video;
@@ -73,22 +74,14 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
         mBeyondarFragment.setWorld(mWorld);
 
-        //Creo reproductor de audio
-        if (mPlayer == null) {
-            mPlayer = new MediaPlayer();
-            //Listener para que se borre cuando termine de reproducirse audio
-            MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopAudio();
-                    audio_bool = true;
-                }
-            };
-            mPlayer.setOnCompletionListener(onCompletionListener);
-        }
 
         if (savedInstanceState != null) {
-            audio_bool = savedInstanceState.getBoolean("Bool_audio", false);
+            audio_bool = savedInstanceState.getBoolean("Bool_audio");
+            idPunto = savedInstanceState.getInt("ID_Punto");
+            if (idPunto != -1) {
+                crearFab();
+            }
+
         }
 
         // set listener for the geoObjects
@@ -124,9 +117,10 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onClick(View v) {
         if (v == mShowGallery) {
             Intent intent = new Intent(this, Gallery.class);
+            stopAudio();
             startActivity(intent);
-        }
-        else if (v == mShowMap) {
+        } else if (v == mShowMap) {
+            stopAudio();
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -139,14 +133,14 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         // Make sure to call the super method so that the states of our views are saved
         savedInstanceState.putBoolean("Bool_audio", audio_bool);
+        savedInstanceState.putInt("ID_Punto", idPunto);
         super.onSaveInstanceState(savedInstanceState);
         // Save our own state now
     }
 
     @Override
     public void onBackPressed() {
-        mPlayer.release();
-        mPlayer = null;
+        stopAudio();
         audio_bool = true;
         super.onBackPressed();
     }
@@ -319,26 +313,46 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         if (beyondarObjects.size() > 0) {
-            idPunto = (int) beyondarObjects.get(0).getId()-99;
+            idPunto = (int) beyondarObjects.get(0).getId() - 99;
             crearFab();
         }
     }
 
-    private void playAudio()
-    {
+    private void playAudio() {
         try {
             AssetFileDescriptor descriptor = baseDatos.selectAudio(idPunto);
-            mPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+            mPlayerBuilder();
+            mPlayer.setDataSource(descriptor.getFileDescriptor());
             descriptor.close();
             mPlayer.prepare();
             mPlayer.start();
-        } catch (Exception e){
-            Log.i("Audio", "Error "+e);
+        } catch (Exception e) {
+            Log.i("Audio", "Error " + e);
         }
     }
 
-    private void stopAudio(){
-        mPlayer.release();
-        mPlayer = null;
+    private void stopAudio() {
+        if(mPlayer != null)
+        {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+
+    private void mPlayerBuilder() {
+        //Creo reproductor de audio
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
+            //Listener para que se borre cuando termine de reproducirse audio
+            MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopAudio();
+                    mPlayer = null;
+                    audio_bool = true;
+                }
+            };
+            mPlayer.setOnCompletionListener(onCompletionListener);
+        }
     }
 }
