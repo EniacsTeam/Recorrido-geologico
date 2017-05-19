@@ -112,7 +112,7 @@ public class Mapa implements MapEventsReceiver{
                     marcador_anterior = new Marker(map);
                     marcador_actual = marker;
                     //marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
-                    marker.setAlpha(0.7f);
+                    marker.setAlpha(1);
                     marker.showInfoWindow();
                 }
                 else if (marker != marcador_actual)
@@ -120,19 +120,19 @@ public class Mapa implements MapEventsReceiver{
                     marcador_anterior = marcador_actual;
                     marcador_anterior.closeInfoWindow();
                     //marcador_anterior.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
-                    marcador_anterior.setAlpha(1);
+                    marcador_anterior.setAlpha(0.5f);
                     marcador_actual = marker;
                     //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
-                    marcador_actual.setAlpha(0.7f);
+                    marcador_actual.setAlpha(1);
                     marcador_actual.showInfoWindow();
                 }else{
                     if (marcador_actual.isInfoWindowShown()){
                         marcador_actual.closeInfoWindow();
                         //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
-                        marcador_actual.setAlpha(1);
+                        marcador_actual.setAlpha(0.5f);
                     }else{
                         //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
-                        marcador_actual.setAlpha(0.7f);
+                        marcador_actual.setAlpha(1);
                         marker.showInfoWindow();
                     }
 
@@ -271,7 +271,7 @@ public class Mapa implements MapEventsReceiver{
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1,false, mContext,dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
-
+            marcador.setAlpha(0.5f);
             mapView.getOverlays().add(marcador);
             marcadores.set(i,marcador);
         }
@@ -283,7 +283,7 @@ public class Mapa implements MapEventsReceiver{
         if (!isMarker) {
             InfoWindow.closeAllInfoWindowsOn(mapView);
             //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
-            marcador_actual.setAlpha(1);
+            marcador_actual.setAlpha(0.5f);
         }
         isMarker = false;
         return true;
@@ -304,7 +304,7 @@ public class Mapa implements MapEventsReceiver{
         boolean tipo;
         Context mContext;
         CustomDialogClass dialogo;
-        TextView txtVerMas;
+
         /**
          * Constructor de la ventana de informacion
          *
@@ -342,7 +342,7 @@ public class Mapa implements MapEventsReceiver{
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
-            txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
+            TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
             View viewLinea = mView.findViewById(R.id.linea_centro);
 
 
