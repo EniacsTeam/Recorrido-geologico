@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
 
 /**
@@ -110,23 +111,28 @@ public class Mapa implements MapEventsReceiver{
                 {
                     marcador_anterior = new Marker(map);
                     marcador_actual = marker;
-                    marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
+                    //marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
+                    marker.setAlpha(0.7f);
                     marker.showInfoWindow();
                 }
                 else if (marker != marcador_actual)
                 {
                     marcador_anterior = marcador_actual;
                     marcador_anterior.closeInfoWindow();
-                    marcador_anterior.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+                    //marcador_anterior.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+                    marcador_anterior.setAlpha(1);
                     marcador_actual = marker;
-                    marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
+                    //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
+                    marcador_actual.setAlpha(0.7f);
                     marcador_actual.showInfoWindow();
                 }else{
                     if (marcador_actual.isInfoWindowShown()){
                         marcador_actual.closeInfoWindow();
-                        marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+                        //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+                        marcador_actual.setAlpha(1);
                     }else{
-                        marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
+                        //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
+                        marcador_actual.setAlpha(0.7f);
                         marker.showInfoWindow();
                     }
 
@@ -276,7 +282,8 @@ public class Mapa implements MapEventsReceiver{
     public boolean singleTapConfirmedHelper(GeoPoint p) {
         if (!isMarker) {
             InfoWindow.closeAllInfoWindowsOn(mapView);
-            marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+            //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+            marcador_actual.setAlpha(1);
         }
         isMarker = false;
         return true;
@@ -291,11 +298,13 @@ public class Mapa implements MapEventsReceiver{
     /**
      * Clase para generar la ventana de informacion para cada punto de interes
      */
-    public static class MyInfoWindow extends InfoWindow {
+
+    public class MyInfoWindow extends InfoWindow {
         int puntoCargado;
         boolean tipo;
         Context mContext;
         CustomDialogClass dialogo;
+        TextView txtVerMas;
         /**
          * Constructor de la ventana de informacion
          *
@@ -315,6 +324,10 @@ public class Mapa implements MapEventsReceiver{
         public void onClose() {
         }
 
+        public void setTipo(boolean t){
+            tipo=t;
+        }
+
         /**
          * Metodo para controlar lo que debe cargarse cada vez que se accede a una ventana
          *
@@ -329,7 +342,7 @@ public class Mapa implements MapEventsReceiver{
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
-            TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
+            txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
             View viewLinea = mView.findViewById(R.id.linea_centro);
 
 
