@@ -107,7 +107,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
-     * Devuelve las imagenes disponibles para un punto dado
+     * Devuelve las imagenes ordenadas disponibles para un punto dado
      * @param id El identificador del lugar de consulta
      * @return imagen como array de Drawable
      */
@@ -195,7 +195,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     /**
      * Devuelve el audio para un punto dado
      * @param id El identificador del lugar de consulta
-     * @return descriptor como AssetFileDescriptor
+     * @return ruta como descriptor
      */
     public AssetFileDescriptor selectAudio(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
