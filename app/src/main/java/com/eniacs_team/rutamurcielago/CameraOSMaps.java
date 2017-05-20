@@ -121,6 +121,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             startActivity(intent);
         } else if (v == mShowMap) {
             stopAudio();
+            mWorld.clearWorld();
+            mWorld.removeAllPlugins();
+            mWorld = null;
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -142,6 +145,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onBackPressed() {
         stopAudio();
         audio_bool = true;
+        mWorld.clearWorld();
+        mWorld.removeAllPlugins();
+        mWorld = null;
         super.onBackPressed();
     }
 

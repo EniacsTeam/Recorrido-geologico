@@ -26,6 +26,7 @@ import android.widget.Toast;
  * @author  EniacsTeam
  */
 public class SplashActivity extends AppCompatActivity {
+    CustomDialogClass dialogo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +91,15 @@ public class SplashActivity extends AppCompatActivity {
                     //se crea bien
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     // close splash activity
+                    dialogo.c = null;
+                    dialogo = null;
                     finish();
                 } else {
                     //Toast.makeText(this, "Need your storage", Toast.LENGTH_SHORT).show();
-                    CustomDialogClass dialogo = new CustomDialogClass(this);
+                    dialogo = new CustomDialogClass(this);
                     dialogo.show();
+                    dialogo.c = null;
+                    dialogo = null;
                 }
                 break;
 
@@ -143,5 +148,6 @@ public class SplashActivity extends AppCompatActivity {
             }
             dismiss();
         }
+
     }
 }
