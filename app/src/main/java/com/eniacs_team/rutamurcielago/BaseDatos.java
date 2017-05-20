@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -120,10 +120,11 @@ public class BaseDatos extends SQLiteOpenHelper {
         String[] selectionArgs = {Integer.toString(id)};
         String groupBy = null;
         String having = null;
-        String orderBy = null;
+        String orderBy = "IDFoto";
         String limit = null;
 
-        Map<Drawable,String> imagenes = new HashMap<Drawable, String>();
+        Map<Drawable,String> imagenes = new LinkedHashMap<Drawable, String>();
+
 
         try {
             Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
