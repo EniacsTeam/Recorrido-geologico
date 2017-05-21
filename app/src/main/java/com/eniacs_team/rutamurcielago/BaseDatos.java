@@ -232,9 +232,9 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
-     * Devuelve la descripcion de un punto dado
+     * Devuelve la transcripcion del audio para un punto dado
      * @param id El identificador del lugar de consulta
-     * @return descripcion como String
+     * @return textoAudio como String
      */
     public String selectTextoAudio(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
