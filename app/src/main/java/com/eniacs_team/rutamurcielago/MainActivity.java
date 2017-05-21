@@ -90,18 +90,6 @@ public class MainActivity extends AppCompatActivity {
         List<Marker> marcadores = mapa.agregarMarcadores();
         //se inicializa la escucha del GPS
 
-        try {
-            AssetFileDescriptor descriptor = base.selectAudio(1);
-            MediaPlayer mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
-            descriptor.close();
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        } catch (Exception e){
-            Log.i("Audio", "Error "+e);
-        }
-
-
         //se inicializa la escucha del GPS
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
