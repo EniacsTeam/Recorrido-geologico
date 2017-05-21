@@ -61,23 +61,9 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
         listItemMenuMultimedia listItem = listItems.get(position);
 
         if(listItem.getTitulo().equals("Audio")){
-
-            ViewGroup.LayoutParams Lp =  holder.cardView.getLayoutParams();
-            int witdh = Lp.width;
-            Bitmap backgroundBitmap = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.audios);
-
-            float imageRatio = (float) backgroundBitmap.getWidth() / (float) backgroundBitmap.getHeight();
-
-            int imageRealHeight = (int) (witdh / imageRatio);
-
             holder.cardView.setBackground(context.getDrawable(R.drawable.audios));
-            Lp.height = imageRealHeight;
-            holder.cardView.setLayoutParams(Lp);
         }else if(listItem.getTitulo().equals("Imagen")){
-
             holder.cardView.setBackground(context.getDrawable(R.drawable.imagenes));
-
         }else if(listItem.getTitulo().equals("Video")){
             holder.cardView.setBackground(context.getDrawable(R.drawable.videos));
         }else if(listItem.getTitulo().equals("Animacion")){
@@ -119,7 +105,7 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
                     ViewGroup.LayoutParams Lp =  v.getLayoutParams();
                     Bitmap backgroundBitmap = BitmapFactory.decodeResource(context.getResources(),
-                            R.drawable.imagenes);
+                            R.drawable.animaciones);
 
                     float imageRatio = (float) backgroundBitmap.getWidth() / (float) backgroundBitmap.getHeight();
 
@@ -127,7 +113,7 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
 
                     Lp.height = imageRealHeight;
-                    cardView.setLayoutParams(Lp);
+                    v.setLayoutParams(Lp);
 
 
 
@@ -147,7 +133,16 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
          */
         @Override
         public void onClick(View v) {
-            Toast.makeText(context, listItems.get(getAdapterPosition()).getTitulo(), Toast.LENGTH_SHORT).show();
+
+            if(listItems.get(getAdapterPosition()).getTitulo().equals("Audio")){
+                Intent intent = new Intent(context, reproductor_audio.class);
+                intent.putExtra("id", listItems.get(getAdapterPosition()).getId());
+                context.startActivity(intent);
+            }else if(listItems.get(getAdapterPosition()).getTitulo().equals("Imagen")){
+
+            }else{
+                Toast.makeText(context, listItems.get(getAdapterPosition()).getTitulo(), Toast.LENGTH_SHORT).show();
+            }
            /* Intent intent = new Intent(context, Galeria.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("Id", String.valueOf(listItems.get(getAdapterPosition()).getId()));
