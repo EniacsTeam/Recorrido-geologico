@@ -212,9 +212,6 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                     ImageView intermedio = new ImageView(CameraOSMaps.this);
                     if (audio_bool) {
                         //reproduzco
-                        int id = R.raw.audio1;
-                        //mPlayer = MediaPlayer.create(CameraOSMaps.this, id);
-                        //mPlayer.start();
                         playAudio();
                         intermedio.setImageResource(R.mipmap.mute);
                         audioIcon.setImageDrawable(intermedio.getDrawable());
