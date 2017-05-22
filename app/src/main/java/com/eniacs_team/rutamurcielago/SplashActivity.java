@@ -92,10 +92,10 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     // close splash activity
 
-                    if(dialogo != null)
-                    {
-                        dialogo.c = null;
+                    if (dialogo!= null) {
                         dialogo = null;
+                        dialogo.c = null;
+
                     }
                     finish();
                 } else {

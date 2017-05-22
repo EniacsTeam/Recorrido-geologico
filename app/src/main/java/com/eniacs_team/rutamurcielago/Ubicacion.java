@@ -122,7 +122,9 @@ public class Ubicacion implements LocationListener {
         snackbar.show();
 
     }
-
+    public void desMsjGpsDesactivado(){
+        snackbar.dismiss();
+    }
     /**
      * Permite actualizar la vista del mapa, cambio de colores y funcionalidad del "ver más" en el marcador
      * @param location
@@ -190,13 +192,8 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
        // Toast.makeText(mainActivity, "GPS desactivado", Toast.LENGTH_SHORT).show();
-        snackbar.show();
-        /*LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(15,0,13,150);
-        btCenterMap.setLayoutParams(params);*/
+        mostrarMsjGpsDesactivado();
+
     }
 
     /**
@@ -206,7 +203,7 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onProviderEnabled(String provider) {
        // Toast.makeText(mainActivity, "Gps activado", Toast.LENGTH_SHORT).show();
-        snackbar.dismiss();
+        desMsjGpsDesactivado();
     }
 
     /**
