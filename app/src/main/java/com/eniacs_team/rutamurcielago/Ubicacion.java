@@ -1,5 +1,7 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -15,11 +17,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.media.CamcorderProfile.get;
+
+import static android.os.Build.VERSION_CODES.M;
+import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 
 /**
  * Esta clase se encarga de obtener la ubicación del usuario.
@@ -29,53 +38,57 @@ import java.util.List;
 public class Ubicacion implements LocationListener {
 
   //   private Location mLastLocation;
-  //  private Location mCurrentLocation;
     MainActivity mainActivity;
-    Marker markerLocation;
+   // Marker markerLocation;
     Snackbar snackbar;
     MapView map;
     List<Marker> marcadores;
     ArrayList<Location> locations;
     int[] distancias;
-    int i=0;
+
     int marcadorActual=-1;
     Location currentLocation;
     ImageButton btCenterMap;
-
+    Context mContext;
+    View v;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
-
     /**
      * Constructor de clase, Se inicializan variables globales.
      * @param map
      * @param main: Activity main
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
-    public Ubicacion (final MapView map, MainActivity main, View v, List<Marker> markers, View center){
+
+    public Ubicacion (final MapView map, MainActivity main, View v, List<Marker> markers,View center, Activity activity){
+        mContext= activity;
         this.locations = DatosGeo.getLocations();
-        double[] latitude = DatosGeo.latitudes();
-        double[] longitud =DatosGeo.longitudes();
         this.distancias=DatosGeo.radios();
+
+        this.v= v;
         this.marcadores=markers;
         this.map = map;
         this.mainActivity = main;
-        this.markerLocation = new Marker(map);
-        markerLocation.setPosition(routeCenter);
-        Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
-        markerLocation.setIcon(marker);
-        markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-        markerLocation.setTitle("My location");
-        this.map.getOverlays().add(markerLocation);
+       // this.markerLocation = new Marker(map);
+        //markerLocation.setPosition(routeCenter);
+
+       // Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
+       // markerLocation.setIcon(marker);
+       // markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
+       // markerLocation.setTitle("My location");
+       // this.map.getOverlays().add(markerLocation);
         gpsActivo(v);
         this.btCenterMap = (ImageButton) center;
 
         btCenterMap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(mainActivity, "Sin GPS", Toast.LENGTH_LONG).show();
+            public void onClick(View center) {
+
                 if (currentLocation != null) {
-                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-                    map.getController().animateTo(myPosition);
+                    map.getController().setZoom(13);
+                    map.getController().animateTo(new GeoPoint(currentLocation.getLatitude()+0.0001,currentLocation.getLongitude()));
                 }
+
+
             }
         });
     }
@@ -107,30 +120,65 @@ public class Ubicacion implements LocationListener {
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
     }
+
+    /**
+     * Permite actualizar la vista del mapa, cambio de colores y funcionalidad del "ver más" en el marcador
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
-        currentLocation=location;
-        markerLocation.setPosition(new GeoPoint(location));
+       // markerLocation.setPosition(new GeoPoint(location));
+        currentLocation= new Location(location);
+
         int marcador = distanciaEntrePuntos(location);
-        if(marcadorActual==-1){
-            marcadorActual=marcador;
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(true);
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(1);
-            Toast.makeText(mainActivity, "Se encuentra cercano a un punto.", Toast.LENGTH_LONG).show();
+        map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
+//        map.getController().animateTo(new GeoPoint(location.getLatitude()+0.0001,location.getLongitude()));
+        Marker marker;
+//         Mapa.CustomDialogClass dialogo = new Mapa.CustomDialogClass(mainActivity);
+        if (marcador == -1){
+            if (marcadorActual!= -1){
+                marker= marcadores.get(marcadorActual);
+               // marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
 
-            //Mostrar ventana entrando en punto
-        }else if(marcador!=marcadorActual){
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(false);
-            marcadores.get(marcadorActual).getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(0);
-            marcadores.get(marcador).getInfoWindow().getView().findViewById(R.id.ver_mas).setEnabled(true);
-            marcadores.get(marcador).getInfoWindow().getView().findViewById(R.id.ver_mas).setAlpha(1);
-            Toast.makeText(mainActivity, "Se encuentra cercano a un punto.", Toast.LENGTH_LONG).show();
-            marcadorActual=marcador;
+                Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                ma.setTipo(false); marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                marcadores.set(marcadorActual, marker);
+            }
+        }else{
+            if (marcadorActual!= marcador) {
+                BaseDatos base = new BaseDatos(mContext);
+                Snackbar s = Snackbar
+                        .make(v, "Esta cerca de "+base.selectDescripcion(marcador+1)+", seleccione el punto azul para más información.", Snackbar.LENGTH_LONG);
+                s.show();
+                if (marcadorActual!= -1) {
+                    marker = marcadores.get(marcadorActual);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
+                    Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma.setTipo(false);
+
+                    marcadores.set(marcadorActual, marker);
+                    marker = marcadores.get(marcador);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+
+                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext, dialogo));
+                    ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma.setTipo(true);
+                    marcadores.set(marcador, marker);
+                    marcadorActual= marcador;
+
+                }else {
+                    marker = marcadores.get(marcador);
+                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext ,dialogo));
+                    Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma.setTipo(true);
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    marcadores.set(marcador, marker);
+
+                }
+            }
         }
-
-        //si title de marcador_actual = marcador(int) no hacer nada: caso contario desabilitarlo y habilitar marcador con title = marcador(int)
-        //ademas si es marcador 4-7 los pegados se debe hacer zoom a ese espacio aumentar a zoom 16 y
-        //Toast.makeText(mainActivity, "Latitud: "+mCurrentLocation.getLatitude()+" y Longitud: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+        marcadorActual = marcador;
     }
 
     /**
@@ -156,7 +204,7 @@ public class Ubicacion implements LocationListener {
     /**
      * Se ejecuta cuando el status del GPS cambia, puede estar disponible, fuera de servicio o temporalmente no disponible
      * @param provider: proveedor de GPS
-     * @param status : AVAILABLE, OUT_OF_SERVICE or TEMPORARILY_UNAVAILABLE
+     * @param status : AVAILABLE, OUT_OF_SERVICE or TEMPORARILY_UNAVAILABLEa
      * @param extras
      */
     @Override
@@ -174,13 +222,23 @@ public class Ubicacion implements LocationListener {
         }
     }
 
+    /**
+     * Ahorita devuelve el punto más cercano dentro de los rangos
+     * @param current
+     * @return
+     */
     public int distanciaEntrePuntos(Location current){
+        float menorDist= Float.MAX_VALUE;
+        int ret= -1;
         for(int i=0;i<locations.size();i++){
             if(current.distanceTo(locations.get(i))<distancias[i]){
-                return i;
+                if (current.distanceTo(locations.get(i))<menorDist) {
+                    menorDist = current.distanceTo(locations.get(i));
+                    ret = i;
+                }
             }
         }
-        return -1;
+        return ret;
     }
 }
 

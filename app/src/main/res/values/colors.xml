@@ -16,4 +16,6 @@
     <color name="blanco">#FFFFFF</color>
     <color name="gris">#808080</color>
 
+    <color name="black_overlay">#66000000</color>
+
 </resources>

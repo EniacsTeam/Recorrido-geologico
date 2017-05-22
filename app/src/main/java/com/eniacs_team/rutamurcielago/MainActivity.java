@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -14,17 +17,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.List;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Esta clase se encarga de inicializar el mapa y su base de datos asociada, ademas crea un enlace a la actividad encargada
@@ -34,7 +42,6 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
-
     //Se ocupan en el onResume
     Ubicacion ubicacionListener;
     LocationManager mlocManager;
@@ -64,10 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
         BaseDatos base = new BaseDatos(getApplicationContext());
 
-        //Carga de la base de datos, quitar el comentario si se modifico el archivo en assets
-        base.copyDataBase();
-
-
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
         //se copia el archivo de assets a /osmdroid si no ha sido copiado
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             CopyFolder.copyAssets(this);
             base.actualizarEstadoMapa();
         }
+        base.cargarBase();
         //se le pasa el mapa y actividad a la clase encargada de controlarlo
         Mapa mapa = new Mapa(mapView,this);
         //se inicializa el mapa. Zoom, bounding box etc
@@ -82,12 +86,14 @@ public class MainActivity extends AppCompatActivity {
         //se inserta el mapa offline dentro del mapview
         mapa.findMapFiles();
         //se agregan los marcadores del mapa
+
         List<Marker> marcadores = mapa.agregarMarcadores();
         //se inicializa la escucha del GPS
 
-
+        //se inicializa la escucha del GPS
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab),marcadores,findViewById(R.id.ic_center_map));
+
+        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab),marcadores,findViewById(R.id.ic_center_map),this);
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         }*/
@@ -103,6 +109,18 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mlocManager.removeUpdates(ubicacionListener);
+        mapView.onDetach();
     }
 
     /**
