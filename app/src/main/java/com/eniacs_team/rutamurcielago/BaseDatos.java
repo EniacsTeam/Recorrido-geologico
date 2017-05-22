@@ -10,11 +10,12 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -106,7 +107,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
-     * Devuelve las imagenes disponibles para un punto dado
+     * Devuelve las imagenes ordenadas disponibles para un punto dado
      * @param id El identificador del lugar de consulta
      * @return imagen como array de Drawable
      */
@@ -119,10 +120,11 @@ public class BaseDatos extends SQLiteOpenHelper {
         String[] selectionArgs = {Integer.toString(id)};
         String groupBy = null;
         String having = null;
-        String orderBy = null;
+        String orderBy = "IDFoto";
         String limit = null;
 
-        Map<Drawable,String> imagenes = new HashMap<Drawable, String>();
+        Map<Drawable,String> imagenes = new LinkedHashMap<Drawable, String>();
+
 
         try {
             Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
@@ -194,7 +196,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     /**
      * Devuelve el audio para un punto dado
      * @param id El identificador del lugar de consulta
-     * @return descriptor como AssetFileDescriptor
+     * @return ruta como descriptor
      */
     public AssetFileDescriptor selectAudio(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -227,6 +229,40 @@ public class BaseDatos extends SQLiteOpenHelper {
             Log.i("Base de datos", "No hay datos en la base");
         }
         return descriptor;
+    }
+
+    /**
+     * Devuelve la transcripcion del audio para un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return textoAudio como String
+     */
+    public String selectTextoAudio(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "Lugares";
+        String[] columns = {"TextoAudio"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+        String textoAudio = null;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                textoAudio = cursor.getString(0);
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+
+        return textoAudio;
     }
 
 
