@@ -1,19 +1,11 @@
 package com.eniacs_team.rutamurcielago;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Point;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -23,21 +15,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
+import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
 import com.beyondar.android.world.World;
-import com.beyondar.android.view.OnClickBeyondarObjectListener;
-
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
-
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
-
-import static android.R.id.button1;
-import static android.R.id.button2;
-import static android.R.id.button3;
-import static android.R.id.inputExtractEditText;
 
 import java.util.ArrayList;
 
@@ -46,14 +29,16 @@ import java.util.ArrayList;
  *
  * @author EniacsTeam
  */
-public class CameraOSMaps extends FragmentActivity implements OnClickListener, OnClickBeyondarObjectListener{
+
+public class CameraOSMaps extends FragmentActivity implements OnClickListener, OnClickBeyondarObjectListener {
 
     private BeyondarFragmentSupport mBeyondarFragment;
     private World mWorld;
     private ImageButton mShowMap;
     private BaseDatos baseDatos;
     private Button mShowGallery;
-    private int idPunto = 1;
+
+    private int idPunto = -1;
 
     private FloatingActionButton actionButton;
     private SubActionButton btn_video;
@@ -67,7 +52,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private ImageView animacionIcon;
     private ImageView muteIcon;
 
-    private boolean audio_bool = true;
+    private static boolean audio_bool = true;
+    private static MediaPlayer mPlayer;
 
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
@@ -87,6 +73,16 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         mWorld = CustomWorldHelper.generateObjects(this);
 
         mBeyondarFragment.setWorld(mWorld);
+
+
+        if (savedInstanceState != null) {
+            audio_bool = savedInstanceState.getBoolean("Bool_audio");
+            idPunto = savedInstanceState.getInt("ID_Punto");
+            if (idPunto != -1) {
+                crearFab();
+            }
+
+        }
 
         // set listener for the geoObjects
         mBeyondarFragment.setOnClickBeyondarObjectListener(this);
@@ -121,31 +117,44 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onClick(View v) {
         if (v == mShowGallery) {
             Intent intent = new Intent(this, Gallery.class);
+            stopAudio();
             startActivity(intent);
-        }
-        else if (v == mShowMap) {
+        } else if (v == mShowMap) {
+            stopAudio();
+            mWorld.clearWorld();
+            mWorld.removeAllPlugins();
+            mWorld = null;
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         }
+
     }
 
     @Override
-    public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
-        if (beyondarObjects.size() > 0) {
-            idPunto = (int) beyondarObjects.get(0).getId()-99;
-            crearFab();
-        }
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        // Make sure to call the super method so that the states of our views are saved
+        savedInstanceState.putBoolean("Bool_audio", audio_bool);
+        savedInstanceState.putInt("ID_Punto", idPunto);
+        super.onSaveInstanceState(savedInstanceState);
+        // Save our own state now
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopAudio();
+        audio_bool = true;
+        mWorld.clearWorld();
+        mWorld.removeAllPlugins();
+        mWorld = null;
+        super.onBackPressed();
     }
 
     /**
      * Metodo encargado de crear fab.
      */
     private void crearFab() {
-        final boolean boolAudio = true;
-        boolean boolVideo = true;
-
         // Create an icon
         ImageView icon = new ImageView(this);
         icon.setImageResource(R.mipmap.menu);
@@ -179,7 +188,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
         //Creo botones
         btn_video = itemBuilder.setContentView(videoIcon).build();
-        btn_audio = itemBuilder.setContentView(audioIcon).build();
+        if (!audio_bool) {
+            audioIcon = muteIcon;
+            btn_audio = itemBuilder.setContentView(audioIcon).build();
+        } else {
+            btn_audio = itemBuilder.setContentView(audioIcon).build();
+        }
         btn_imagen = itemBuilder.setContentView(imagenIcon).build();
         btn_animacion = itemBuilder.setContentView(animacionIcon).build();
 
@@ -196,21 +210,20 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
                 if (v == btn_audio) {
                     ImageView intermedio = new ImageView(CameraOSMaps.this);
-                    if(audio_bool)
-                    {
+                    if (audio_bool) {
                         //reproduzco
-                        intermedio.setImageResource(R.mipmap.audio);
+                        playAudio();
+                        intermedio.setImageResource(R.mipmap.mute);
                         audioIcon.setImageDrawable(intermedio.getDrawable());
                         audio_bool = false;
-                    }
-                    else
-                    {
+                    } else {
                         //cambio icono y stop audio
-                        audioIcon.setImageDrawable(muteIcon.getDrawable());
+                        stopAudio();
+                        intermedio.setImageResource(R.mipmap.audio);
+                        audioIcon.setImageDrawable(intermedio.getDrawable());
                         audio_bool = true;
                     }
 
-                    Toast.makeText(getApplicationContext(), "Toque audio", Toast.LENGTH_SHORT).show();
                 }
 
                 if (v == btn_imagen) {
@@ -234,15 +247,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
     /**
      * Metodo encargado de agregar los botones al fab
-     *
      */
-    private void fabBuilder()
-    {
+    private void fabBuilder() {
         FloatingActionMenu actionMenu;
 
         //Pregunto si hay videos y audio en la base para agregarlos o no al fab
-        if(baseDatos.existenciaPunto(idPunto, "Video") == 0 && (baseDatos.existenciaPunto(idPunto, "Audio") == 0) )
-        {
+        if (baseDatos.existenciaPunto(idPunto, "Video") == 0 && (baseDatos.existenciaPunto(idPunto, "Audio") == 0)) {
 
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
@@ -254,8 +264,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         }
 
         //Pregunto si hay audios en la base para agregarlo o no al fab
-        else if(baseDatos.existenciaPunto(idPunto, "Audio") == 0)
-        {
+        else if (baseDatos.existenciaPunto(idPunto, "Audio") == 0) {
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_video)
@@ -265,8 +274,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                     .build();
         }
         //Pregunto si hay videos en la base para agregarlo o no al fab
-        else if(baseDatos.existenciaPunto(idPunto, "Video") == 0)
-        {
+        else if (baseDatos.existenciaPunto(idPunto, "Video") == 0) {
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_animacion)
@@ -275,9 +283,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                     .attachTo(actionButton)
                     .setRadius(260)
                     .build();
-        }
-        else
-        {
+        } else {
             //attach the sub buttons to the main button
             actionMenu = new FloatingActionMenu.Builder(this)
                     .addSubActionView(btn_animacion)
@@ -302,6 +308,53 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 Toast.makeText(getApplicationContext(), "Menu cerrado", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
+
+    @Override
+    public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
+        if (beyondarObjects.size() > 0) {
+            idPunto = (int) beyondarObjects.get(0).getId() - 99;
+            crearFab();
+        }
+    }
+
+    private void playAudio() {
+        try {
+            AssetFileDescriptor descriptor = baseDatos.selectAudio(idPunto);
+            mPlayerBuilder();
+            mPlayer.setDataSource(descriptor.getFileDescriptor());
+            descriptor.close();
+            mPlayer.prepare();
+            mPlayer.start();
+        } catch (Exception e) {
+            Log.i("Audio", "Error " + e);
+        }
+    }
+
+    private void stopAudio() {
+        if(mPlayer != null)
+        {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+
+    private void mPlayerBuilder() {
+        //Creo reproductor de audio
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
+            //Listener para que se borre cuando termine de reproducirse audio
+            MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopAudio();
+                    audio_bool = true;
+                }
+            };
+            mPlayer.setOnCompletionListener(onCompletionListener);
+        }
+    }
 }

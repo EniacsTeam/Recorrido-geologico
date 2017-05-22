@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.osmdroid.views.MapView;
@@ -41,7 +42,6 @@ import java.util.Map;
  */
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
-
     //Se ocupan en el onResume
     Ubicacion ubicacionListener;
     LocationManager mlocManager;
@@ -109,6 +109,18 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mlocManager.removeUpdates(ubicacionListener);
+        mapView.onDetach();
     }
 
     /**

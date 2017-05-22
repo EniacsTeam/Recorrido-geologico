@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/linearLayout2">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -27,7 +28,7 @@
 
         <include
             android:id="@+id/include"
-            layout="@layout/content_main"/>
+            layout="@layout/content_main" />
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -36,24 +37,26 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        android:src="@mipmap/camera_ic" />
 
     <ImageButton
         android:id="@+id/ic_center_map"
-        android:layout_width="wrap_content"
-        android:layout_height="63dp"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="false"
-        android:layout_gravity="top|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="#00ffffff"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="86dp"
         android:contentDescription="HERE"
         android:cropToPadding="true"
-        android:src="@mipmap/ic_follow_me"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|left" />
+        android:elevation="8dp"
+        android:scaleType="center"
+        android:background="@mipmap/current_location"
+        app:layout_anchor="@+id/linearLayout2"
+        app:layout_anchorGravity="bottom|right" />
 
 
 </android.support.design.widget.CoordinatorLayout>
