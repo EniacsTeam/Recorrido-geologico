@@ -91,15 +91,17 @@ public class SplashActivity extends AppCompatActivity {
                     //se crea bien
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     // close splash activity
-                    dialogo.c = null;
-                    dialogo = null;
+
+                    if(dialogo != null)
+                    {
+                        dialogo.c = null;
+                        dialogo = null;
+                    }
                     finish();
                 } else {
                     //Toast.makeText(this, "Need your storage", Toast.LENGTH_SHORT).show();
                     dialogo = new CustomDialogClass(this);
                     dialogo.show();
-                    dialogo.c = null;
-                    dialogo = null;
                 }
                 break;
 
