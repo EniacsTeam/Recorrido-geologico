@@ -138,24 +138,6 @@ public class CustomWorldHelper {
         go19.setImageResource(R.drawable.arcos);
         go19.setName("Roca arco");
 
-        // Create an object with an image in the app resources.
-        GeoObject go20 = new GeoObject(119);
-        go20.setGeoPosition(latitudes[19], longitudes[19]);
-        go20.setImageResource(R.drawable.basaltos);
-        go20.setName("Basaltos");
-
-        // Create an object with an image in the app resources.
-        GeoObject go21 = new GeoObject(120);
-        go21.setGeoPosition(latitudes[20], longitudes[20]);
-        go21.setImageResource(R.drawable.upwelling);
-        go21.setName("Upwelling");
-
-        // Create an object with an image in the app resources.
-        GeoObject go22 = new GeoObject(121);
-        go22.setGeoPosition(latitudes[21], longitudes[21]);
-        go22.setImageResource(R.drawable.paleodunas);
-        go22.setName("Paleodunas");
-
         // Add the GeoObjects to the world
         sharedWorld.addBeyondarObject(go1);
         sharedWorld.addBeyondarObject(go2);
@@ -175,10 +157,6 @@ public class CustomWorldHelper {
         sharedWorld.addBeyondarObject(go16);
         sharedWorld.addBeyondarObject(go17);
         sharedWorld.addBeyondarObject(go18);
-        sharedWorld.addBeyondarObject(go19);
-        sharedWorld.addBeyondarObject(go20);
-        sharedWorld.addBeyondarObject(go21);
-        sharedWorld.addBeyondarObject(go22);
     }
 
     /**

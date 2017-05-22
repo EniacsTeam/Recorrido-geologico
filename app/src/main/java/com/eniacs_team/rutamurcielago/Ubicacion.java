@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
@@ -120,7 +121,9 @@ public class Ubicacion implements LocationListener {
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
     }
-
+    public void desMsjGpsDesactivado(){
+        snackbar.dismiss();
+    }
     /**
      * Permite actualizar la vista del mapa, cambio de colores y funcionalidad del "ver más" en el marcador
      * @param location
@@ -188,7 +191,7 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
        // Toast.makeText(mainActivity, "GPS desactivado", Toast.LENGTH_SHORT).show();
-        snackbar.show();
+        mostrarMsjGpsDesactivado();
     }
 
     /**
@@ -198,7 +201,7 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onProviderEnabled(String provider) {
        // Toast.makeText(mainActivity, "Gps activado", Toast.LENGTH_SHORT).show();
-        snackbar.dismiss();
+        desMsjGpsDesactivado();
     }
 
     /**
