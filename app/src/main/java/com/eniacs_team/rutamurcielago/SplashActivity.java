@@ -95,6 +95,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (dialogo!= null) {
                         dialogo = null;
                         dialogo.c = null;
+
                     }
                     finish();
                 } else {

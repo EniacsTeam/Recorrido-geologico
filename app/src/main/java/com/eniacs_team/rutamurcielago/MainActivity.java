@@ -56,11 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        final Intent intent = new Intent(this, CameraOSMaps.class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(intent);
+                //startActivity(intent);
                 requestPermission("android.permission.CAMERA",1);
             }
         });

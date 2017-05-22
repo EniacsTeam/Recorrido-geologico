@@ -38,7 +38,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@mipmap/camera_ic" />
-
+<!--
     <ImageButton
         android:id="@+id/ic_center_map"
         android:layout_width="62dp"
@@ -52,11 +52,26 @@
         android:layout_marginBottom="86dp"
         android:contentDescription="HERE"
         android:cropToPadding="true"
-        android:elevation="8dp"
         android:scaleType="center"
         android:background="@mipmap/current_location"
-        app:layout_anchor="@+id/linearLayout2"
+        app:layout_anchor="@+id/fab"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_anchorGravity="bottom|right" />
+-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/ic_center_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/current_location"
+        android:layout_marginBottom="86dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/blanco"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        />
+
 
 
 </android.support.design.widget.CoordinatorLayout>
