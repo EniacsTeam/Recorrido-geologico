@@ -38,7 +38,6 @@ import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 public class Ubicacion implements LocationListener {
 
   //   private Location mLastLocation;
-  //  private Location mCurrentLocation;
     MainActivity mainActivity;
    // Marker markerLocation;
     Snackbar snackbar;
@@ -53,7 +52,6 @@ public class Ubicacion implements LocationListener {
     Context mContext;
     View v;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
-
     /**
      * Constructor de clase, Se inicializan variables globales.
      * @param map
@@ -61,7 +59,7 @@ public class Ubicacion implements LocationListener {
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
 
-    public Ubicacion (final MapView map, MainActivity main, View v, List<Marker> markers, View center, Activity activity){
+    public Ubicacion (final MapView map, MainActivity main, View v, List<Marker> markers,View center, Activity activity){
         mContext= activity;
         this.locations = DatosGeo.getLocations();
         this.distancias=DatosGeo.radios();
@@ -83,12 +81,14 @@ public class Ubicacion implements LocationListener {
 
         btCenterMap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(mainActivity, "Sin GPS", Toast.LENGTH_LONG).show();
+            public void onClick(View center) {
+
                 if (currentLocation != null) {
-                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-                    map.getController().animateTo(myPosition);
+                    map.getController().setZoom(13);
+                    map.getController().animateTo(new GeoPoint(currentLocation.getLatitude()+0.0001,currentLocation.getLongitude()));
                 }
+
+
             }
         });
     }
@@ -128,11 +128,13 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
        // markerLocation.setPosition(new GeoPoint(location));
-        MapController mapController=(MapController) map.getController();
+        currentLocation= new Location(location);
+
         int marcador = distanciaEntrePuntos(location);
-        mapController.animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
+        map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
+//        map.getController().animateTo(new GeoPoint(location.getLatitude()+0.0001,location.getLongitude()));
         Marker marker;
-        Mapa.CustomDialogClass dialogo = new Mapa.CustomDialogClass(mainActivity);
+//         Mapa.CustomDialogClass dialogo = new Mapa.CustomDialogClass(mainActivity);
         if (marcador == -1){
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
@@ -177,10 +179,6 @@ public class Ubicacion implements LocationListener {
             }
         }
         marcadorActual = marcador;
-
-        //si title de marcador_actual = marcador(int) no hacer nada: caso contario desabilitarlo y habilitar marcador con title = marcador(int)
-        //ademas si es marcador 4-7 los pegados se debe hacer zoom a ese espacio aumentar a zoom 16 y
-        //Toast.makeText(mainActivity, "Latitud: "+mCurrentLocation.getLatitude()+" y Longitud: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
     }
 
     /**

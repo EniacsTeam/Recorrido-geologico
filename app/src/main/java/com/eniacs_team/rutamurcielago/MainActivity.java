@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         List<Marker> marcadores = mapa.agregarMarcadores();
         //se inicializa la escucha del GPS
-
 
         //se inicializa la escucha del GPS
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
