@@ -3,12 +3,111 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\gradle-wrapper.jar"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\libs\beyondar-radar-plugin-v0.9.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="25ce04f5845c01910b0f3600914c0c8e8e4f37c2">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-radar-plugin-v0.9.1_1fa1c51292a4be1c466ea717c5c996d1e5c55424.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\libs\beyondar-radar-plugin-v0.9.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="25ce04f5845c01910b0f3600914c0c8e8e4f37c2">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\2\beyondar-radar-plugin-v0.9.1_1fa1c51292a4be1c466ea717c5c996d1e5c55424\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Johan Duran Cerdas\.android\build-cache\96735efc1a2ff583d65409b83ceb2416357e7858\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="607d961caf1a59b6e782724654c1f3229e036c20">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_859a92a1be6ac4c23d8a07f8c237da93e4cb63ba.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Johan Duran Cerdas\.android\build-cache\b00fd9bd99f562316eb5d9402e0abf6d75d7296d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="914f5d3e3ace66080e59613708f06d129a222e25">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_0fa32e691458a44a1db3d5b5984e67ad5c05224d.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="95f4268bc7b52f08f6fbc76325d3fcccaaac8bdf">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_0c2e812f1a899241eb5ad5719225eb72acb1c6b1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\libs\gradle-wrapper.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="e614e3b2edc63a9cc423437dea087c91962254f5">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\2\gradle-wrapper_5678506437de093f2973683a0d9f11a7f324aed6\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\libs\beyondar-v0.9.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-v0.9.3_70029485d095e6ac8d34ee1bea61a2599aa05096.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\libs\beyondar-v0.9.3.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\2\beyondar-v0.9.3_70029485d095e6ac8d34ee1bea61a2599aa05096\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\Sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_fc9d68e81452128b8ab9b1ad3c603becaae8f0ee.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\libs\gradle-wrapper.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="e614e3b2edc63a9cc423437dea087c91962254f5">
-        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\gradle-wrapper_601b5a4d2cfb5bc090c99209be88a466c44fa6be.jar" />
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\gradle-wrapper_5678506437de093f2973683a0d9f11a7f324aed6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Johan Duran Cerdas\.android\build-cache\b74ee916dcc6f5440dbcedf32e930fa83b3fae4e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\classes_77c5209d74a6efb44805e0a4fef3593d239d4712.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="12920f9016b8b05acbc2af7cdc13cef6946fe7d3">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_1b2654bb75c6aaa2320f54ad2ce161007b5cc989\classes.dex" />
     </item>
 
 </items>
