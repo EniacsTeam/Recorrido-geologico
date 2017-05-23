@@ -24,6 +24,9 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
 /**
  * Esta actividad proporciona una camara de realidad aumentada que permite sobreponer elementos digitales sobre el mundo real.
  *
@@ -36,9 +39,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private World mWorld;
     private ImageButton mShowMap;
     private BaseDatos baseDatos;
-    private Button mShowGallery;
-
     private int idPunto = -1;
+    private String nPunto;
 
     private FloatingActionButton actionButton;
     private SubActionButton btn_video;
@@ -55,12 +57,16 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private static boolean audio_bool = true;
     private static MediaPlayer mPlayer;
 
+    private static GifImageView geoImage;
+    private GifDrawable gifDrawable;
+
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
      *
      * @param savedInstanceState contiene los datos mas recientemente suministrados en {@link #onSaveInstanceState(Bundle) onSaveInstanceState}
      */
     @Override
+    @SuppressWarnings("ResourceType")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -72,12 +78,15 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // We create the world and fill it
         mWorld = CustomWorldHelper.generateObjects(this);
 
+        //mBeyondarFragment.setMaxDistanceToRender(900000);
+        //mBeyondarFragment.setPushAwayDistance(1);
         mBeyondarFragment.setWorld(mWorld);
 
 
         if (savedInstanceState != null) {
             audio_bool = savedInstanceState.getBoolean("Bool_audio");
             idPunto = savedInstanceState.getInt("ID_Punto");
+            geoImage.setVisibility(savedInstanceState.getInt("Gif_visible"));
             if (idPunto != -1) {
                 crearFab();
             }
@@ -98,13 +107,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         mBeyondarFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
                 R.id.beyondarFragment);
 
-        mShowGallery = (Button) findViewById(R.id.showGalleryButton);
-        mShowGallery.setOnClickListener(this);
-
         mShowMap = (ImageButton) findViewById(R.id.imageButton1);
         mShowMap.setOnClickListener(this);
 
         baseDatos = new BaseDatos(this);
+
+        geoImage = (GifImageView) findViewById(R.id.gifImageView);
     }
 
     /**
@@ -115,15 +123,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
      */
     @Override
     public void onClick(View v) {
-        if (v == mShowGallery) {
-            Intent intent = new Intent(this, Gallery.class);
+        if (v == mShowMap) {
             stopAudio();
-            startActivity(intent);
-        } else if (v == mShowMap) {
-            stopAudio();
-            mWorld.clearWorld();
-            mWorld.removeAllPlugins();
-            mWorld = null;
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -137,6 +138,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // Make sure to call the super method so that the states of our views are saved
         savedInstanceState.putBoolean("Bool_audio", audio_bool);
         savedInstanceState.putInt("ID_Punto", idPunto);
+        savedInstanceState.putInt("Gif_visible", geoImage.getVisibility());
         super.onSaveInstanceState(savedInstanceState);
         // Save our own state now
     }
@@ -145,9 +147,6 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onBackPressed() {
         stopAudio();
         audio_bool = true;
-        mWorld.clearWorld();
-        mWorld.removeAllPlugins();
-        mWorld = null;
         super.onBackPressed();
     }
 
@@ -227,11 +226,17 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 }
 
                 if (v == btn_imagen) {
-                    Toast.makeText(getApplicationContext(), "Toque imagen", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), Gallery.class);
+                    intent.putExtra("id", idPunto);
+                    intent.putExtra("nombre", nPunto);
+                    startActivity(intent);
                 }
 
                 if (v == btn_animacion) {
-                    Toast.makeText(getApplicationContext(), "Toque animacion", Toast.LENGTH_SHORT).show();
+                    geoImage.setVisibility(View.VISIBLE);
+                    playAudio();
+                    gifDrawable = (GifDrawable) geoImage.getDrawable();
+                    gifDrawable.start();
                 }
 
             }
@@ -298,14 +303,10 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         actionMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
             @Override
             public void onMenuOpened(FloatingActionMenu menu) {
-
-                Toast.makeText(getApplicationContext(), "Menu abierto", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMenuClosed(FloatingActionMenu menu) {
-
-                Toast.makeText(getApplicationContext(), "Menu cerrado", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -317,6 +318,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         if (beyondarObjects.size() > 0) {
             idPunto = (int) beyondarObjects.get(0).getId() - 99;
+            nPunto = beyondarObjects.get(0).getName();
             crearFab();
         }
     }
@@ -351,6 +353,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     stopAudio();
+                    gifDrawable.stop();
+                    geoImage.setVisibility(View.INVISIBLE);
                     audio_bool = true;
                 }
             };

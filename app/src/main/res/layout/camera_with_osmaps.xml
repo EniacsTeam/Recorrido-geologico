@@ -17,17 +17,12 @@
         android:background="@null"
         android:layout_gravity="top|start"/>
 
-    <Button
-        android:id="@+id/showGalleryButton"
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView"
+        android:src="@drawable/geo_izq"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:text="Show gallery" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"/>
+        android:layout_gravity="bottom|start"/>
 
 </FrameLayout>
