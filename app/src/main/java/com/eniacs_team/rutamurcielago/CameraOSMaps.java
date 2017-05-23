@@ -325,7 +325,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         try {
             AssetFileDescriptor descriptor = baseDatos.selectAudio(idPunto);
             mPlayerBuilder();
-            mPlayer.setDataSource(descriptor.getFileDescriptor());
+            mPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(),descriptor.getLength());
             descriptor.close();
             mPlayer.prepare();
             mPlayer.start();
