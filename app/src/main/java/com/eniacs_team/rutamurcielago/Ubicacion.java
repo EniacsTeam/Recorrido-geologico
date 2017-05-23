@@ -3,6 +3,7 @@ package com.eniacs_team.rutamurcielago;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +25,7 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class Ubicacion implements LocationListener {
 
   //   private Location mLastLocation;
     MainActivity mainActivity;
+    MyLocationNewOverlay mLocationOverlay;
    // Marker markerLocation;
     Snackbar snackbar;
     MapView map;
@@ -52,6 +55,8 @@ public class Ubicacion implements LocationListener {
     int marcadorActual=-1;
     Location currentLocation;
     FloatingActionButton btCenterMap;
+    //FloatingActionButton btFollowMe;
+    //boolean isFollowing;
     Context mContext;
     View v;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -62,15 +67,16 @@ public class Ubicacion implements LocationListener {
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
 
-    public Ubicacion (final MapView map, MainActivity main, View v, List<Marker> markers,View center, Activity activity){
+    public Ubicacion (final MapView map, final MainActivity main, View v, List<Marker> markers, View center, Activity activity){
         mContext= activity;
         this.locations = DatosGeo.getLocations();
         this.distancias=DatosGeo.radios();
-
         this.v= v;
         this.marcadores=markers;
         this.map = map;
         this.mainActivity = main;
+        //this.btFollowMe=(FloatingActionButton) mainActivity.findViewById(R.id.ic_follow_me);
+        //this.isFollowing=false;
        // this.markerLocation = new Marker(map);
         //markerLocation.setPosition(routeCenter);
 
@@ -88,10 +94,21 @@ public class Ubicacion implements LocationListener {
                     map.getController().setZoom(13);
                     map.getController().animateTo(new GeoPoint(currentLocation.getLatitude()+0.0001,currentLocation.getLongitude()));
                 }
-
-
             }
         });
+
+/*        btFollowMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isFollowing) {
+                    btFollowMe.setBackgroundTintList(ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.rojo)));
+                    isFollowing=true;
+                } else {
+                    btFollowMe.setBackgroundTintList(ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.blanco)));
+                    isFollowing=false;
+                }
+            }
+        });*/
     }
 
     /**
@@ -131,7 +148,14 @@ public class Ubicacion implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
-       // markerLocation.setPosition(new GeoPoint(location));
+        //si está activado el boton de seguimiento
+/*        if(isFollowing){
+            map.getController().animateTo(new GeoPoint(location.getLatitude()+0.0001,location.getLongitude()));
+            Toast.makeText(mainActivity, "FOllowing", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(mainActivity, "NOO following", Toast.LENGTH_SHORT).show();
+        }*/
+        // markerLocation.setPosition(new GeoPoint(location));
         currentLocation= new Location(location);
 
         int marcador = distanciaEntrePuntos(location);

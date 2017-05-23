@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -37,9 +40,11 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
+import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -60,9 +65,12 @@ import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWind
  */
 
 public class Mapa implements MapEventsReceiver{
-    private MyLocationNewOverlay mLocationOverlay;
+    public MyLocationNewOverlay mLocationOverlay;
     private CompassOverlay mCompassOverlay;
-    protected ImageButton btCenterMap;
+    ScaleBarOverlay mScaleBarOverlay;
+    FloatingActionButton btFollowMe;
+    private RotationGestureOverlay mRotationGestureOverlay;
+
 
     MapView mapView;
     Context mContext;
@@ -97,6 +105,9 @@ public class Mapa implements MapEventsReceiver{
         this.marcadores = new ArrayList<>();
         this.activity = activity;
         marcador_actual = null;
+        this.btFollowMe = (FloatingActionButton)this.activity.findViewById(R.id.ic_follow_me);
+        this.mScaleBarOverlay = new ScaleBarOverlay(mapView);
+        this.mRotationGestureOverlay = new RotationGestureOverlay(mapView);
 
         double[] latitude = DatosGeo.latitudes();;
         double[] longitud = DatosGeo.longitudes();
@@ -154,23 +165,48 @@ public class Mapa implements MapEventsReceiver{
         /*En caso de error muestra este layout*/
         mapView.getTileProvider().setTileLoadFailureImage(activity.getResources().getDrawable(R.drawable.notfound));
         this.mContext = activity;
+        final DisplayMetrics dm = activity.getResources().getDisplayMetrics();
 
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
         //mapView.setUseDataConnection(true);
         mapView.setTilesScaledToDpi(true);
+        mapView.setFlingEnabled(true);
 
         this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
-                mapView);
+                mapView);//se agrega luego de los marcadores para que no sea cubierta por ellos
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity),
                 mapView);
+
+        mScaleBarOverlay.setCentred(true);
+        mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
+
+        mRotationGestureOverlay.setEnabled(true);
+
         mapView.getOverlays().add(this.mLocationOverlay);
-        mapView.getOverlays().add(this.mCompassOverlay);
+        mapView.getOverlays().add(this.mScaleBarOverlay);
+
         mLocationOverlay.enableMyLocation();
-        mLocationOverlay.enableFollowLocation();
+        //mLocationOverlay.enableFollowLocation();
         mLocationOverlay.setOptionsMenuEnabled(true);
-        mCompassOverlay.enableCompass();
+
+
+
+        btFollowMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mLocationOverlay.isFollowLocationEnabled()) {
+                    //Toast.makeText(activity, "FOllowing", Toast.LENGTH_SHORT).show();
+                    mLocationOverlay.enableFollowLocation();
+                    btFollowMe.setBackgroundTintList(ColorStateList.valueOf(activity.getResources().getColor(R.color.rojo)));
+                } else {
+                    //Toast.makeText(activity, "NOOO FOllowing", Toast.LENGTH_SHORT).show();
+                    mLocationOverlay.disableFollowLocation();
+                    btFollowMe.setBackgroundTintList(ColorStateList.valueOf(activity.getResources().getColor(R.color.blanco)));
+                }
+            }
+        });
 
 
         /*Ajustes en el zoom y el enfoque inicial*/
@@ -280,6 +316,9 @@ public class Mapa implements MapEventsReceiver{
             mapView.getOverlays().add(marcador);
             marcadores.set(i,marcador);
         }
+        //se agregan acá porqué se necesita sobre los marcadores
+        mapView.getOverlays().add(this.mCompassOverlay);
+        mCompassOverlay.enableCompass();
         return marcadores;
     }
 
