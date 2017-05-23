@@ -2,13 +2,22 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\gradle-wrapper.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\libs\gradle-wrapper.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.3"
         sha1="e614e3b2edc63a9cc423437dea087c91962254f5">
-        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\gradle-wrapper_601b5a4d2cfb5bc090c99209be88a466c44fa6be.jar" />
+        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\2\gradle-wrapper_685a58d904ebbbd71fa5d1c0ea1b3a119ff49672\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f097edc387eb9667e1865bd05ef5f4cd0635e308">
+        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_fd047a8f45d996d7a1ad1f6837fd87564d86b860\classes.dex" />
     </item>
 
 </items>

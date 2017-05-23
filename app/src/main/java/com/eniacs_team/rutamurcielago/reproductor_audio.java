@@ -63,6 +63,7 @@ public class reproductor_audio extends AppCompatActivity {
 
 
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(false);
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -81,8 +82,11 @@ public class reproductor_audio extends AppCompatActivity {
 
         try {
             AssetFileDescriptor audio = baseDatos.selectAudio(id);
-            String texto_del_audio = baseDatos.selectDescripcion(id);
+            String texto_del_audio = baseDatos.selectTextoAudio(id);
             texto.setText(texto_del_audio);
+            if(mediaPlayer == null){
+                mediaPlayer = new MediaPlayer();
+            }
             mediaPlayer.setDataSource(audio.getFileDescriptor());
             audio.close();
             mediaPlayer.prepare();
@@ -91,7 +95,6 @@ public class reproductor_audio extends AppCompatActivity {
         } catch (IOException e) {
             Log.i("Audio", "Error " + e);
         }
-        //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.more_love);
 
 
         seekBar.setMax(mediaPlayer.getDuration());
