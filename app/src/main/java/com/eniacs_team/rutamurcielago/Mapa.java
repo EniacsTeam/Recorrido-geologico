@@ -360,14 +360,14 @@ public class Mapa implements MapEventsReceiver{
                  */
                 @Override
                 public void onClick(View v) {
-                    //if(tipo){
+                    if(tipo){
                         Intent intent = new Intent( mContext,MenuMultimediaMapa.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("id", puntoCargado);
                         mContext.startActivity(intent);
-                    //}else{
-                     //   dialogo.show();
-                    //}
+                    }else{
+                        dialogo.show();
+                    }
                 }
 
 

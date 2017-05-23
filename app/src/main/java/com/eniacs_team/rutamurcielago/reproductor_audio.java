@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -87,7 +88,13 @@ public class reproductor_audio extends AppCompatActivity {
             if(mediaPlayer == null){
                 mediaPlayer = new MediaPlayer();
             }
-            mediaPlayer.setDataSource(audio.getFileDescriptor());
+            if(audio == null){
+                Toast.makeText(getApplicationContext(), getString(R.string.error_audio), Toast.LENGTH_LONG).show();
+                Intent intento =  new Intent(getApplicationContext(), MainActivity.class);
+                intento.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intento);
+            }
+            mediaPlayer.setDataSource(audio.getFileDescriptor(),audio.getStartOffset(),audio.getLength());;
             audio.close();
             mediaPlayer.prepare();
             mediaPlayer.start();
