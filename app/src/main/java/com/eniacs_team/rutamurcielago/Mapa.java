@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -35,6 +37,7 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
@@ -46,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static android.content.Context.SENSOR_SERVICE;
 import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
 
@@ -154,7 +158,7 @@ public class Mapa implements MapEventsReceiver{
         /*Elementos correspondietes a funcionalidades*/
         mapView.setClickable(true);
         mapView.setMultiTouchControls(true);
-        mapView.setUseDataConnection(true);
+        //mapView.setUseDataConnection(true);
         mapView.setTilesScaledToDpi(true);
 
         this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity),
@@ -168,10 +172,12 @@ public class Mapa implements MapEventsReceiver{
         mLocationOverlay.setOptionsMenuEnabled(true);
         mCompassOverlay.enableCompass();
 
+
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
         mapViewController.setZoom(13);
         mapViewController.animateTo(routeCenter);
+        mapViewController.setCenter(routeCenter);
         mapView.setMinZoomLevel(12);
         mapView.setMaxZoomLevel(16);
 
@@ -242,7 +248,6 @@ public class Mapa implements MapEventsReceiver{
                 } else {
                     mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
                 }
-
                 mapView.invalidate();
                 return;
             } catch (Exception ex) {

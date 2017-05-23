@@ -231,6 +231,40 @@ public class BaseDatos extends SQLiteOpenHelper {
         return descriptor;
     }
 
+    /**
+     * Devuelve la transcripcion del audio para un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return textoAudio como String
+     */
+    public String selectTextoAudio(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "Lugares";
+        String[] columns = {"TextoAudio"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+        String textoAudio = null;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                textoAudio = cursor.getString(0);
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+
+        return textoAudio;
+    }
+
 
     /**
      * Verifica si el mapa ya ha sido cargado

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -63,6 +64,7 @@ public class reproductor_audio extends AppCompatActivity {
 
 
         mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(false);
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -81,9 +83,18 @@ public class reproductor_audio extends AppCompatActivity {
 
         try {
             AssetFileDescriptor audio = baseDatos.selectAudio(id);
-            String texto_del_audio = baseDatos.selectDescripcion(id);
+            String texto_del_audio = baseDatos.selectTextoAudio(id);
             texto.setText(texto_del_audio);
-            mediaPlayer.setDataSource(audio.getFileDescriptor());
+            if(mediaPlayer == null){
+                mediaPlayer = new MediaPlayer();
+            }
+            if(audio == null){
+                Toast.makeText(getApplicationContext(), getString(R.string.error_audio), Toast.LENGTH_LONG).show();
+                Intent intento =  new Intent(getApplicationContext(), MainActivity.class);
+                intento.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intento);
+            }
+            mediaPlayer.setDataSource(audio.getFileDescriptor(),audio.getStartOffset(),audio.getLength());;
             audio.close();
             mediaPlayer.prepare();
             mediaPlayer.start();
@@ -91,7 +102,6 @@ public class reproductor_audio extends AppCompatActivity {
         } catch (IOException e) {
             Log.i("Audio", "Error " + e);
         }
-        //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.more_love);
 
 
         seekBar.setMax(mediaPlayer.getDuration());
