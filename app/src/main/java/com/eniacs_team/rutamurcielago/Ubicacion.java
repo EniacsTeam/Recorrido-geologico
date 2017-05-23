@@ -9,10 +9,13 @@ import android.location.LocationListener;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +51,7 @@ public class Ubicacion implements LocationListener {
 
     int marcadorActual=-1;
     Location currentLocation;
-    ImageButton btCenterMap;
+    FloatingActionButton btCenterMap;
     Context mContext;
     View v;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
@@ -77,12 +80,10 @@ public class Ubicacion implements LocationListener {
        // markerLocation.setTitle("My location");
        // this.map.getOverlays().add(markerLocation);
         gpsActivo(v);
-        this.btCenterMap = (ImageButton) center;
-
+        this.btCenterMap = (FloatingActionButton) center;
         btCenterMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View center) {
-
                 if (currentLocation != null) {
                     map.getController().setZoom(13);
                     map.getController().animateTo(new GeoPoint(currentLocation.getLatitude()+0.0001,currentLocation.getLongitude()));
@@ -100,7 +101,7 @@ public class Ubicacion implements LocationListener {
      */
     public void gpsActivo(View v){
         snackbar = Snackbar
-                .make(v, "Se necesita activar el GPS!", Snackbar.LENGTH_INDEFINITE)
+                .make(v, "¡Se necesita activar el GPS!", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Activar", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -119,8 +120,11 @@ public class Ubicacion implements LocationListener {
      */
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
-    }
 
+    }
+    public void desMsjGpsDesactivado(){
+        snackbar.dismiss();
+    }
     /**
      * Permite actualizar la vista del mapa, cambio de colores y funcionalidad del "ver más" en el marcador
      * @param location
@@ -188,7 +192,8 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
        // Toast.makeText(mainActivity, "GPS desactivado", Toast.LENGTH_SHORT).show();
-        snackbar.show();
+        mostrarMsjGpsDesactivado();
+
     }
 
     /**
@@ -198,7 +203,7 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onProviderEnabled(String provider) {
        // Toast.makeText(mainActivity, "Gps activado", Toast.LENGTH_SHORT).show();
-        snackbar.dismiss();
+        desMsjGpsDesactivado();
     }
 
     /**
