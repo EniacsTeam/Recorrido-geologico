@@ -28,7 +28,7 @@ public class reproductor_audio extends AppCompatActivity {
     ImageButton reproductor;
     TextView texto;
 
-    private static MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
     private BaseDatos baseDatos;
 
     Handler handler;
@@ -49,7 +49,7 @@ public class reproductor_audio extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras= intent.getExtras();
         if(intent.hasExtra("id")){
-            id = Integer.parseInt(extras.getString("id"));// id del punto.
+            id = extras.getInt("id");// id del punto.
         }else{
             onBackPressed();
         }
@@ -64,6 +64,10 @@ public class reproductor_audio extends AppCompatActivity {
         reproductor = (ImageButton) findViewById(R.id.btn_reproductor);
         texto = (TextView) findViewById(R.id.texto_audio);
 
+        String texto_del_audio = baseDatos.selectTextoAudio(id);
+        if(texto_del_audio != null){
+            texto.setText(texto_del_audio);
+        }
 
 
 /*
@@ -223,7 +227,7 @@ public class reproductor_audio extends AppCompatActivity {
         try {
             AssetFileDescriptor descriptor = baseDatos.selectAudio(id);
             mPlayerBuilder();
-            mediaPlayer.setDataSource(descriptor.getFileDescriptor());
+            mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(),descriptor.getLength());
             descriptor.close();
             mediaPlayer.prepare();
             mediaPlayer.start();

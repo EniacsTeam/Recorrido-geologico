@@ -136,12 +136,12 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
             if(listItems.get(getAdapterPosition()).getTitulo().equals("Audio")){
                 Intent intent = new Intent(context, reproductor_audio.class);
-                intent.putExtra("id", listItems.get(getAdapterPosition()).getId());
+                intent.putExtra("id", Integer.parseInt(listItems.get(getAdapterPosition()).getId()));
                 context.startActivity(intent);
             }else if(listItems.get(getAdapterPosition()).getTitulo().equals("Imagen")){
                 Intent intent = new Intent(context, Gallery.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id", String.valueOf(listItems.get(getAdapterPosition()).getId()));
+                intent.putExtra("id", Integer.parseInt(listItems.get(getAdapterPosition()).getId()));
                 context.startActivity(intent);
             }else{
                 Toast.makeText(context, listItems.get(getAdapterPosition()).getTitulo(), Toast.LENGTH_SHORT).show();
