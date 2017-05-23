@@ -2,20 +2,24 @@ package com.eniacs_team.rutamurcielago;
 
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
+import static android.R.attr.orientation;
 import static android.os.Looper.prepare;
 import static com.eniacs_team.rutamurcielago.R.mipmap.audio;
 
@@ -24,7 +28,8 @@ public class reproductor_audio extends AppCompatActivity {
     ImageButton reproductor;
     TextView texto;
 
-    MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
+    private BaseDatos baseDatos;
 
     Handler handler;
     Runnable runnable;
@@ -49,9 +54,10 @@ public class reproductor_audio extends AppCompatActivity {
             onBackPressed();
         }
 
+
         handler = new Handler();
 
-        BaseDatos baseDatos = new BaseDatos(this);
+        baseDatos = new BaseDatos(this);
         baseDatos.cargarBase();
 
         seekBar = (SeekBar)findViewById(R.id.sb_reproductor);
@@ -60,11 +66,12 @@ public class reproductor_audio extends AppCompatActivity {
 
 
 
-
+/*
 
         mediaPlayer = new MediaPlayer();
+        //mediaPlayer.setLooping(false);
 
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
@@ -81,9 +88,18 @@ public class reproductor_audio extends AppCompatActivity {
 
         try {
             AssetFileDescriptor audio = baseDatos.selectAudio(id);
-            String texto_del_audio = baseDatos.selectDescripcion(id);
+            String texto_del_audio = baseDatos.selectTextoAudio(id);
             texto.setText(texto_del_audio);
-            mediaPlayer.setDataSource(audio.getFileDescriptor());
+            if(mediaPlayer == null){
+                mediaPlayer = new MediaPlayer();
+            }
+            if(audio == null){
+                Toast.makeText(getApplicationContext(), getString(R.string.error_audio), Toast.LENGTH_LONG).show();
+                Intent intento =  new Intent(getApplicationContext(), MainActivity.class);
+                intento.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intento);
+            }
+            mediaPlayer.setDataSource(audio.getFileDescriptor(),audio.getStartOffset(),audio.getLength());;
             audio.close();
             mediaPlayer.prepare();
             mediaPlayer.start();
@@ -91,9 +107,8 @@ public class reproductor_audio extends AppCompatActivity {
         } catch (IOException e) {
             Log.i("Audio", "Error " + e);
         }
-        //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.more_love);
-
-
+*/
+        playAudio();
         seekBar.setMax(mediaPlayer.getDuration());
 
 
@@ -157,26 +172,33 @@ public class reproductor_audio extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        mediaPlayer.start();
-        reproductor.setImageDrawable(getDrawable(R.drawable.ic_pause_white_24px));
-        playCycle();
+        if(mediaPlayer != null)
+        {
+            mediaPlayer.start();
+            reproductor.setImageDrawable(getDrawable(R.drawable.ic_pause_white_24px));
+            playCycle();
+        }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.pause();
+        if(mediaPlayer != null)
+        {
+            mediaPlayer.pause();
+        }
+
     }
 
     @Override
     protected void onDestroy() {
+        stopAudio();
         super.onDestroy();
-        mediaPlayer.release();
-        handler.removeCallbacks(runnable);
-        mediaPlayer = null;
     }
 
 
@@ -196,5 +218,52 @@ public class reproductor_audio extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
+
+    private void playAudio() {
+        try {
+            AssetFileDescriptor descriptor = baseDatos.selectAudio(id);
+            mPlayerBuilder();
+            mediaPlayer.setDataSource(descriptor.getFileDescriptor());
+            descriptor.close();
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            Log.i("Audio", "Error " + e);
+        }
+    }
+
+    private void stopAudio() {
+        if(mediaPlayer != null)
+        {
+            mediaPlayer.release();
+            handler.removeCallbacks(runnable);
+            seekBar = null;
+            mediaPlayer = null;
+        }
+    }
+
+    private void mPlayerBuilder() {
+        //Creo reproductor de audio
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            //Listener para que se borre cuando termine de reproducirse audio
+            MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayer.seekTo(0);
+                    reproductor.setImageDrawable(getDrawable(R.drawable.ic_play_arrow_white_24px));
+                    seekBar.setProgress(0);
+                }
+            };
+            mediaPlayer.setOnCompletionListener(onCompletionListener);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopAudio();
+        super.onBackPressed();
+    }
+
 
 }
