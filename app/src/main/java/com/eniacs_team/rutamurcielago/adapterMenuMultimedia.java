@@ -127,7 +127,8 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
         }
 
         /**
-         * Llamado cuando un cardView es seleccionado, entra a la galeria de dicho elemento..
+         * Llamado cuando un cardView es seleccionado,
+         * Entra a galeria, o a reproducir el audio.
          *
          * @param v The view that was clicked.
          */

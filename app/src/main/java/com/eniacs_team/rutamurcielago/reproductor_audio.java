@@ -49,7 +49,7 @@ public class reproductor_audio extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras= intent.getExtras();
         if(intent.hasExtra("id")){
-            id = extras.getInt("id");// id del punto.
+            id = extras.getInt("id");// Obtiene el id de la vista anterior para consultar en la base de datos.
         }else{
             onBackPressed();
         }
@@ -64,69 +64,21 @@ public class reproductor_audio extends AppCompatActivity {
         reproductor = (ImageButton) findViewById(R.id.btn_reproductor);
         texto = (TextView) findViewById(R.id.texto_audio);
 
-        String texto_del_audio = baseDatos.selectTextoAudio(id);
+        String texto_del_audio = baseDatos.selectTextoAudio(id); //Obtiene el texto relacionado al audio para ser mostrado en el textView
         if(texto_del_audio != null){
             texto.setText(texto_del_audio);
         }
 
-
-/*
-
-        mediaPlayer = new MediaPlayer();
-        //mediaPlayer.setLooping(false);
-
-        //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mediaPlayer.seekTo(0);
-                reproductor.setImageDrawable(getDrawable(R.drawable.ic_play_arrow_white_24px));
-                seekBar.setProgress(0);
-
-
-            }
-
-        });
-
-        try {
-            AssetFileDescriptor audio = baseDatos.selectAudio(id);
-            String texto_del_audio = baseDatos.selectTextoAudio(id);
-            texto.setText(texto_del_audio);
-            if(mediaPlayer == null){
-                mediaPlayer = new MediaPlayer();
-            }
-            if(audio == null){
-                Toast.makeText(getApplicationContext(), getString(R.string.error_audio), Toast.LENGTH_LONG).show();
-                Intent intento =  new Intent(getApplicationContext(), MainActivity.class);
-                intento.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intento);
-            }
-            mediaPlayer.setDataSource(audio.getFileDescriptor(),audio.getStartOffset(),audio.getLength());;
-            audio.close();
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            playCycle();
-        } catch (IOException e) {
-            Log.i("Audio", "Error " + e);
-        }
-*/
         playAudio();
-        seekBar.setMax(mediaPlayer.getDuration());
+        seekBar.setMax(mediaPlayer.getDuration()); //Define el tamaño maximo del seekBar = duracion del audio
 
-
-
-
-
-
-        reproductor.setOnClickListener(new View.OnClickListener() {
+        reproductor.setOnClickListener(new View.OnClickListener() { // click listener del boton de reproducir.
             @Override
             public void onClick(View v) {
-                if(mediaPlayer.isPlaying()){
+                if(mediaPlayer.isPlaying()){ // si se esta reproduciendo se pausa y se cambia el icono al de play
                     mediaPlayer.pause();
                     reproductor.setImageDrawable(getDrawable(R.drawable.ic_play_arrow_white_24px));
-                }else{
+                }else{// si no, se reproduce el audio y se cambia el icono al de pausa.
                     mediaPlayer.start();
                     playCycle();
                     reproductor.setImageDrawable(getDrawable(R.drawable.ic_pause_white_24px));
@@ -139,7 +91,7 @@ public class reproductor_audio extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(fromUser){
-                    mediaPlayer.seekTo(progress);
+                    mediaPlayer.seekTo(progress); //cambia al segundo de reproducción indicado por el seekbar cuando este cambia por interacción humana.
                 }
             }
 
@@ -161,6 +113,9 @@ public class reproductor_audio extends AppCompatActivity {
     }
 
 
+    /**
+     * Método que actualiza el seekBar según lo que lleva de audio.
+     */
     public void playCycle(){
         seekBar.setProgress(mediaPlayer.getCurrentPosition());
 
@@ -177,6 +132,10 @@ public class reproductor_audio extends AppCompatActivity {
     }
 
 
+    /**
+     * Método llamado cuando la aplicación vuelve a ejecución.
+     * Vuelve a poner el audio en play y llama a playCycle para que se actualize el seekBar.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -189,6 +148,10 @@ public class reproductor_audio extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo llamado cuando la aplicación se pone en pausa.
+     * se pone en pasusa el reproductor.
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -199,6 +162,9 @@ public class reproductor_audio extends AppCompatActivity {
 
     }
 
+    /**
+     * Método llamado cuando la actividad muere. Destruye el media player para que no quede basura.
+     */
     @Override
     protected void onDestroy() {
         stopAudio();
@@ -223,6 +189,9 @@ public class reproductor_audio extends AppCompatActivity {
 
     }
 
+    /**
+     * método que carga el audio al media player para su ejecución.
+     */
     private void playAudio() {
         try {
             AssetFileDescriptor descriptor = baseDatos.selectAudio(id);
@@ -236,6 +205,9 @@ public class reproductor_audio extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método llamado para destruir los datos del media player.
+     */
     private void stopAudio() {
         if(mediaPlayer != null)
         {
@@ -246,6 +218,9 @@ public class reproductor_audio extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método que construye el media player.
+     */
     private void mPlayerBuilder() {
         //Creo reproductor de audio
         if (mediaPlayer == null) {
@@ -263,6 +238,10 @@ public class reproductor_audio extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método llamado cuando se da "click" en el boton de atrás.
+     * Mata al media player.
+     */
     @Override
     public void onBackPressed() {
         stopAudio();
