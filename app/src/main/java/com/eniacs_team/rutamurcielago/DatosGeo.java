@@ -57,4 +57,14 @@ public class DatosGeo {
             return new BoundingBox(10.929974, -85.816022, 10.921589, -85.821822);
         }
     }
+
+    public  static boolean isIntoBoundingBox(Location l){
+        Location bs=new Location("superior");//superior
+        Location bi=new Location("inferior");//inferior
+        if((bs.getLatitude()<l.getLatitude()&&l.getLatitude()<bi.getLatitude())&&(bi.getLongitude()<l.getLongitude()&&l.getLongitude()<bs.getLongitude())){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
