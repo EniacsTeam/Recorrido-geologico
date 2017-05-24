@@ -58,6 +58,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private static GifImageView geoImage;
     private GifDrawable gifDrawable;
 
+    private boolean isMenuOpen = false;
+
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
      *
@@ -303,10 +305,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         actionMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
             @Override
             public void onMenuOpened(FloatingActionMenu menu) {
+                isMenuOpen = true;
             }
 
             @Override
             public void onMenuClosed(FloatingActionMenu menu) {
+                isMenuOpen = false;
             }
         });
 
@@ -321,6 +325,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         if (beyondarObjects.size() > 0) {
             idPunto = (int) beyondarObjects.get(0).getId() - 99;
             nPunto = beyondarObjects.get(0).getName();
+            if (isMenuOpen) {
+                actionButton.performClick();
+            }
             crearFab();
         }
     }
