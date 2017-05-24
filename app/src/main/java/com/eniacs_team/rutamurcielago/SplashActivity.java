@@ -33,9 +33,9 @@ public class SplashActivity extends AppCompatActivity {
         String Permiso[] = {"android.permission.WRITE_EXTERNAL_STORAGE","android.permission.ACCESS_FINE_LOCATION"};
         // Start home activity
         requestPermission(Permiso,1);
-
-
     }
+
+
 
     /**
      * Metodo encargado de mostrar los dialogos de solicitud de permisos si es necesario.

@@ -1,6 +1,7 @@
 package com.eniacs_team.rutamurcielago;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,13 +11,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenImage extends AppCompatActivity {
     TextView description;
-    ImageView image;
+    ZoomableImageView image;
+
+    private BaseDatos baseDatos;
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -90,6 +96,8 @@ public class FullscreenImage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        baseDatos = new BaseDatos(this);
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen_image);
@@ -113,13 +121,29 @@ public class FullscreenImage extends AppCompatActivity {
         description = (TextView) findViewById(R.id.img_desc);
         description.setOnTouchListener(mDelayHideTouchListener);
 
-        image = (ImageView) findViewById(R.id.fullscreen_content);
+        image = (ZoomableImageView) mContentView;
 
         Bundle extras = getIntent().getExtras();
-        int drawable = extras.getInt("picture");
+        int idPunto = extras.getInt("idPunto");
+        int pos = extras.getInt("pos");
+        Map imagenes = baseDatos.selectImagen(idPunto);
+
+        Iterator<Map.Entry<Drawable, String>> it = imagenes.entrySet().iterator();
+        Drawable img = null;
+        int count = 0;
+        boolean found = false;
+        while (it.hasNext() && !found) {
+            Map.Entry<Drawable, String> par = it.next();
+            if (count == pos) {
+                img = par.getKey();
+                found = true;
+            }
+            count++;
+        }
+
         String text = extras.getString("text");
 
-        image.setImageDrawable(getResources().getDrawable(drawable));
+        image.setImageDrawable(img);
         description.setText(text);
     }
 

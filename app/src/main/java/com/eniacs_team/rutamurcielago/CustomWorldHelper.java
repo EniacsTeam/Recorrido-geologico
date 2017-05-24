@@ -173,7 +173,8 @@ public class CustomWorldHelper {
 
         // User position (you can change it using the GPS listeners form Android
         // API)
-        sharedWorld.setGeoPosition(10.951398d,-85.709450d);
+        //sharedWorld.setGeoPosition(10.926201d, -85.818870d);
+        sharedWorld.setGeoPosition(10.951398d, -85.709450d);
 
         agregarCarteles();
 
