@@ -301,7 +301,7 @@ public class Mapa implements MapEventsReceiver {
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
-            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1, false, mContext, dialogo);
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , false, mContext, dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
             marcador.setAlpha(0.5f);
