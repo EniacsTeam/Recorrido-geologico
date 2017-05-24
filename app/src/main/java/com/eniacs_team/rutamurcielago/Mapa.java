@@ -370,12 +370,10 @@ public class Mapa implements MapEventsReceiver {
          */
         public void onOpen(Object arg0) {
 
-            LinearLayout layout = (LinearLayout) mView.findViewById(R.id.bonuspack_bubble);
 
             BaseDatos base = new BaseDatos(mContext);
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
-            TextView txtDescription = (TextView) mView.findViewById(R.id.bubble_description);
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
             View viewLinea = mView.findViewById(R.id.linea_centro);
 
@@ -399,10 +397,9 @@ public class Mapa implements MapEventsReceiver {
                 }
 
             });
-            txtTitle.setText("Punto #" + puntoCargado);
-            txtDescription.setText(base.selectDescripcion(puntoCargado));
+            txtTitle.setText(base.selectDescripcion(puntoCargado));
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtDescription.getMaxWidth(), 3);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtTitle.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);
             viewLinea.setLayoutParams(lp);
 
