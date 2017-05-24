@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,7 +31,6 @@ import pl.droidsonroids.gif.GifImageView;
  *
  * @author EniacsTeam
  */
-
 public class CameraOSMaps extends FragmentActivity implements OnClickListener, OnClickBeyondarObjectListener {
 
     private BeyondarFragmentSupport mBeyondarFragment;
@@ -78,14 +76,15 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // We create the world and fill it
         mWorld = CustomWorldHelper.generateObjects(this);
 
-        //mBeyondarFragment.setMaxDistanceToRender(900000);
-        //mBeyondarFragment.setPushAwayDistance(1);
+        mBeyondarFragment.setMaxDistanceToRender(900000);
+        mBeyondarFragment.setPushAwayDistance(1);
         mBeyondarFragment.setWorld(mWorld);
 
 
         if (savedInstanceState != null) {
             audio_bool = savedInstanceState.getBoolean("Bool_audio");
             idPunto = savedInstanceState.getInt("ID_Punto");
+            nPunto = savedInstanceState.getString("N_Punto");
             geoImage.setVisibility(savedInstanceState.getInt("Gif_visible"));
             if (idPunto != -1) {
                 crearFab();
@@ -138,6 +137,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // Make sure to call the super method so that the states of our views are saved
         savedInstanceState.putBoolean("Bool_audio", audio_bool);
         savedInstanceState.putInt("ID_Punto", idPunto);
+        savedInstanceState.putString("N_Punto", nPunto);
         savedInstanceState.putInt("Gif_visible", geoImage.getVisibility());
         super.onSaveInstanceState(savedInstanceState);
         // Save our own state now
@@ -313,7 +313,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
     }
 
-
+    /*
+     * Metodo que maneja los cliqueos a los objetos de realidad aumentada y crea un boton de recursos asociado.
+     */
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         if (beyondarObjects.size() > 0) {

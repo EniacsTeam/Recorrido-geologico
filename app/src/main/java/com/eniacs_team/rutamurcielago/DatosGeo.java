@@ -6,7 +6,11 @@ import org.osmdroid.util.BoundingBox;
 
 import java.util.ArrayList;
 
-
+/**
+ * Clase ayudante que engloba todos los datos de geolocalizacion de interes.
+ *
+ * @author EniacsTeam
+ */
 public class DatosGeo {
     static double bsLat=10.963565;
     static double bsLng=-85.669550;
@@ -33,6 +37,11 @@ public class DatosGeo {
         return radios;
     }
 
+    /**
+     * Metodo que retorna todas las ubicaciones de los puntos de interes.
+     *
+     * @return la lista de {@link Location} de todos los sitios geologicos
+     */
     public static ArrayList<Location> getLocations(){
 
 		ArrayList<Location>locations = new ArrayList<>();

@@ -2,6 +2,11 @@ package com.eniacs_team.rutamurcielago;
 
 import android.graphics.drawable.Drawable;
 
+/**
+ * Clase ayudante que engloba los datos que posee cada item dentro de la galeria.
+ *
+ * @author EniacsTeam
+ */
 public class CreateList {
 
     private String image_title;

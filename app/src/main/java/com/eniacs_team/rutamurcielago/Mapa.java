@@ -377,6 +377,8 @@ public class Mapa implements MapEventsReceiver {
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
             View viewLinea = mView.findViewById(R.id.linea_centro);
 
+            final String desc = base.selectDescripcion(puntoCargado);
+
             txtVerMas.setOnClickListener(new View.OnClickListener() {
 
                 /**
@@ -390,6 +392,7 @@ public class Mapa implements MapEventsReceiver {
                         Intent intent = new Intent(mContext, MenuMultimediaMapa.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("id", puntoCargado);
+                        intent.putExtra("nombre", desc);
                         mContext.startActivity(intent);
                     } else {
                         dialogo.show();
@@ -397,7 +400,7 @@ public class Mapa implements MapEventsReceiver {
                 }
 
             });
-            txtTitle.setText(base.selectDescripcion(puntoCargado));
+            txtTitle.setText(desc);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtTitle.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);

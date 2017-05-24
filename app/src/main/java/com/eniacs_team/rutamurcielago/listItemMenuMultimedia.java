@@ -7,6 +7,7 @@ package com.eniacs_team.rutamurcielago;
 public class listItemMenuMultimedia {
     private String titulo; //Titulo del menú.
     private String id; // Id del punto seleccionado.
+    private String nPunto;
 
 
     /**
@@ -14,10 +15,12 @@ public class listItemMenuMultimedia {
      * @param titulo
      * @param id
      */
-    public listItemMenuMultimedia(String titulo, String id) {
+    public listItemMenuMultimedia(String titulo, String id, String nPunto) {
         this.titulo = titulo;
         this.id = id;
+        this.nPunto = nPunto;
     }
+
     /**
      * getter del titulo
      * @return
@@ -25,12 +28,20 @@ public class listItemMenuMultimedia {
     public String getTitulo() {
         return titulo;
     }
+
     /**
      * getter del Id
      * @return
      */
-
     public String getId() {
         return id;
+    }
+
+    /**
+     * getter del Id
+     * @return
+     */
+    public String getNombre() {
+        return nPunto;
     }
 }
