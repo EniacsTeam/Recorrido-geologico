@@ -6,7 +6,12 @@
     <string name="ver_mas"><u>Ver más</u></string>
     <string name="aviso_ver_mas">¡Lo sentimos!</string>
     <string name="aviso_texto">Necesitas estar cerca del punto de interés para poder acceder a más información</string>
+    <string name="aviso_texto_website">Se encuentra fuera del recorrido, puede acceder a más contenido visitando nuestro sitio web.</string>
     <string name="aviso_aceptar">Aceptar</string>
+    <string name="aviso_reintentar">Reintentar</string>
+    <string name="aviso_visitar_website">Visitar sitio web</string>
+
+
     <string name="No_multimedia">No existe datos multimedia para este sitio!</string>
     <string name="error_audio">Ha ocurrido un error, inténtelo nuevamente!</string>
 </resources>

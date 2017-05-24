@@ -59,6 +59,7 @@ public class Ubicacion implements LocationListener {
     //boolean isFollowing;
     Context mContext;
     View v;
+    CustomDialogClass dialog;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
     /**
      * Constructor de clase, Se inicializan variables globales.
@@ -75,6 +76,7 @@ public class Ubicacion implements LocationListener {
         this.marcadores=markers;
         this.map = map;
         this.mainActivity = main;
+        this.dialog=new CustomDialogClass(mainActivity,1);
         //this.btFollowMe=(FloatingActionButton) mainActivity.findViewById(R.id.ic_follow_me);
         //this.isFollowing=false;
        // this.markerLocation = new Marker(map);
@@ -207,6 +209,13 @@ public class Ubicacion implements LocationListener {
             }
         }
         marcadorActual = marcador;
+        //si la ubicación actual no está dentro del recorrido muestre el mensaje.
+        if(!DatosGeo.isIntoBoundingBox(location)){
+            //Toast.makeText(mainActivity, "inside"+location.getLatitude()+" "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+            if(!dialog.isShowing()){//si ya está abierto, no haga nada.
+                dialog.show();
+            }
+        }
     }
 
     /**

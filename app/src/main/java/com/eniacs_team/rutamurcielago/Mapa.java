@@ -221,7 +221,7 @@ public class Mapa implements MapEventsReceiver {
         mapView.getOverlays().add(0, mapEventsOverlay);
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
-        dialogo = new CustomDialogClass(activity);
+        dialogo = new CustomDialogClass(activity,2);
 
         mapView.setMapListener(new MapListener() {
             @Override
@@ -410,40 +410,4 @@ public class Mapa implements MapEventsReceiver {
 
     }
 
-    /**
-     * Clase para controlar el dialogo que indica que el usuario esta fuera del rango del
-     * punto de interes
-     */
-    public static class CustomDialogClass extends Dialog implements android.view.View.OnClickListener {
-
-        public Activity c;
-        public Button btnAceptar;
-
-        public CustomDialogClass(Activity a) {
-            super(a);
-            this.c = a;
-        }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.dialogo_ver_mas);
-            btnAceptar = (Button) findViewById(R.id.aceptar);
-            btnAceptar.setOnClickListener(this);
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-            case R.id.aceptar:
-                dismiss();
-                break;
-            default:
-                break;
-            }
-            dismiss();
-        }
-    }
 }

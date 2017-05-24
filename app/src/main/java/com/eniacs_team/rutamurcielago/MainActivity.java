@@ -1,5 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.net.Uri;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -109,6 +110,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void goToSo (View view) {
+        goToUrl( "http://stackoverflow.com/");
+    }
+    private void goToUrl (String url) {
+        Uri uriUrl = Uri.parse("http://stackoverflow.com/");
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchBrowser);
     }
 
     @Override

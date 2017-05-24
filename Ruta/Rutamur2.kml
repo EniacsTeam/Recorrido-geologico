@@ -76,6 +76,24 @@
     <Folder>
       <name>recorrido 2</name>
       <Placemark>
+        <name>out1</name>
+        <styleUrl>#icon-1899-DB4436-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -84.805579,10.739715,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>out2</name>
+        <styleUrl>#icon-1899-DB4436-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -85.347815,10.902883,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
         <name>salida</name>
         <styleUrl>#icon-1899-DB4436-nodesc</styleUrl>
         <Point>

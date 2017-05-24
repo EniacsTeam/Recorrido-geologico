@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 
 public class DatosGeo {
+    static double bsLat=10.963565;
+    static double bsLng=-85.669550;
+    static double biLat=10.827862;
+    static double biLng=-85.979089;
 
     static int cantidadElementos=19;
 
@@ -58,9 +62,8 @@ public class DatosGeo {
     }
 
     public  static boolean isIntoBoundingBox(Location l){
-        Location bs=new Location("superior");//superior
-        Location bi=new Location("inferior");//inferior
-        if((bs.getLatitude()<l.getLatitude()&&l.getLatitude()<bi.getLatitude())&&(bi.getLongitude()<l.getLongitude()&&l.getLongitude()<bs.getLongitude())){
+
+        if((biLat<l.getLatitude()&&l.getLatitude()<bsLat)&&(biLng<l.getLongitude()&&l.getLongitude()<bsLng)){
             return true;
         }else{
             return false;
