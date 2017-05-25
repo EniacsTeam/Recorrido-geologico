@@ -324,6 +324,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         if (beyondarObjects.size() > 0) {
             idPunto = (int) beyondarObjects.get(0).getId() - 99;
+            idPunto = idPunto + 1;
             nPunto = beyondarObjects.get(0).getName();
             if (isMenuOpen) {
                 actionButton.performClick();
