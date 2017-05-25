@@ -68,7 +68,6 @@ public class Mapa implements MapEventsReceiver {
     public MyLocationNewOverlay mLocationOverlay;
     private CompassOverlay mCompassOverlay;
     ScaleBarOverlay mScaleBarOverlay;
-    FloatingActionButton btFollowMe;
     private RotationGestureOverlay mRotationGestureOverlay;
 
     MapView mapView;
@@ -104,7 +103,6 @@ public class Mapa implements MapEventsReceiver {
         this.marcadores = new ArrayList<>();
         this.activity = activity;
         marcador_actual = null;
-        this.btFollowMe = (FloatingActionButton) this.activity.findViewById(R.id.ic_follow_me);
         this.mScaleBarOverlay = new ScaleBarOverlay(mapView);
         this.mRotationGestureOverlay = new RotationGestureOverlay(mapView);
 
@@ -185,23 +183,6 @@ public class Mapa implements MapEventsReceiver {
         mLocationOverlay.enableMyLocation();
         //mLocationOverlay.enableFollowLocation();
         mLocationOverlay.setOptionsMenuEnabled(true);
-
-        btFollowMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mLocationOverlay.isFollowLocationEnabled()) {
-                    //Toast.makeText(activity, "FOllowing", Toast.LENGTH_SHORT).show();
-                    mLocationOverlay.enableFollowLocation();
-                    btFollowMe.setBackgroundTintList(
-                            ColorStateList.valueOf(activity.getResources().getColor(R.color.rojo)));
-                } else {
-                    //Toast.makeText(activity, "NOOO FOllowing", Toast.LENGTH_SHORT).show();
-                    mLocationOverlay.disableFollowLocation();
-                    btFollowMe.setBackgroundTintList(
-                            ColorStateList.valueOf(activity.getResources().getColor(R.color.blanco)));
-                }
-            }
-        });
 
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
@@ -401,7 +382,9 @@ public class Mapa implements MapEventsReceiver {
 
             });
             txtTitle.setText(desc);
-
+            if(puntoCargado == 1){
+                txtVerMas.setEnabled(false);txtVerMas.setVisibility(View.INVISIBLE);
+            }
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtTitle.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);
             viewLinea.setLayoutParams(lp);
