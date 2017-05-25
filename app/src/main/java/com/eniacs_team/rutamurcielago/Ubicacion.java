@@ -42,10 +42,8 @@ import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
  */
 public class Ubicacion implements LocationListener {
 
-  //   private Location mLastLocation;
     MainActivity mainActivity;
     MyLocationNewOverlay mLocationOverlay;
-   // Marker markerLocation;
     Snackbar snackbar;
     MapView map;
     List<Marker> marcadores;
@@ -55,11 +53,11 @@ public class Ubicacion implements LocationListener {
     int marcadorActual=-1;
     Location currentLocation;
     FloatingActionButton btCenterMap;
-    //FloatingActionButton btFollowMe;
-    //boolean isFollowing;
+    boolean isFollowing= false;
     Context mContext;
     View v;
     CustomDialogClass dialog;
+    FloatingActionButton btFollowMe;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
     /**
      * Constructor de clase, Se inicializan variables globales.
@@ -77,16 +75,7 @@ public class Ubicacion implements LocationListener {
         this.map = map;
         this.mainActivity = main;
         this.dialog=new CustomDialogClass(mainActivity,1);
-        //this.btFollowMe=(FloatingActionButton) mainActivity.findViewById(R.id.ic_follow_me);
-        //this.isFollowing=false;
-       // this.markerLocation = new Marker(map);
-        //markerLocation.setPosition(routeCenter);
-
-       // Drawable marker=main.getResources().getDrawable(R.drawable.ic_here);
-       // markerLocation.setIcon(marker);
-       // markerLocation.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-       // markerLocation.setTitle("My location");
-       // this.map.getOverlays().add(markerLocation);
+        this.btFollowMe = (FloatingActionButton) this.mainActivity.findViewById(R.id.ic_follow_me);
         gpsActivo(v);
         this.btCenterMap = (FloatingActionButton) center;
         btCenterMap.setOnClickListener(new View.OnClickListener() {
@@ -99,18 +88,24 @@ public class Ubicacion implements LocationListener {
             }
         });
 
-/*        btFollowMe.setOnClickListener(new View.OnClickListener() {
+        btFollowMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isFollowing) {
-                    btFollowMe.setBackgroundTintList(ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.rojo)));
-                    isFollowing=true;
+                    if(currentLocation!=null){
+                        map.getController().animateTo(new GeoPoint(currentLocation.getLatitude() + 0.0001, currentLocation.getLongitude()));
+                    }
+                    isFollowing= true;
+
+                    btFollowMe.setBackgroundTintList(
+                            ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.rojo)));
                 } else {
-                    btFollowMe.setBackgroundTintList(ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.blanco)));
-                    isFollowing=false;
+                    isFollowing= false;
+                    btFollowMe.setBackgroundTintList(
+                            ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.blanco)));
                 }
             }
-        });*/
+        });
     }
 
     /**
@@ -162,14 +157,15 @@ public class Ubicacion implements LocationListener {
 
         int marcador = distanciaEntrePuntos(location);
         map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
-//        map.getController().animateTo(new GeoPoint(location.getLatitude()+0.0001,location.getLongitude()));
+
+        if(isFollowing) {
+            map.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
+        }
+
         Marker marker;
-//         Mapa.CustomDialogClass dialogo = new Mapa.CustomDialogClass(mainActivity);
         if (marcador == -1){
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
-               // marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
-
                 Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                 ma.setTipo(false); marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
                 marcadores.set(marcadorActual, marker);
@@ -177,13 +173,18 @@ public class Ubicacion implements LocationListener {
         }else{
             if (marcadorActual!= marcador) {
                 BaseDatos base = new BaseDatos(mContext);
-                Snackbar s = Snackbar
-                        .make(v, "Esta cerca de "+base.selectDescripcion(marcador+1)+", seleccione el punto azul para más información.", Snackbar.LENGTH_LONG);
-                s.show();
+                if(marcador==0){
+                    Snackbar s = Snackbar
+                            .make(v, "Esta cerca de " + base.selectDescripcion(marcador + 1) + ".", Snackbar.LENGTH_LONG);
+                    s.show();
+                }else {
+                    Snackbar s = Snackbar
+                            .make(v, "Esta cerca de " + base.selectDescripcion(marcador + 1) + ", seleccione el punto azul para más información.", Snackbar.LENGTH_LONG);
+                    s.show();
+                }
                 if (marcadorActual!= -1) {
                     marker = marcadores.get(marcadorActual);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_naranja));
-                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcadorActual+1,false,mContext,dialogo));
                     Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo(false);
 
@@ -191,7 +192,6 @@ public class Ubicacion implements LocationListener {
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
 
-                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext, dialogo));
                     ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo(true);
                     marcadores.set(marcador, marker);
@@ -199,7 +199,6 @@ public class Ubicacion implements LocationListener {
 
                 }else {
                     marker = marcadores.get(marcador);
-                    //marker.setInfoWindow(new Mapa.MyInfoWindow(R.layout.bonuspack_bubble, map, marcador+1,true, mContext ,dialogo));
                     Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo(true);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
