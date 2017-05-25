@@ -21,6 +21,7 @@ public class MenuMultimediaMapa extends AppCompatActivity {
     private List<listItemMenuMultimedia> listItemns;
     private BaseDatos baseDatos;
     private int id;
+    private String nPunto = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MenuMultimediaMapa extends AppCompatActivity {
         Bundle extras= intent.getExtras();
         if(extras != null){
             id = extras.getInt("id"); // id del punto.
+            nPunto = extras.getString("nombre");
         }
         
         loadRecyclerViewData();
@@ -57,21 +59,21 @@ public class MenuMultimediaMapa extends AppCompatActivity {
 
         //if(baseDatos.existenciaPunto(id, "Imagen") == 1){
         listItemMenuMultimedia item3 = new listItemMenuMultimedia(
-                "Imagen", String.valueOf(id)
+                "Imagen", String.valueOf(id), nPunto
         );
         listItemns.add(item3);
 
         //}
         if(baseDatos.existenciaPunto(id, "Audio") == 1){
             listItemMenuMultimedia item2 = new listItemMenuMultimedia(
-                    "Audio", String.valueOf(id)
+                    "Audio", String.valueOf(id), nPunto
             );
             listItemns.add(item2);
 
         }
         if(baseDatos.existenciaPunto(id, "Video") == 1) {
             listItemMenuMultimedia item1 = new listItemMenuMultimedia(
-                    "Video", String.valueOf(id)
+                    "Video", String.valueOf(id), nPunto
             );
             listItemns.add(item1);
 

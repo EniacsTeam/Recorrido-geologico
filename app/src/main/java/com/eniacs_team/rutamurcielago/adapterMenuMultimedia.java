@@ -143,6 +143,7 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
                 Intent intent = new Intent(context, Gallery.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("id", Integer.parseInt(listItems.get(getAdapterPosition()).getId()));
+                intent.putExtra("nombre", listItems.get(getAdapterPosition()).getNombre());
                 context.startActivity(intent);
             }else{
                 Toast.makeText(context, listItems.get(getAdapterPosition()).getTitulo(), Toast.LENGTH_SHORT).show();
