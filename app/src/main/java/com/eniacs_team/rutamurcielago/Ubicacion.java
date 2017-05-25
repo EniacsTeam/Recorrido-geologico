@@ -213,7 +213,7 @@ public class Ubicacion implements LocationListener {
         if(!DatosGeo.isIntoBoundingBox(location)){
             //Toast.makeText(mainActivity, "inside"+location.getLatitude()+" "+location.getLatitude(), Toast.LENGTH_SHORT).show();
             if(!dialog.isShowing()){//si ya está abierto, no haga nada.
-                dialog.show();
+                //dialog.show();
             }
         }
     }

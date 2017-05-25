@@ -376,30 +376,36 @@ public class Mapa implements MapEventsReceiver {
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
             View viewLinea = mView.findViewById(R.id.linea_centro);
-
             final String desc = base.selectDescripcion(puntoCargado);
+            if(puntoCargado == 1)
+            {
+                txtVerMas.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                txtVerMas.setOnClickListener(new View.OnClickListener() {
 
-            txtVerMas.setOnClickListener(new View.OnClickListener() {
-
-                /**
-                 * Metodo para mostrar el dialogo en caso de que el usuario se encuentre fuera del rango del punto
-                 * de interes
-                 * @param v es la vista donde se muestra el dialogo
-                 */
-                @Override
-                public void onClick(View v) {
-                    if (tipo) {
+                    /**
+                     * Metodo para mostrar el dialogo en caso de que el usuario se encuentre fuera del rango del punto
+                     * de interes
+                     * @param v es la vista donde se muestra el dialogo
+                     */
+                    @Override
+                    public void onClick(View v) {
+                        //if (tipo) {
                         Intent intent = new Intent(mContext, MenuMultimediaMapa.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("id", puntoCargado);
                         intent.putExtra("nombre", desc);
                         mContext.startActivity(intent);
-                    } else {
-                        dialogo.show();
+                        //} else {
+                        //dialogo.show();
+                        // }
                     }
-                }
 
-            });
+                });
+            }
+
             txtTitle.setText(desc);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtTitle.getMaxWidth(), 3);
