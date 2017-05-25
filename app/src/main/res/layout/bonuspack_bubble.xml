@@ -20,20 +20,12 @@
                 android:textColor="#000000"
                 android:maxEms="17"
                 android:textStyle="bold"
-                android:textSize="12dp"
+                android:textSize="14dp"
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 android:text="Title" />
 
         </LinearLayout>
-        <TextView android:id="@+id/bubble_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="12dp"
-            android:paddingRight="10dp"
-            android:maxEms="17"
-            android:text="Description" />
         <TextView android:id="@+id/bubble_subdescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
