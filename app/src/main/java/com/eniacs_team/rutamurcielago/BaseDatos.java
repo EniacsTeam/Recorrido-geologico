@@ -26,8 +26,9 @@ public class BaseDatos extends SQLiteOpenHelper {
     private Context context;
 
     public BaseDatos(Context context) {
-        super(context, "IslaMurcielagoDB", null, 1);
+        super(context, "IslaMurcielagoDB", null,1);
         this.context=context;
+        context.deleteDatabase("IslaMurcielagoDB");
         cargarBase();
     }
     @Override
@@ -64,7 +65,7 @@ public class BaseDatos extends SQLiteOpenHelper {
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
         }catch(SQLiteException e){
-            Log.i("Base de datos", "No existe la base");
+            Log.i("Base de datos", "No existe la base ");
         }
 
         if(checkDB != null){
