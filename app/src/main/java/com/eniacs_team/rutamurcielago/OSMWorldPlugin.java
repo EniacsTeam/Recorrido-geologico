@@ -42,6 +42,9 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+/**
+ * Clase que ayuda a controlar el mapa
+ */
 public class OSMWorldPlugin implements WorldPlugin, BitmapCache.OnExternalBitmapLoadedCacheListener {
     /** Default icon size for the markers in dips */
     public static final int DEFAULT_ICON_SIZE_MARKER = 40;
