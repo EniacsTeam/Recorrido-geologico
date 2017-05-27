@@ -1,5 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -23,14 +24,25 @@ import java.util.Map;
  * @author    EniacsTeam
  */
 public class BaseDatos extends SQLiteOpenHelper {
-    private Context context;
+    private static Context context;
+    private static BaseDatos baseUnica;
 
-    public BaseDatos(Context context) {
+    BaseDatos(Context context) {
         super(context, "IslaMurcielagoDB", null,1);
-        this.context=context;
+        this.context=context.getApplicationContext();
         context.deleteDatabase("IslaMurcielagoDB");
         cargarBase();
     }
+
+    public static BaseDatos getInstancia() {
+        return baseUnica;
+    }
+
+    public static BaseDatos getInstanciaInicial(Context contextoAplicacion) {
+        baseUnica = new BaseDatos(contextoAplicacion);
+        return baseUnica;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
     }

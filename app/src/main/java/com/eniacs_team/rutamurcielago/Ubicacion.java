@@ -172,7 +172,7 @@ public class Ubicacion implements LocationListener {
             }
         }else{
             if (marcadorActual!= marcador) {
-                BaseDatos base = new BaseDatos(mContext);
+                BaseDatos base = BaseDatos.getInstancia();
                 if(marcador==0){
                     Snackbar s = Snackbar
                             .make(v, "Esta cerca de " + base.selectDescripcion(marcador + 1) + ".", Snackbar.LENGTH_LONG);

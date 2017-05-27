@@ -352,7 +352,7 @@ public class Mapa implements MapEventsReceiver {
         public void onOpen(Object arg0) {
 
 
-            BaseDatos base = new BaseDatos(mContext);
+            BaseDatos base = BaseDatos.getInstancia();
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
