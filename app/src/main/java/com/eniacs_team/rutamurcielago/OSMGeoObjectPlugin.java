@@ -32,6 +32,9 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+/**
+ * Clase que ayuda a controlar el mapa
+ */
 public class OSMGeoObjectPlugin implements GeoObjectPlugin {
     private Marker mMarker;
     private GeoPoint mLatLng;

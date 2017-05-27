@@ -36,7 +36,7 @@ import static android.os.Build.VERSION_CODES.M;
 import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 
 /**
- * Esta clase se encarga de obtener la ubicación del usuario.
+ * Esta clase se encarga de obtener la ubicación del usuario y controlar lo que sucede en el onLocationChanged.
  *
  * @author  EniacsTeam
  */

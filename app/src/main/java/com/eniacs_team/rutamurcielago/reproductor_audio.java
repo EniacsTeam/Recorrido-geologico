@@ -23,6 +23,9 @@ import static android.R.attr.orientation;
 import static android.os.Looper.prepare;
 import static com.eniacs_team.rutamurcielago.R.mipmap.audio;
 
+/**
+ * Clase encargada de la reproducción de audios.
+ */
 public class reproductor_audio extends AppCompatActivity {
     SeekBar seekBar;
     ImageButton reproductor;
