@@ -74,7 +74,7 @@ public class Ubicacion implements LocationListener {
         this.marcadores=markers;
         this.map = map;
         this.mainActivity = main;
-        this.dialog=new CustomDialogClass(mainActivity,1);
+        this.dialog=new CustomDialogClass(mainActivity);
         this.btFollowMe = (FloatingActionButton) this.mainActivity.findViewById(R.id.ic_follow_me);
         gpsActivo(v);
         this.btCenterMap = (FloatingActionButton) center;
@@ -82,8 +82,12 @@ public class Ubicacion implements LocationListener {
             @Override
             public void onClick(View center) {
                 if (currentLocation != null) {
-                    map.getController().setZoom(13);
+                    if(DatosGeo.isIntoBoundingBox(currentLocation)){
+                    //map.getController().setZoom(13);
                     map.getController().animateTo(new GeoPoint(currentLocation.getLatitude()+0.0001,currentLocation.getLongitude()));
+                    }else{
+                        Toast.makeText(mainActivity, "Esta fuera del recorrido", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -93,7 +97,11 @@ public class Ubicacion implements LocationListener {
             public void onClick(View v) {
                 if (!isFollowing) {
                     if(currentLocation!=null){
+                        if(DatosGeo.isIntoBoundingBox(currentLocation)){
                         map.getController().animateTo(new GeoPoint(currentLocation.getLatitude() + 0.0001, currentLocation.getLongitude()));
+                        }else{
+                            Toast.makeText(mainActivity, "Esta fuera del recorrido", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     isFollowing= true;
 
@@ -159,7 +167,9 @@ public class Ubicacion implements LocationListener {
         map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
 
         if(isFollowing) {
-            map.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
+            if(DatosGeo.isIntoBoundingBox(location)){
+                map.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
+            }
         }
 
         Marker marker;
@@ -209,12 +219,12 @@ public class Ubicacion implements LocationListener {
         }
         marcadorActual = marcador;
         //si la ubicación actual no está dentro del recorrido muestre el mensaje.
-        if(!DatosGeo.isIntoBoundingBox(location)){
-            //Toast.makeText(mainActivity, "inside"+location.getLatitude()+" "+location.getLatitude(), Toast.LENGTH_SHORT).show();
-            if(!dialog.isShowing()){//si ya está abierto, no haga nada.
-                dialog.show();
-            }
-        }
+//        if(!DatosGeo.isIntoBoundingBox(location)){
+//            //Toast.makeText(mainActivity, "inside"+location.getLatitude()+" "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+//            if(!dialog.isShowing()){//si ya está abierto, no haga nada.
+//                dialog.show();
+//            }
+//        }
     }
 
     /**
