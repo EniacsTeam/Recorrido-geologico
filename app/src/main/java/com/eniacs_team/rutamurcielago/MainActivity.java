@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
         //se copia el archivo de assets a /osmdroid si no ha sido copiado
-        if (base.selectEstadoMapa() == 0){
+        if (base.selectEstadoDatos(1) == 0){
             CopyFolder.copyAssets(this);
-            base.actualizarEstadoMapa();
+            base.actualizarEstado(1);
         }
         //se le pasa el mapa y actividad a la clase encargada de controlarlo
         Mapa mapa = new Mapa(mapView,this);
