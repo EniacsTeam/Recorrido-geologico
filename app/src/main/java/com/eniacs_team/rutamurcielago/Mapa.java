@@ -52,9 +52,11 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static android.content.Context.SENSOR_SERVICE;
+import static android.os.Build.VERSION_CODES.M;
 import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
 
@@ -125,6 +127,7 @@ public class Mapa implements MapEventsReceiver {
                     marcador_actual = marker;
                     //marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marker.setAlpha(1);
+                    mapView.getController().animateTo(marker.getPosition());
                     marker.showInfoWindow();
                 } else if (marker != marcador_actual) {
                     marcador_anterior = marcador_actual;
@@ -134,6 +137,7 @@ public class Mapa implements MapEventsReceiver {
                     marcador_actual = marker;
                     //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marcador_actual.setAlpha(1);
+                    mapView.getController().animateTo(marcador_actual.getPosition());
                     marcador_actual.showInfoWindow();
                 } else {
                     if (marcador_actual.isInfoWindowShown()) {
@@ -143,6 +147,7 @@ public class Mapa implements MapEventsReceiver {
                     } else {
                         //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                         marcador_actual.setAlpha(1);
+                        mapView.getController().animateTo(marcador_actual.getPosition());
                         marker.showInfoWindow();
                     }
 
@@ -202,7 +207,7 @@ public class Mapa implements MapEventsReceiver {
         mapView.getOverlays().add(0, mapEventsOverlay);
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
-        dialogo = new CustomDialogClass(activity,2);
+        dialogo = new CustomDialogClass(activity);
 
         mapView.setMapListener(new MapListener() {
             @Override
@@ -320,7 +325,6 @@ public class Mapa implements MapEventsReceiver {
         boolean tipo;
         Context mContext;
         CustomDialogClass dialogo;
-
         /**
          * Constructor de la ventana de informacion
          *
@@ -329,7 +333,7 @@ public class Mapa implements MapEventsReceiver {
          * @param puntoCargar es el punto de interes asociado a la ventana
          */
         public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar, boolean tipo, Context context,
-                CustomDialogClass dialogo) {
+                            CustomDialogClass dialogo) {
             super(layoutResId, mapView);
             puntoCargado = puntoCargar;
             this.tipo = tipo;
