@@ -35,7 +35,7 @@ public class Gallery extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
 
-        baseDatos = new BaseDatos(this);
+        baseDatos = BaseDatos.getInstancia();
         Bundle extras = getIntent().getExtras();
         idPunto = extras.getInt("id");
         nPunto = extras.getString("nombre");

@@ -111,7 +111,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         mShowMap = (ImageButton) findViewById(R.id.imageButton1);
         mShowMap.setOnClickListener(this);
 
-        baseDatos = new BaseDatos(this);
+        baseDatos = BaseDatos.getInstancia();
 
         geoImage = (GifImageView) findViewById(R.id.gifImageView);
     }

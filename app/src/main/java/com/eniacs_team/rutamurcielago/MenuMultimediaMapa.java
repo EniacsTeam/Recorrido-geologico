@@ -37,7 +37,7 @@ public class MenuMultimediaMapa extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         
         listItemns = new ArrayList<>();
-        baseDatos = new BaseDatos(this);
+        baseDatos = BaseDatos.getInstancia();
         baseDatos.cargarBase();
 
         Intent intent = getIntent();

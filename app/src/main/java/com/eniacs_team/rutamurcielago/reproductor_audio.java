@@ -60,7 +60,7 @@ public class reproductor_audio extends AppCompatActivity {
 
         handler = new Handler();
 
-        baseDatos = new BaseDatos(this);
+        baseDatos = BaseDatos.getInstancia();
         baseDatos.cargarBase();
 
         seekBar = (SeekBar)findViewById(R.id.sb_reproductor);

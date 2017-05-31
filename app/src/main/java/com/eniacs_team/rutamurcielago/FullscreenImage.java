@@ -96,7 +96,7 @@ public class FullscreenImage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        baseDatos = new BaseDatos(this);
+        baseDatos = BaseDatos.getInstancia();
 
         super.onCreate(savedInstanceState);
 
