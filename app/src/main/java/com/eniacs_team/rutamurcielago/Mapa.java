@@ -52,9 +52,11 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static android.content.Context.SENSOR_SERVICE;
+import static android.os.Build.VERSION_CODES.M;
 import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
 
@@ -68,7 +70,6 @@ public class Mapa implements MapEventsReceiver {
     public MyLocationNewOverlay mLocationOverlay;
     private CompassOverlay mCompassOverlay;
     ScaleBarOverlay mScaleBarOverlay;
-    FloatingActionButton btFollowMe;
     private RotationGestureOverlay mRotationGestureOverlay;
 
     MapView mapView;
@@ -104,7 +105,6 @@ public class Mapa implements MapEventsReceiver {
         this.marcadores = new ArrayList<>();
         this.activity = activity;
         marcador_actual = null;
-        this.btFollowMe = (FloatingActionButton) this.activity.findViewById(R.id.ic_follow_me);
         this.mScaleBarOverlay = new ScaleBarOverlay(mapView);
         this.mRotationGestureOverlay = new RotationGestureOverlay(mapView);
 
@@ -127,6 +127,7 @@ public class Mapa implements MapEventsReceiver {
                     marcador_actual = marker;
                     //marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marker.setAlpha(1);
+                    mapView.getController().animateTo(marker.getPosition());
                     marker.showInfoWindow();
                 } else if (marker != marcador_actual) {
                     marcador_anterior = marcador_actual;
@@ -136,6 +137,7 @@ public class Mapa implements MapEventsReceiver {
                     marcador_actual = marker;
                     //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marcador_actual.setAlpha(1);
+                    mapView.getController().animateTo(marcador_actual.getPosition());
                     marcador_actual.showInfoWindow();
                 } else {
                     if (marcador_actual.isInfoWindowShown()) {
@@ -145,6 +147,7 @@ public class Mapa implements MapEventsReceiver {
                     } else {
                         //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                         marcador_actual.setAlpha(1);
+                        mapView.getController().animateTo(marcador_actual.getPosition());
                         marker.showInfoWindow();
                     }
 
@@ -186,23 +189,6 @@ public class Mapa implements MapEventsReceiver {
         //mLocationOverlay.enableFollowLocation();
         mLocationOverlay.setOptionsMenuEnabled(true);
 
-        btFollowMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mLocationOverlay.isFollowLocationEnabled()) {
-                    //Toast.makeText(activity, "FOllowing", Toast.LENGTH_SHORT).show();
-                    mLocationOverlay.enableFollowLocation();
-                    btFollowMe.setBackgroundTintList(
-                            ColorStateList.valueOf(activity.getResources().getColor(R.color.rojo)));
-                } else {
-                    //Toast.makeText(activity, "NOOO FOllowing", Toast.LENGTH_SHORT).show();
-                    mLocationOverlay.disableFollowLocation();
-                    btFollowMe.setBackgroundTintList(
-                            ColorStateList.valueOf(activity.getResources().getColor(R.color.blanco)));
-                }
-            }
-        });
-
         /*Ajustes en el zoom y el enfoque inicial*/
         final MapController mapViewController = (MapController) mapView.getController();
         mapViewController.setZoom(13);
@@ -221,7 +207,7 @@ public class Mapa implements MapEventsReceiver {
         mapView.getOverlays().add(0, mapEventsOverlay);
 
         /*Creo el dialogo que se despliega en ver mas si no estoy cerca del punto*/
-        dialogo = new CustomDialogClass(activity,2);
+        dialogo = new CustomDialogClass(activity);
 
         mapView.setMapListener(new MapListener() {
             @Override
@@ -301,7 +287,7 @@ public class Mapa implements MapEventsReceiver {
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
-            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i + 1, false, mContext, dialogo);
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , false, mContext, dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
             marcador.setAlpha(0.5f);
@@ -339,7 +325,6 @@ public class Mapa implements MapEventsReceiver {
         boolean tipo;
         Context mContext;
         CustomDialogClass dialogo;
-
         /**
          * Constructor de la ventana de informacion
          *
@@ -348,7 +333,7 @@ public class Mapa implements MapEventsReceiver {
          * @param puntoCargar es el punto de interes asociado a la ventana
          */
         public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar, boolean tipo, Context context,
-                CustomDialogClass dialogo) {
+                            CustomDialogClass dialogo) {
             super(layoutResId, mapView);
             puntoCargado = puntoCargar;
             this.tipo = tipo;
@@ -371,7 +356,7 @@ public class Mapa implements MapEventsReceiver {
         public void onOpen(Object arg0) {
 
 
-            BaseDatos base = new BaseDatos(mContext);
+            BaseDatos base = BaseDatos.getInstancia();
 
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
@@ -407,7 +392,9 @@ public class Mapa implements MapEventsReceiver {
             }
 
             txtTitle.setText(desc);
-
+            if(puntoCargado == 1){
+                txtVerMas.setEnabled(false);txtVerMas.setVisibility(View.INVISIBLE);
+            }
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(txtTitle.getMaxWidth(), 3);
             lp.setMargins(0, 20, 15, 0);
             viewLinea.setLayoutParams(lp);

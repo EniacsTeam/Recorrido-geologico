@@ -111,7 +111,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         mShowMap = (ImageButton) findViewById(R.id.imageButton1);
         mShowMap.setOnClickListener(this);
 
-        baseDatos = new BaseDatos(this);
+        baseDatos = BaseDatos.getInstancia();
 
         geoImage = (GifImageView) findViewById(R.id.gifImageView);
     }
@@ -125,11 +125,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     @Override
     public void onClick(View v) {
         if (v == mShowMap) {
-            stopAudio();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            onBackPressed();
+//            stopAudio();
+//            Intent intent = new Intent(this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//            finish();
         }
 
     }

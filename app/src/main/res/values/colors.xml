@@ -7,15 +7,36 @@
 
 
     <color name="naranja_light">#e5b365</color>
+    <color name="naranja_morelight">#ffc770</color>
     <color name="naranja_medium">#f99d1c</color>
+    <color name="naranja_3">#f37021</color>
     <color name="naranja_dark">#f37021</color>
+    <color name="naranja_moredark">#d4a65e</color>
     <color name="rojo">#EF5350</color>
-    <color name="verde">#8dc63f</color>
+    <color name="verde">#b9d989</color>
     <color name="celeste">#bad2cd</color>
     <color name="amarillo">#fdb912</color>
+    <color name="amarillo_ligth">#ffe06a</color>
     <color name="blanco">#FFFFFF</color>
     <color name="gris">#808080</color>
+    <color name="celeste4">#bad2cd</color>
+    <color name="celeste4_dark">#80a9ba</color>
+    <color name="verde_dark">#8dc63f</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <array name="array_dot_active">
+        <item>@color/naranja_morelight</item>
+        <item>@color/amarillo_ligth</item>
+        <item>@color/verde</item>
+        <item>@color/celeste4</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/naranja_moredark</item>
+        <item>@color/amarillo</item>
+        <item>@color/verde_dark</item>
+        <item>@color/celeste4</item>
+    </array>
 
 </resources>

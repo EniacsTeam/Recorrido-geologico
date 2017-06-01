@@ -81,7 +81,7 @@ public class CustomWorldHelper {
             return sharedWorld;
         }
         sharedWorld = new World(context);
-        baseDatos = new BaseDatos(context);
+        baseDatos = BaseDatos.getInstancia();
 
         // User position (you can change it using the GPS listeners form Android
         // API)

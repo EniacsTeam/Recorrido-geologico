@@ -25,23 +25,17 @@ public class CustomDialogClass extends Dialog implements android.view.View.OnCli
     public Button btnAceptar;
     public Button btnVisitarSitio;
 
-    static int id;
     //id=1 no está dentro del recorrido; id=2 no está dentro del punto
-    public CustomDialogClass(Activity a, int identificador) {
+    public CustomDialogClass(Activity a) {
         super(a);
         this.c = a;
-        this.id = identificador;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(id==2){
-            setContentView(R.layout.dialogo_ver_mas);
-        }else{
-            setContentView(R.layout.web_site_link);
-        }
+        setContentView(R.layout.web_site_link);
         btnAceptar = (Button) findViewById(R.id.aceptar);
         btnAceptar.setOnClickListener(this);
         btnVisitarSitio = (Button) findViewById(R.id.visitar_sitio);
