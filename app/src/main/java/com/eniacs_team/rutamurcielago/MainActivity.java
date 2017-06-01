@@ -84,15 +84,18 @@ public class MainActivity extends AppCompatActivity {
         mapa.setupMap();
         //se inserta el mapa offline dentro del mapview
         mapa.findMapFiles();
-        //se agregan los marcadores del mapa
 
+        //Se obtienen el marcador que controla la ubucación actual
+        Marker currentMarker=mapa.agregarCurrentLocation();
+
+        //se agregan los marcadores del mapa
         List<Marker> marcadores = mapa.agregarMarcadores();
         //se inicializa la escucha del GPS
 
         //se inicializa la escucha del GPS
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab),marcadores,findViewById(R.id.ic_center_map),this);
+        ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab),marcadores,currentMarker,findViewById(R.id.ic_center_map),this);
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         }*/
