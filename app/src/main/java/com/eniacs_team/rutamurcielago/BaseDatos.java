@@ -1,5 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -23,13 +24,25 @@ import java.util.Map;
  * @author    EniacsTeam
  */
 public class BaseDatos extends SQLiteOpenHelper {
-    private Context context;
+    private static Context context;
+    private static BaseDatos baseUnica;
 
-    public BaseDatos(Context context) {
-        super(context, "IslaMurcielagoDB", null, 1);
-        this.context=context;
+    BaseDatos(Context context) {
+        super(context, "IslaMurcielagoDB", null,1);
+        this.context=context.getApplicationContext();
+        context.deleteDatabase("IslaMurcielagoDB");
         cargarBase();
     }
+
+    public static BaseDatos getInstancia() {
+        return baseUnica;
+    }
+
+    public static BaseDatos getInstanciaInicial(Context contextoAplicacion) {
+        baseUnica = new BaseDatos(contextoAplicacion);
+        return baseUnica;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
     }
@@ -64,7 +77,7 @@ public class BaseDatos extends SQLiteOpenHelper {
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
         }catch(SQLiteException e){
-            Log.i("Base de datos", "No existe la base");
+            Log.i("Base de datos", "No existe la base ");
         }
 
         if(checkDB != null){
@@ -265,36 +278,8 @@ public class BaseDatos extends SQLiteOpenHelper {
         return textoAudio;
     }
 
-
     /**
-     * Verifica si el mapa ya ha sido cargado
-     * @return estado como entero
-     */
-    public int selectEstadoMapa() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String table = "MapaCargado";
-        String[] columns = {"Estado"};
-        String selection = "Condicion =?";
-        String[] selectionArgs = {"1"};
-        int estado = 0;
-        try {
-            Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                estado = Integer.parseInt(cursor.getString(0));
-            }
-            cursor.close();
-            db.close();
-        }
-        catch(Exception e)
-        {
-            Log.i("Base de datos", "No hay datos en la base");
-        }
-        return estado;
-    }
-
-    /**
-     * Verifica si el mapa ya ha sido cargado
+     * Verifica si hay datos para un punto especifico
      * @param punto El lugar de consulta
      * @param tipoMedia El tipo de archivo que se requiere
      * @return existe como entero 1->Existe, 0->No existe
@@ -328,13 +313,94 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
-     * Actualiza el estado del mapa cuando lo carga
+     * Verifica si un punto en el mapa ya ha sido visitado
+     * @param punto El lugar de consulta
+     * @return existe como entero 1->Existe, 0->No existe
      */
-    public void actualizarEstadoMapa() {
+    public int visitadoPreviamente(int punto) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String table = "MapaCargado";
+        String table = "Lugares";
+        String[] columns = {"Visitado"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(punto)};
+        int estado = 0;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                estado = Integer.parseInt(cursor.getString(0));
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        Log.i("Base de datos", Integer.toString(estado));
+        return estado;
+    }
+
+    /**
+     * Actualiza un punto en el mapa si ha sido visitado
+     * @param punto El lugar visitado
+     */
+    public void agregarVisita(int punto) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "Lugares";
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(punto)};
+        ContentValues estado = new ContentValues();
+        estado.put("Visitado","1");
+        try {
+            db.update(table, estado, selection, selectionArgs);
+            Log.i("Base de datos", "Se actualizo un valor en la base de datos");
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "Error al insertar en la base");
+        }
+    }
+
+    /**
+     * Verifica si un dato ya ha sido cargado
+     * * @param datoConsulta El dato que se requiere
+     * 1 = Mapa, 2 = Mensaje inicial
+     * @return estado como entero
+     */
+    public int selectEstadoDatos(int datoConsulta) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "DatosCargados";
+        String[] columns = {"Estado"};
         String selection = "Condicion =?";
-        String[] selectionArgs = {"1"};
+        String[] selectionArgs = {Integer.toString(datoConsulta)};
+        int estado = 0;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                estado = Integer.parseInt(cursor.getString(0));
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        return estado;
+    }
+
+    /**
+     * Actualiza el estado de datos ya cargados
+     * @param datoActualizado El dato ya cargado
+     * 1 = Mapa, 2 = Mensaje inicial
+     */
+    public void actualizarEstado(int datoActualizado) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "DatosCargados";
+        String selection = "Condicion =?";
+        String[] selectionArgs = {Integer.toString(datoActualizado)};
         ContentValues estado = new ContentValues();
         estado.put("Estado","1");
         try {

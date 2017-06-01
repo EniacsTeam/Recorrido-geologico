@@ -69,16 +69,15 @@ public class MainActivity extends AppCompatActivity {
         Permisos permisos = new Permisos(MainActivity.this);
         permisos.requestPermission("android.permission.WRITE_EXTERNAL_STORAGE",1);*/
 
-        BaseDatos base = new BaseDatos(getApplicationContext());
+        BaseDatos base = BaseDatos.getInstanciaInicial(this);
 
         //Se busca el mapa
         mapView = (MapView) findViewById(R.id.map);
         //se copia el archivo de assets a /osmdroid si no ha sido copiado
-        if (base.selectEstadoMapa() == 0){
+        if (base.selectEstadoDatos(1) == 0){
             CopyFolder.copyAssets(this);
-            base.actualizarEstadoMapa();
+            base.actualizarEstado(1);
         }
-        base.cargarBase();
         //se le pasa el mapa y actividad a la clase encargada de controlarlo
         Mapa mapa = new Mapa(mapView,this);
         //se inicializa el mapa. Zoom, bounding box etc

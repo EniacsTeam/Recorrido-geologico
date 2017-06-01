@@ -14,10 +14,15 @@ import android.view.View.OnClickListener;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
+/**
+ * Clase ayudante para crear la galeria compuesta de una matriz donde cada celda tiene una imagen y una descripcion.
+ *
+ * @author EniacsTeam
+ */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<CreateList> galleryList;
     private Context context;
-    private int idPunto; //Borrar si no resuelve pasar Drawable
+    private int idPunto;
 
     public MyAdapter(Context context, ArrayList<CreateList> galleryList, int idPunto) {
         this.galleryList = galleryList;
@@ -31,10 +36,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    /*
+     * Metodo responsable de cargar cada celda con sus datos correspondientes y de manejar cliqueos a ellas.
+     */
     @Override
     public void onBindViewHolder(final MyAdapter.ViewHolder viewHolder, int i) {
 
-        viewHolder.title.setText(galleryList.get(i).getImage_title());
+        StringBuilder sb = new StringBuilder(galleryList.get(i).getImage_title());
+        if (sb.length() > 21)
+        {
+            sb = new StringBuilder(sb.substring(0, 20));
+            sb.append("...");
+        }
+
+        viewHolder.title.setText(sb);
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         viewHolder.img.setImageDrawable((galleryList.get(i).getImage_drawable()));
         viewHolder.img.setOnClickListener(new OnClickListener() {
@@ -55,6 +70,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return galleryList.size();
     }
 
+    /**
+     * Define la composicion de cada celda (una imagen y una descripcion).
+     *
+     * @author EniacsTeam
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView title;
         private ImageView img;

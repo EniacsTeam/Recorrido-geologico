@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+/*
+ * Clase ayudante para poder proporcionar zoom in y zoom out de imagenes.
+ */
 public class ZoomableImageView extends android.support.v7.widget.AppCompatImageView
 {
     Matrix matrix = new Matrix();
@@ -34,8 +37,9 @@ public class ZoomableImageView extends android.support.v7.widget.AppCompatImageV
     ScaleGestureDetector mScaleDetector;
     Context context;
 
-    OnClickListener mListener;
-
+    /*
+     * Metodo que inicializa la vista y asocia un listener que manejara los eventos asociados a ciertos gestures.
+     */
     public ZoomableImageView(Context context, AttributeSet attr)
     {
         super(context, attr);
@@ -171,6 +175,9 @@ public class ZoomableImageView extends android.support.v7.widget.AppCompatImageV
         maxScale = x;
     }
 
+    /*
+     * Clase ayudante para manejar la escala de la imagen y restringir ciertos escalamientos anormales.
+     */
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
     {
 
@@ -247,6 +254,9 @@ public class ZoomableImageView extends android.support.v7.widget.AppCompatImageV
         }
     }
 
+    /*
+     * Metodo responsable de establecer el tamaño de la vista.
+     */
     @Override
     protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec)
     {
