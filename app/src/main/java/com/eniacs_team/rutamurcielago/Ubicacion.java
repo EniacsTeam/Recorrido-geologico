@@ -58,6 +58,7 @@ public class Ubicacion implements LocationListener {
     View v;
     CustomDialogClass dialog;
     FloatingActionButton btFollowMe;
+    Marker currentPosition;
     public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
     /**
      * Constructor de clase, Se inicializan variables globales.
@@ -66,15 +67,16 @@ public class Ubicacion implements LocationListener {
      * @param v : View contiene:( layout, drawing, focus change, scrolling, etc..)
      */
 
-    public Ubicacion (final MapView map, final MainActivity main, View v, List<Marker> markers, View center, Activity activity){
+    public Ubicacion (final MapView map, final MainActivity main, View v, List<Marker> markers, Marker currentMarker ,View center, Activity activity){
         mContext= activity;
         this.locations = DatosGeo.getLocations();
         this.distancias=DatosGeo.radios();
         this.v= v;
         this.marcadores=markers;
         this.map = map;
+        this.currentPosition=currentMarker;
         this.mainActivity = main;
-        this.dialog=new CustomDialogClass(mainActivity);
+        this.dialog = new CustomDialogClass(mainActivity);
         this.btFollowMe = (FloatingActionButton) this.mainActivity.findViewById(R.id.ic_follow_me);
         gpsActivo(v);
         this.btCenterMap = (FloatingActionButton) center;
@@ -142,34 +144,28 @@ public class Ubicacion implements LocationListener {
      */
     public void mostrarMsjGpsDesactivado(){
         snackbar.show();
-
     }
+
     public void desMsjGpsDesactivado(){
         snackbar.dismiss();
     }
+
     /**
      * Permite actualizar la vista del mapa, cambio de colores y funcionalidad del "ver más" en el marcador
      * @param location
      */
     @Override
     public void onLocationChanged(Location location) {
-        //si está activado el boton de seguimiento
-/*        if(isFollowing){
-            map.getController().animateTo(new GeoPoint(location.getLatitude()+0.0001,location.getLongitude()));
-            Toast.makeText(mainActivity, "FOllowing", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(mainActivity, "NOO following", Toast.LENGTH_SHORT).show();
-        }*/
-        // markerLocation.setPosition(new GeoPoint(location));
         currentLocation= new Location(location);
+
+        //Se cambia la ubicación del marcador de mí ubicación
+        currentPosition.setPosition(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
 
         int marcador = distanciaEntrePuntos(location);
         map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
 
         if(isFollowing) {
-            if(DatosGeo.isIntoBoundingBox(location)){
-                map.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
-            }
+            map.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
         }
 
         Marker marker;
@@ -218,13 +214,6 @@ public class Ubicacion implements LocationListener {
             }
         }
         marcadorActual = marcador;
-        //si la ubicación actual no está dentro del recorrido muestre el mensaje.
-//        if(!DatosGeo.isIntoBoundingBox(location)){
-//            //Toast.makeText(mainActivity, "inside"+location.getLatitude()+" "+location.getLatitude(), Toast.LENGTH_SHORT).show();
-//            if(!dialog.isShowing()){//si ya está abierto, no haga nada.
-//                dialog.show();
-//            }
-//        }
     }
 
     /**
