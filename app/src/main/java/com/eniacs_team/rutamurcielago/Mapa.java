@@ -195,7 +195,7 @@ public class Mapa implements MapEventsReceiver {
         mapViewController.animateTo(routeCenter);
         mapViewController.setCenter(routeCenter);
         mapView.setMinZoomLevel(12);
-        mapView.setMaxZoomLevel(16);
+        mapView.setMaxZoomLevel(15);
 
         //Desactivar botones de zoom nativos.
         mapView.setBuiltInZoomControls(false);
@@ -283,6 +283,7 @@ public class Mapa implements MapEventsReceiver {
         for (int i = 0; i < locations.size(); i++) {
             Marker marcador = marcadores.get(i);
             marcador.setPosition(locations.get(i));
+
             Drawable marker = activity.getResources().getDrawable(R.drawable.ic_marker_naranja);
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
