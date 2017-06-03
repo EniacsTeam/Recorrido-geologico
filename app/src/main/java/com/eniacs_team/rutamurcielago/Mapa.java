@@ -277,12 +277,16 @@ public class Mapa implements MapEventsReceiver {
         Drawable marker = activity.getResources().getDrawable(R.mipmap.current);
         marcador.setIcon(marker);
         marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
-        //marcador.setTitle("Ubica");
-        //infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , false, mContext, dialogo);
-        //marcador.setInfoWindow(infoWindow);
-        //marcador.setOnMarkerClickListener(markerClickListener);
+        Marker.OnMarkerClickListener markerClickLis;
+        markerClickLis = new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                return false;
+            }
+        };
         marcador.setAlpha(1);
         mapView.getOverlays().add(marcador);
+        marcador.setOnMarkerClickListener(markerClickLis);
         return marcador;
     }
     /**
@@ -299,7 +303,7 @@ public class Mapa implements MapEventsReceiver {
             marcador.setIcon(marker);
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
-            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , false, mContext, dialogo);
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , mContext, dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
             marcador.setAlpha(0.5f);
@@ -344,10 +348,17 @@ public class Mapa implements MapEventsReceiver {
          * @param mapView     es el mapa
          * @param puntoCargar es el punto de interes asociado a la ventana
          */
-        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar, boolean tipo, Context context,
+        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar, Context context,
                             CustomDialogClass dialogo) {
             super(layoutResId, mapView);
             puntoCargado = puntoCargar;
+
+            BaseDatos base = BaseDatos.getInstancia();
+            if(base.visitadoPreviamente(puntoCargado)==0){
+                this.tipo=false;
+            }else{
+                this.tipo= true;
+            }
             this.tipo = tipo;
             this.mContext = context;
             this.dialogo = dialogo;
@@ -356,8 +367,13 @@ public class Mapa implements MapEventsReceiver {
         public void onClose() {
         }
 
-        public void setTipo(boolean t) {
-            tipo = t;
+        /**
+         * Cambia el estado de la base para que se pueda ver la información de un punto
+         */
+        public void setTipo() {
+            BaseDatos base = BaseDatos.getInstancia();
+            tipo= true;
+            base.agregarVisita(puntoCargado);
         }
 
         /**
@@ -375,7 +391,6 @@ public class Mapa implements MapEventsReceiver {
             View viewLinea = mView.findViewById(R.id.linea_centro);
 
             final String desc = base.selectDescripcion(puntoCargado);
-
             txtVerMas.setOnClickListener(new View.OnClickListener() {
 
                 /**

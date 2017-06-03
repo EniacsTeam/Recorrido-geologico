@@ -173,7 +173,7 @@ public class Ubicacion implements LocationListener {
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
                 Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
-                ma.setTipo(false); marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_verde));
+                marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_verde));
                 marcadores.set(marcadorActual, marker);
             }
         }else{
@@ -192,21 +192,18 @@ public class Ubicacion implements LocationListener {
                     marker = marcadores.get(marcadorActual);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_verde));
                     Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
-                    ma.setTipo(false);
 
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
-
-                    ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
-                    ma.setTipo(true);
+                    ma.setTipo();
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
 
                 }else {
                     marker = marcadores.get(marcador);
                     Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
-                    ma.setTipo(true);
+                    ma.setTipo();
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
                     marcadores.set(marcador, marker);
 

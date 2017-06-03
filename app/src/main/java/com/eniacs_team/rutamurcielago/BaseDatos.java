@@ -31,7 +31,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         super(context, "IslaMurcielagoDB", null,1);
         this.context=context.getApplicationContext();
         // Al quitar el comentario de la siguiente linea, se borran los datos que hayan sido actualizados en la aplicacion
-        // context.deleteDatabase("IslaMurcielagoDB");
+        //context.deleteDatabase("IslaMurcielagoDB");
         cargarBase();
     }
 
