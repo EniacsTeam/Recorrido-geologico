@@ -30,7 +30,8 @@ public class BaseDatos extends SQLiteOpenHelper {
     BaseDatos(Context context) {
         super(context, "IslaMurcielagoDB", null,1);
         this.context=context.getApplicationContext();
-        context.deleteDatabase("IslaMurcielagoDB");
+        // Al quitar el comentario de la siguiente linea, se borran los datos que hayan sido actualizados en la aplicacion
+        // context.deleteDatabase("IslaMurcielagoDB");
         cargarBase();
     }
 
@@ -337,7 +338,6 @@ public class BaseDatos extends SQLiteOpenHelper {
         {
             Log.i("Base de datos", "No hay datos en la base");
         }
-        Log.i("Base de datos", Integer.toString(estado));
         return estado;
     }
 
