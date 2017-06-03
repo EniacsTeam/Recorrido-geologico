@@ -299,8 +299,14 @@ public class Mapa implements MapEventsReceiver {
             Marker marcador = marcadores.get(i);
             marcador.setPosition(locations.get(i));
 
+            BaseDatos base = BaseDatos.getInstancia();
             Drawable marker = activity.getResources().getDrawable(R.drawable.ic_marker_naranja);
             marcador.setIcon(marker);
+            if(base.visitadoPreviamente(i+1)==0){
+                marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+            }else{
+                marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_verde));
+            }
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
             infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , mContext, dialogo);
