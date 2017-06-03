@@ -85,7 +85,7 @@ public class Mapa implements MapEventsReceiver {
     private World mWorld;
     Marker marcador_anterior;
     Marker marcador_actual;
-
+    Marker currentLocationM;
     boolean isMarker = true;
 
     Marker.OnMarkerClickListener markerClickListener;
@@ -112,6 +112,7 @@ public class Mapa implements MapEventsReceiver {
         ;
         double[] longitud = DatosGeo.longitudes();
 
+        currentLocationM=new Marker(this.mapView);
         for (int i = 0; i < longitud.length; i++) {
             locations.add(i, new GeoPoint(latitude[i], longitud[i]));
             marcadores.add(i, new Marker(map));
@@ -172,11 +173,10 @@ public class Mapa implements MapEventsReceiver {
         mapView.setMultiTouchControls(true);
         //mapView.setUseDataConnection(true);
         mapView.setTilesScaledToDpi(true);
-        mapView.setFlingEnabled(true);
+        //mapView.setFlingEnabled(true);
 
         this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity), mapView);//se agrega luego de los marcadores para que no sea cubierta por ellos
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity), mapView);
-
         mScaleBarOverlay.setCentred(true);
         mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
 
@@ -185,7 +185,7 @@ public class Mapa implements MapEventsReceiver {
         mapView.getOverlays().add(this.mLocationOverlay);
         mapView.getOverlays().add(this.mScaleBarOverlay);
 
-        mLocationOverlay.enableMyLocation();
+        //mLocationOverlay.enableMyLocation();
         //mLocationOverlay.enableFollowLocation();
         mLocationOverlay.setOptionsMenuEnabled(true);
 
@@ -217,12 +217,7 @@ public class Mapa implements MapEventsReceiver {
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                if (event.getZoomLevel() != 16) {
-                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
-                } else {
-                    mapViewController.animateTo(new GeoPoint(10.925547, -85.818351));
-                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(2));
-                }
+                mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
                 return true;
             }
         });
@@ -274,6 +269,22 @@ public class Mapa implements MapEventsReceiver {
         }
     }
 
+
+
+    public Marker agregarCurrentLocation(){
+        Marker marcador = currentLocationM;
+        //marcador.setPosition(locations.get(i));
+        Drawable marker = activity.getResources().getDrawable(R.mipmap.current);
+        marcador.setIcon(marker);
+        marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
+        //marcador.setTitle("Ubica");
+        //infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , false, mContext, dialogo);
+        //marcador.setInfoWindow(infoWindow);
+        //marcador.setOnMarkerClickListener(markerClickListener);
+        marcador.setAlpha(1);
+        mapView.getOverlays().add(marcador);
+        return marcador;
+    }
     /**
      * Metodo que agrega los marcadores al mapa
      */
