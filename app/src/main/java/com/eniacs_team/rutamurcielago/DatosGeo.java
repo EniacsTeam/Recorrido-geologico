@@ -12,10 +12,10 @@ import java.util.ArrayList;
  * @author EniacsTeam
  */
 public class DatosGeo {
-    static double bsLat=10.963565;
-    static double bsLng=-85.669550;
-    static double biLat=10.827862;
-    static double biLng=-85.979089;
+    static double bsLat=11.052586;
+    static double bsLng=-85.594728;
+    static double biLat=10.772827;
+    static double biLng=-86.078768;
 
     static int cantidadElementos=19;
 
