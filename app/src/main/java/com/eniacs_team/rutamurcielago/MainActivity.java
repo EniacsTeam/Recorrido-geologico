@@ -156,7 +156,16 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_pag_web) {
+            Uri uriUrl = Uri.parse("http://www.geologia.ucr.ac.cr/");
+            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+            this.startActivity(launchBrowser);
+            return true;
+        }else if (id == R.id.action_sobre_nosotros) {
+            Intent nosotros = new Intent(this, Sobre_nosotros.class);
+            this.startActivity(nosotros);
+            return true;
+        }else if (id == R.id.action_ver_recomendaciones) {
             return true;
         }
 
