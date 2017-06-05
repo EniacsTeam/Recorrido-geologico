@@ -6,6 +6,7 @@ package com.eniacs_team.rutamurcielago;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -26,8 +27,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 import static android.R.attr.data;
 import static com.eniacs_team.rutamurcielago.R.mipmap.current;
@@ -43,6 +48,10 @@ public class WelcomeActivity extends AppCompatActivity {
     private BaseDatos baseDatos;
     private Context context;
     private MediaPlayer mPlayer;
+    private SeekBar seekBar;
+    private Handler handler;
+    private Runnable runnable;
+    int contador = 0;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -68,22 +77,22 @@ public class WelcomeActivity extends AppCompatActivity {
                     switch (position){
                         case 0:
                             mPlayer.seekTo(time);
-                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             time =  6393;
                             mPlayer.seekTo(time);
-                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
                             time =  11209;
                             mPlayer.seekTo(time);
-                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         case 3:
                             time = 13301;
                             mPlayer.seekTo(time);
-                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             launchHomeScreen();
@@ -148,7 +157,12 @@ public class WelcomeActivity extends AppCompatActivity {
         baseDatos = new BaseDatos(context);
         //baseDatos = BaseDatos.getInstancia();
        // mPlayerBuilder();
+        handler = new Handler();
         playAudio();
+
+        seekBar = new SeekBar(context);
+        seekBar.setMax(mPlayer.getDuration()); //Define el tamaño maximo del seekBar = duracion del audio
+
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,41 +245,15 @@ public class WelcomeActivity extends AppCompatActivity {
             //mPlayer.create(this.context,R.raw.introduccion);
             mPlayer.prepare();
             mPlayer.start();
-            int time = 0;
-            int current = getItem(0);
-            if (current < layouts.length) {
-                switch (current){
-                    case 0:
-                       // mPlayer.seekTo(0);
-                        break;
-                    case 1:
-                        time = (int) 6.393;
-                        mPlayer.seekTo(time);
-                        break;
-                    case 2:
-                        time = (int) 11.209;
-                        mPlayer.seekTo(time);
-                        break;
-                    case 3:
-                        time = (int) 13.301;
-                        mPlayer.seekTo(time);
-                        break;
-                    default:
-                        launchHomeScreen();
-                        break;
-                }
-
-            }
-            else
-            {
-                launchHomeScreen();
-            }
+            playCycle();
         } catch (Exception e) {
             Log.i("Audio", "Error " + e);
         }
     }
 
     private void stopAudio() {
+        String testString = "Contador = " + Integer.toString(contador);
+        Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
         if(mPlayer != null)
         {
             mPlayer.release();
@@ -285,29 +273,47 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
             };
 
-            MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
+
+            mPlayer.setOnCompletionListener(onCompletionListener);
+
+        }
+    }
+
+
+    /**
+     * Método que actualiza el seekBar según lo que lleva de audio.
+     */
+    public void playCycle(){
+        //seekBar.setProgress(mPlayer.getCurrentPosition());
+        ++contador;
+        int time = mPlayer.getCurrentPosition();
+        //String testString = "Time = " + Integer.toString(time);
+        //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+        if(mPlayer.isPlaying()){
+
+            if(6393 < time && time < 6500)
+            {
+                viewPager.setCurrentItem(1);
+            }
+            //Si es segundo slide de bienvenida
+            else if (11209 < time && time < 11500)
+            {
+                viewPager.setCurrentItem(2);
+            }
+            //Si es tercero slide de bienvenida
+            else if(13301 < time && time < 13500)
+            {
+                viewPager.setCurrentItem(3);
+            }
+            runnable = new Runnable() {
                 @Override
-                public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                    //Si es primer slide de bienvenida
-                    if(30 < percent && percent < 31)
-                    {
-                        viewPager.setCurrentItem(1);
-                    }
-                    //Si es segundo slide de bienvenida
-                    else if (54 < percent && percent < 55)
-                    {
-                        viewPager.setCurrentItem(2);
-                    }
-                    //Si es tercero slide de bienvenida
-                    else if(64 < percent && percent < 65)
-                    {
-                        viewPager.setCurrentItem(3);
-                    }
+                public void run() {
+                    playCycle();
                 }
             };
-            mPlayer.setOnCompletionListener(onCompletionListener);
-            mPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
+            handler.postDelayed(runnable, 100);
         }
+
     }
 
     /**
