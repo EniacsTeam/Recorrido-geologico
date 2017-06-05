@@ -245,6 +245,45 @@ public class BaseDatos extends SQLiteOpenHelper {
         return descriptor;
     }
 
+
+    /**
+     * Devuelve el audio adicional indicado
+     * @param id El identificador del audio
+     * @return ruta como descriptor
+     */
+    public AssetFileDescriptor selectAudioExtra(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "AudiosAdicionales";
+        String[] columns = {"Ruta"};
+        String selection = "IDAudio =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+
+        String rutaAudio = null;
+        AssetFileDescriptor descriptor = null;
+        AssetManager assetManager = context.getAssets();
+
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                rutaAudio = cursor.getString(0);
+                descriptor = assetManager.openFd(rutaAudio);
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        return descriptor;
+    }
+
     /**
      * Devuelve la transcripcion del audio para un punto dado
      * @param id El identificador del lugar de consulta
