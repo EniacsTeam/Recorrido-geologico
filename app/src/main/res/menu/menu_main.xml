@@ -3,8 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.eniacs_team.rutamurcielago.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_ver_recomendaciones"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/ver_recomendaciones"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_pag_web"
+        android:orderInCategory="100"
+        android:title="@string/pagina_web"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sobre_nosotros"
+        android:orderInCategory="100"
+        android:title="@string/sobre_nosotros"
+        app:showAsAction="never" />
+
 </menu>

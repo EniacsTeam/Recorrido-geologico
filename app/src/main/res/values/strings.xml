@@ -14,4 +14,19 @@
 
     <string name="No_multimedia">No existe datos multimedia para este sitio!</string>
     <string name="error_audio">Ha ocurrido un error, inténtelo nuevamente!</string>
+    <string name="pagina_web">Ir a sitio web</string>
+    <string name="sobre_nosotros">Sobre nosotros</string>
+    <string name="ver_recomendaciones">Seguridad</string>
+    <string name="info_aplicacion">Información general de la aplicación.</string>
+    <string name="desarrollado_por">Desarrollada por:</string>
+    <string name="Eniacs">ENIACS UCR</string>
+    <string name="integrantes">Integrado por:</string>
+    <string name="integrante1">Francisco Arroyo</string>
+    <string name="integrante2">Kenneth Calvo</string>
+    <string name="integrante3">David Chaves</string>
+    <string name="integrante4">Johan Durán</string>
+    <string name="integrante5">Yohel Muñoz</string>
+    <string name="integrante6">Marcelo Solorzano</string>
+    <string name="integrante7">Cesar Vargas</string>
+    <string name="anno">2017</string>
 </resources>

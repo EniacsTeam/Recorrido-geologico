@@ -51,7 +51,6 @@ public class WelcomeActivity extends AppCompatActivity {
     private SeekBar seekBar;
     private Handler handler;
     private Runnable runnable;
-    int contador = 0;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -70,28 +69,63 @@ public class WelcomeActivity extends AppCompatActivity {
                 btnNext.setText("Siguiente");
                 btnSkip.setVisibility(View.VISIBLE);
             }
+            if(mPlayer == null)
+            {
+                playAudio();
+            }
             if(mPlayer.isPlaying())
             {
                 int time = 0;
                 if (position < layouts.length) {
                     switch (position){
                         case 0:
-                            mPlayer.seekTo(time);
+                            if(mPlayer != null)
+                            {
+                                mPlayer.seekTo(time);
+                            }
+                            else {
+                                playAudio();
+                                mPlayer.seekTo(0);
+                            }
+
                             //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             time =  6393;
-                            mPlayer.seekTo(time);
+                            if(mPlayer != null)
+                            {
+                                mPlayer.seekTo(time);
+                            }
+                            else {
+                                playAudio();
+                                mPlayer.seekTo(time);
+                            }
+
                             //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
                             time =  11209;
-                            mPlayer.seekTo(time);
+                            if(mPlayer != null)
+                            {
+                                mPlayer.seekTo(time);
+                            }
+                            else{
+                                playAudio();
+                                mPlayer.seekTo(time);
+                            }
+
                             //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         case 3:
                             time = 13301;
-                            mPlayer.seekTo(time);
+                            if(mPlayer != null)
+                            {
+                                mPlayer.seekTo(time);
+                            }
+                            else {
+                                playAudio();
+                                mPlayer.seekTo(time);
+                            }
                             //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
                             break;
                         default:
@@ -167,6 +201,7 @@ public class WelcomeActivity extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopAudio();
                 launchHomeScreen();
             }
         });
@@ -181,6 +216,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     // move to next screen
                     viewPager.setCurrentItem(current);
                 } else {
+                    stopAudio();
                     launchHomeScreen();
                 }
             }
@@ -238,11 +274,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void playAudio() {
         try {
-            AssetFileDescriptor descriptor = baseDatos.selectAudio(5);
+            AssetFileDescriptor descriptor = baseDatos.selectAudioExtra(1);
             mPlayerBuilder();
             mPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(),descriptor.getLength());
             descriptor.close();
-            //mPlayer.create(this.context,R.raw.introduccion);
             mPlayer.prepare();
             mPlayer.start();
             playCycle();
@@ -252,8 +287,6 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void stopAudio() {
-        String testString = "Contador = " + Integer.toString(contador);
-        Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
         if(mPlayer != null)
         {
             mPlayer.release();
@@ -284,35 +317,37 @@ public class WelcomeActivity extends AppCompatActivity {
      * Método que actualiza el seekBar según lo que lleva de audio.
      */
     public void playCycle(){
-        //seekBar.setProgress(mPlayer.getCurrentPosition());
-        ++contador;
-        int time = mPlayer.getCurrentPosition();
-        //String testString = "Time = " + Integer.toString(time);
-        //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
-        if(mPlayer.isPlaying()){
+        if(mPlayer != null)
+        {
+            int time = mPlayer.getCurrentPosition();
+            if(mPlayer.isPlaying()){
 
-            if(6393 < time && time < 6500)
-            {
-                viewPager.setCurrentItem(1);
-            }
-            //Si es segundo slide de bienvenida
-            else if (11209 < time && time < 11500)
-            {
-                viewPager.setCurrentItem(2);
-            }
-            //Si es tercero slide de bienvenida
-            else if(13301 < time && time < 13500)
-            {
-                viewPager.setCurrentItem(3);
-            }
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    playCycle();
+                if(6393 < time && time < 6490)
+                {
+                   // String testString = Integer.toString(time);
+                   // Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                    viewPager.setCurrentItem(1);
                 }
-            };
-            handler.postDelayed(runnable, 100);
+                //Si es segundo slide de bienvenida
+                else if (11209 < time && time < 11500)
+                {
+                    viewPager.setCurrentItem(2);
+                }
+                //Si es tercero slide de bienvenida
+                else if(13301 < time && time < 13500)
+                {
+                    viewPager.setCurrentItem(3);
+                }
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        playCycle();
+                    }
+                };
+                handler.postDelayed(runnable, 100);
+            }
         }
+
 
     }
 

@@ -85,7 +85,7 @@ public class Mapa implements MapEventsReceiver {
     private World mWorld;
     Marker marcador_anterior;
     Marker marcador_actual;
-
+    Marker currentLocationM;
     boolean isMarker = true;
 
     Marker.OnMarkerClickListener markerClickListener;
@@ -112,6 +112,7 @@ public class Mapa implements MapEventsReceiver {
         ;
         double[] longitud = DatosGeo.longitudes();
 
+        currentLocationM=new Marker(this.mapView);
         for (int i = 0; i < longitud.length; i++) {
             locations.add(i, new GeoPoint(latitude[i], longitud[i]));
             marcadores.add(i, new Marker(map));
@@ -172,11 +173,10 @@ public class Mapa implements MapEventsReceiver {
         mapView.setMultiTouchControls(true);
         //mapView.setUseDataConnection(true);
         mapView.setTilesScaledToDpi(true);
-        mapView.setFlingEnabled(true);
+        //mapView.setFlingEnabled(true);
 
         this.mCompassOverlay = new CompassOverlay(activity, new InternalCompassOrientationProvider(activity), mapView);//se agrega luego de los marcadores para que no sea cubierta por ellos
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(activity), mapView);
-
         mScaleBarOverlay.setCentred(true);
         mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
 
@@ -185,7 +185,7 @@ public class Mapa implements MapEventsReceiver {
         mapView.getOverlays().add(this.mLocationOverlay);
         mapView.getOverlays().add(this.mScaleBarOverlay);
 
-        mLocationOverlay.enableMyLocation();
+        //mLocationOverlay.enableMyLocation();
         //mLocationOverlay.enableFollowLocation();
         mLocationOverlay.setOptionsMenuEnabled(true);
 
@@ -195,7 +195,7 @@ public class Mapa implements MapEventsReceiver {
         mapViewController.animateTo(routeCenter);
         mapViewController.setCenter(routeCenter);
         mapView.setMinZoomLevel(12);
-        mapView.setMaxZoomLevel(16);
+        mapView.setMaxZoomLevel(15);
 
         //Desactivar botones de zoom nativos.
         mapView.setBuiltInZoomControls(false);
@@ -217,12 +217,7 @@ public class Mapa implements MapEventsReceiver {
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                if (event.getZoomLevel() != 16) {
-                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
-                } else {
-                    mapViewController.animateTo(new GeoPoint(10.925547, -85.818351));
-                    mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(2));
-                }
+                mapView.setScrollableAreaLimitDouble(DatosGeo.getBoundingBox(1));
                 return true;
             }
         });
@@ -274,6 +269,26 @@ public class Mapa implements MapEventsReceiver {
         }
     }
 
+
+
+    public Marker agregarCurrentLocation(){
+        Marker marcador = currentLocationM;
+        //marcador.setPosition(locations.get(i));
+        Drawable marker = activity.getResources().getDrawable(R.mipmap.current);
+        marcador.setIcon(marker);
+        marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
+        Marker.OnMarkerClickListener markerClickLis;
+        markerClickLis = new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                return false;
+            }
+        };
+        marcador.setAlpha(1);
+        mapView.getOverlays().add(marcador);
+        marcador.setOnMarkerClickListener(markerClickLis);
+        return marcador;
+    }
     /**
      * Metodo que agrega los marcadores al mapa
      */
@@ -283,11 +298,18 @@ public class Mapa implements MapEventsReceiver {
         for (int i = 0; i < locations.size(); i++) {
             Marker marcador = marcadores.get(i);
             marcador.setPosition(locations.get(i));
+
+            BaseDatos base = BaseDatos.getInstancia();
             Drawable marker = activity.getResources().getDrawable(R.drawable.ic_marker_naranja);
             marcador.setIcon(marker);
+            if(base.visitadoPreviamente(i+1)==0){
+                marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+            }else{
+                marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_verde));
+            }
             marcador.setAnchor(Marker.ANCHOR_CENTER, 1.0f);
             marcador.setTitle("Title of the marker");
-            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , false, mContext, dialogo);
+            infoWindow = new MyInfoWindow(R.layout.bonuspack_bubble, mapView, i+1 , mContext, dialogo);
             marcador.setInfoWindow(infoWindow);
             marcador.setOnMarkerClickListener(markerClickListener);
             marcador.setAlpha(0.5f);
@@ -332,10 +354,17 @@ public class Mapa implements MapEventsReceiver {
          * @param mapView     es el mapa
          * @param puntoCargar es el punto de interes asociado a la ventana
          */
-        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar, boolean tipo, Context context,
+        public MyInfoWindow(int layoutResId, MapView mapView, int puntoCargar, Context context,
                             CustomDialogClass dialogo) {
             super(layoutResId, mapView);
             puntoCargado = puntoCargar;
+
+            BaseDatos base = BaseDatos.getInstancia();
+            if(base.visitadoPreviamente(puntoCargado)==0){
+                this.tipo=false;
+            }else{
+                this.tipo= true;
+            }
             this.tipo = tipo;
             this.mContext = context;
             this.dialogo = dialogo;
@@ -344,8 +373,13 @@ public class Mapa implements MapEventsReceiver {
         public void onClose() {
         }
 
-        public void setTipo(boolean t) {
-            tipo = t;
+        /**
+         * Cambia el estado de la base para que se pueda ver la información de un punto
+         */
+        public void setTipo() {
+            BaseDatos base = BaseDatos.getInstancia();
+            tipo= true;
+            base.agregarVisita(puntoCargado);
         }
 
         /**
@@ -361,36 +395,29 @@ public class Mapa implements MapEventsReceiver {
             TextView txtTitle = (TextView) mView.findViewById(R.id.bubble_title);
             TextView txtVerMas = (TextView) mView.findViewById(R.id.ver_mas);
             View viewLinea = mView.findViewById(R.id.linea_centro);
-            final String desc = base.selectDescripcion(puntoCargado);
-            if(puntoCargado == 1)
-            {
-                txtVerMas.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
-                txtVerMas.setOnClickListener(new View.OnClickListener() {
 
-                    /**
-                     * Metodo para mostrar el dialogo en caso de que el usuario se encuentre fuera del rango del punto
-                     * de interes
-                     * @param v es la vista donde se muestra el dialogo
-                     */
-                    @Override
-                    public void onClick(View v) {
-                        //if (tipo) {
+            final String desc = base.selectDescripcion(puntoCargado);
+            txtVerMas.setOnClickListener(new View.OnClickListener() {
+
+                /**
+                 * Metodo para mostrar el dialogo en caso de que el usuario se encuentre fuera del rango del punto
+                 * de interes
+                 * @param v es la vista donde se muestra el dialogo
+                 */
+                @Override
+                public void onClick(View v) {
+                    if (tipo) {
                         Intent intent = new Intent(mContext, MenuMultimediaMapa.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("id", puntoCargado);
                         intent.putExtra("nombre", desc);
                         mContext.startActivity(intent);
-                        //} else {
-                        //dialogo.show();
-                        // }
+                    } else {
+                        dialogo.show();
                     }
+                }
 
-                });
-            }
-
+            });
             txtTitle.setText(desc);
             if(puntoCargado == 1){
                 txtVerMas.setEnabled(false);txtVerMas.setVisibility(View.INVISIBLE);
