@@ -16,7 +16,7 @@ public class DatosGeo {
     static double bsLng=-85.594728;
     static double biLat=10.772827;
     static double biLng=-86.078768;
-
+    static Ubicacion ubicacionListener;
     static int cantidadElementos=19;
 
     public static double[] latitudes(){

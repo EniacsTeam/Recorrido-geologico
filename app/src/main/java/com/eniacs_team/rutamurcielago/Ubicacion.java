@@ -72,6 +72,8 @@ public class Ubicacion implements LocationListener {
         this.locations = DatosGeo.getLocations();
         this.distancias=DatosGeo.radios();
         this.v= v;
+        //this.currentLocation= location;
+        //currentPosition.setPosition(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));
         this.marcadores=markers;
         this.map = map;
         this.currentPosition=currentMarker;
