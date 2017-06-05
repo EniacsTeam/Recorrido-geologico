@@ -197,7 +197,6 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 .setContentView(icon)
                 .build();
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-
         //Pongo tamano de cada sub boton
         FloatingActionButton.LayoutParams layoutParams = new FloatingActionButton.LayoutParams(180, 180);
         itemBuilder.setLayoutParams(layoutParams);
