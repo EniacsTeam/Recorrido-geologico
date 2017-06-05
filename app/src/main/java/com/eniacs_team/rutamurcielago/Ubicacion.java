@@ -204,6 +204,7 @@ public class Ubicacion implements LocationListener {
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    ma=(Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
