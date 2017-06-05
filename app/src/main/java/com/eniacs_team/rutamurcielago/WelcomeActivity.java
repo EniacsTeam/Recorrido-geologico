@@ -4,8 +4,11 @@ package com.eniacs_team.rutamurcielago;
  * Created by Francisco on 6/1/2017.
  */
 
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.R.attr.data;
+import static com.eniacs_team.rutamurcielago.R.mipmap.current;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -36,7 +40,74 @@ public class WelcomeActivity extends AppCompatActivity {
     private TextView[] dots;
     private int[] layouts;
     private Button btnSkip, btnNext;
+    private BaseDatos baseDatos;
     private Context context;
+    private MediaPlayer mPlayer;
+    //  viewpager change listener
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageSelected(int position) {
+            addBottomDots(position);
+            String testString = Integer.toString(position);
+            //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+            // changing the next button text 'NEXT' / 'GOT IT'
+            if (position == layouts.length - 1) {
+                // last page. make button text to GOT IT
+                btnNext.setText("Listo");
+                btnSkip.setVisibility(View.GONE);
+            } else {
+                // still pages are left
+                btnNext.setText("Siguiente");
+                btnSkip.setVisibility(View.VISIBLE);
+            }
+            if(mPlayer.isPlaying())
+            {
+                int time = 0;
+                if (position < layouts.length) {
+                    switch (position){
+                        case 0:
+                            mPlayer.seekTo(time);
+                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            time =  6393;
+                            mPlayer.seekTo(time);
+                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            time =  11209;
+                            mPlayer.seekTo(time);
+                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            time = 13301;
+                            mPlayer.seekTo(time);
+                            Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            launchHomeScreen();
+                            break;
+                    }
+
+                }
+                else
+                {
+                    launchHomeScreen();
+                }
+            }
+
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +145,10 @@ public class WelcomeActivity extends AppCompatActivity {
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        baseDatos = new BaseDatos(context);
+        //baseDatos = BaseDatos.getInstancia();
+       // mPlayerBuilder();
+        playAudio();
 
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +171,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void addBottomDots(int currentPage) {
@@ -126,35 +202,6 @@ public class WelcomeActivity extends AppCompatActivity {
         finish();
     }
 
-    //  viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            addBottomDots(position);
-            String testString = Integer.toString(position);
-            //Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
-            // changing the next button text 'NEXT' / 'GOT IT'
-            if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
-                btnNext.setText("Listo");
-                btnSkip.setVisibility(View.GONE);
-            } else {
-                // still pages are left
-                btnNext.setText("Siguiente");
-                btnSkip.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-        }
-    };
-
     /**
      * Making notification bar transparent
      */
@@ -165,6 +212,104 @@ public class WelcomeActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
+
+    /**
+     * Método llamado cuando la actividad muere. Destruye el media player para que no quede basura.
+     */
+    @Override
+    protected void onDestroy() {
+        stopAudio();
+        super.onDestroy();
+    }
+
+    private void playAudio() {
+        try {
+            AssetFileDescriptor descriptor = baseDatos.selectAudio(5);
+            mPlayerBuilder();
+            mPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(),descriptor.getLength());
+            descriptor.close();
+            //mPlayer.create(this.context,R.raw.introduccion);
+            mPlayer.prepare();
+            mPlayer.start();
+            int time = 0;
+            int current = getItem(0);
+            if (current < layouts.length) {
+                switch (current){
+                    case 0:
+                       // mPlayer.seekTo(0);
+                        break;
+                    case 1:
+                        time = (int) 6.393;
+                        mPlayer.seekTo(time);
+                        break;
+                    case 2:
+                        time = (int) 11.209;
+                        mPlayer.seekTo(time);
+                        break;
+                    case 3:
+                        time = (int) 13.301;
+                        mPlayer.seekTo(time);
+                        break;
+                    default:
+                        launchHomeScreen();
+                        break;
+                }
+
+            }
+            else
+            {
+                launchHomeScreen();
+            }
+        } catch (Exception e) {
+            Log.i("Audio", "Error " + e);
+        }
+    }
+
+    private void stopAudio() {
+        if(mPlayer != null)
+        {
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+
+    private void mPlayerBuilder() {
+        //Creo reproductor de audio
+        if (mPlayer == null) {
+            mPlayer = new MediaPlayer();
+            //Listener para que se borre cuando termine de reproducirse audio
+            MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopAudio();
+                }
+            };
+
+            MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    //Si es primer slide de bienvenida
+                    if(30 < percent && percent < 31)
+                    {
+                        viewPager.setCurrentItem(1);
+                    }
+                    //Si es segundo slide de bienvenida
+                    else if (54 < percent && percent < 55)
+                    {
+                        viewPager.setCurrentItem(2);
+                    }
+                    //Si es tercero slide de bienvenida
+                    else if(64 < percent && percent < 65)
+                    {
+                        viewPager.setCurrentItem(3);
+                    }
+                }
+            };
+            mPlayer.setOnCompletionListener(onCompletionListener);
+            mPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
+        }
+    }
+
     /**
      * View pager adapter
      */

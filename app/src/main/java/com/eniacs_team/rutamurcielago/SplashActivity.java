@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
         else
         {
             //se crea bien
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
             // close splash activity
             finish();
         }
@@ -89,7 +89,7 @@ public class SplashActivity extends AppCompatActivity {
                 Boolean location = this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
                 if (storage && location) {
                     //se crea bien
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
                     // close splash activity
 
                     if (dialogo!= null) {
