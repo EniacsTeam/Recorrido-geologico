@@ -46,6 +46,7 @@ public class MenuMultimediaMapa extends AppCompatActivity {
             id = extras.getInt("id"); // id del punto.
             nPunto = extras.getString("nombre");
         }
+        setTitle(nPunto);
         
         loadRecyclerViewData();
         
