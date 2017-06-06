@@ -165,7 +165,7 @@ public class Ubicacion implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         currentLocation= new Location(location);
-
+        Mapa.MyInfoWindow ma;
         //Se cambia la ubicación del marcador de mí ubicación
         currentPosition.setPosition(new GeoPoint(location.getLatitude(), location.getLongitude()));
 
@@ -180,7 +180,6 @@ public class Ubicacion implements LocationListener {
         if (marcador == -1){
             if (marcadorActual!= -1){
                 marker= marcadores.get(marcadorActual);
-                Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                 marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_verde));
                 marcadores.set(marcadorActual, marker);
             }
@@ -199,19 +198,18 @@ public class Ubicacion implements LocationListener {
                 if (marcadorActual!= -1) {
                     marker = marcadores.get(marcadorActual);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_verde));
-                    Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
 
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
-                    ma=(Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
 
                 }else {
                     marker = marcadores.get(marcador);
-                    Mapa.MyInfoWindow ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
+                    ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
                     marcadores.set(marcador, marker);

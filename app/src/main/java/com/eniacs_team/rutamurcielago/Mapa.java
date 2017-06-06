@@ -378,8 +378,10 @@ public class Mapa implements MapEventsReceiver {
          */
         public void setTipo() {
             BaseDatos base = BaseDatos.getInstancia();
+            if(base.visitadoPreviamente(puntoCargado)==0){
+                base.agregarVisita(puntoCargado);
+            }
             tipo= true;
-            base.agregarVisita(puntoCargado);
         }
 
         /**
