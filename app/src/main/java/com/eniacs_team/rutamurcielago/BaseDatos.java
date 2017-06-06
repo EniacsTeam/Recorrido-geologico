@@ -249,7 +249,7 @@ public class BaseDatos extends SQLiteOpenHelper {
      * Devuelve la informacion disponible sobre los audios adicionales
      * @return audios como un map <String, String[]>
      */
-    public Map selectAudiosExtra() {
+    public Map audiosExtraDisponibles() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String table = "AudiosAdicionales";
