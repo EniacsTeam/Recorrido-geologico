@@ -155,8 +155,8 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //ActionBar actionBar = getSupportActionBar();
-        //actionBar.hide();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
