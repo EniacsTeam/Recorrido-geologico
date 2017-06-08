@@ -322,7 +322,7 @@ public class WelcomeActivity extends AppCompatActivity {
             int time = mPlayer.getCurrentPosition();
             if(mPlayer.isPlaying()){
 
-                if(6393 < time && time < 6490)
+                if(6298 < time && time < 6393)
                 {
                    // String testString = Integer.toString(time);
                    // Toast.makeText(context, testString, Toast.LENGTH_SHORT).show();
