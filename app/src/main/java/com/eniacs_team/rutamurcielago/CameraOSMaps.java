@@ -1,7 +1,9 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.beyondar.android.fragment.BeyondarFragmentSupport;
 import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
+import com.beyondar.android.util.location.BeyondarLocationManager;
 import com.beyondar.android.world.World;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -51,8 +54,10 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private ImageView imagenIcon;
     private ImageView animacionIcon;
     private ImageView muteIcon;
+    private ImageView animMuteIcon;
 
     private static boolean audio_bool = true;
+    private static boolean anim_bool = true;
     private static MediaPlayer mPlayer;
 
     private static GifImageView geoImage;
@@ -78,13 +83,21 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // We create the world and fill it
         mWorld = CustomWorldHelper.generateObjects(this);
 
-        mBeyondarFragment.setMaxDistanceToRender(900000);
-        mBeyondarFragment.setPushAwayDistance(1);
+        mBeyondarFragment.setMaxDistanceToRender(3000);
+        mBeyondarFragment.setDistanceFactor(20);
+        mBeyondarFragment.setPushAwayDistance(15);
+        //mBeyondarFragment.setPullCloserDistance(progress);
         mBeyondarFragment.setWorld(mWorld);
 
+        BeyondarLocationManager.addWorldLocationUpdate(mWorld);
+
+        // We need to set the LocationManager to the BeyondarLocationManager.
+        BeyondarLocationManager
+                .setLocationManager((LocationManager) getSystemService(Context.LOCATION_SERVICE));
 
         if (savedInstanceState != null) {
             audio_bool = savedInstanceState.getBoolean("Bool_audio");
+            anim_bool = savedInstanceState.getBoolean("Bool_anim");
             idPunto = savedInstanceState.getInt("ID_Punto");
             nPunto = savedInstanceState.getString("N_Punto");
             geoImage.setVisibility(savedInstanceState.getInt("Gif_visible"));
@@ -139,6 +152,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         // Make sure to call the super method so that the states of our views are saved
         savedInstanceState.putBoolean("Bool_audio", audio_bool);
+        savedInstanceState.putBoolean("Bool_anim", anim_bool);
         savedInstanceState.putInt("ID_Punto", idPunto);
         savedInstanceState.putString("N_Punto", nPunto);
         savedInstanceState.putInt("Gif_visible", geoImage.getVisibility());
@@ -150,7 +164,24 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onBackPressed() {
         stopAudio();
         audio_bool = true;
+        anim_bool = true;
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // When the activity is resumed it is time to enable the
+        // BeyondarLocationManager
+        BeyondarLocationManager.enable();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // To avoid unnecessary battery usage disable BeyondarLocationManager
+        // when the activity goes on pause.
+        BeyondarLocationManager.disable();
     }
 
     /**
@@ -166,7 +197,6 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 .setContentView(icon)
                 .build();
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-
         //Pongo tamano de cada sub boton
         FloatingActionButton.LayoutParams layoutParams = new FloatingActionButton.LayoutParams(180, 180);
         itemBuilder.setLayoutParams(layoutParams);
@@ -187,6 +217,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         muteIcon = new ImageView(this);
         muteIcon.setImageResource(R.mipmap.mute);
 
+        animMuteIcon = new ImageView(this);
+        animMuteIcon.setImageResource(R.mipmap.mute_percy);
+
 
         //Creo botones
         btn_video = itemBuilder.setContentView(videoIcon).build();
@@ -197,7 +230,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             btn_audio = itemBuilder.setContentView(audioIcon).build();
         }
         btn_imagen = itemBuilder.setContentView(imagenIcon).build();
-        btn_animacion = itemBuilder.setContentView(animacionIcon).build();
+        if (!anim_bool) {
+            animacionIcon = animMuteIcon;
+            btn_animacion = itemBuilder.setContentView(animacionIcon).build();
+        } else {
+            btn_animacion = itemBuilder.setContentView(animacionIcon).build();
+        }
 
         //Se agregan los botones al fab y verifica que agrega y que no
         fabBuilder();
@@ -211,21 +249,22 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 }
 
                 if (v == btn_audio) {
-                    ImageView intermedio = new ImageView(CameraOSMaps.this);
-                    if (audio_bool) {
-                        //reproduzco
-                        playAudio();
-                        intermedio.setImageResource(R.mipmap.mute);
-                        audioIcon.setImageDrawable(intermedio.getDrawable());
-                        audio_bool = false;
-                    } else {
-                        //cambio icono y stop audio
-                        stopAudio();
-                        intermedio.setImageResource(R.mipmap.audio);
-                        audioIcon.setImageDrawable(intermedio.getDrawable());
-                        audio_bool = true;
+                    if (anim_bool) {
+                        ImageView intermedio = new ImageView(CameraOSMaps.this);
+                        if (audio_bool) {
+                            //reproduzco
+                            playAudio();
+                            intermedio.setImageResource(R.mipmap.mute);
+                            audioIcon.setImageDrawable(intermedio.getDrawable());
+                            audio_bool = false;
+                        } else {
+                            //cambio icono y stop audio
+                            stopAudio();
+                            intermedio.setImageResource(R.mipmap.audio);
+                            audioIcon.setImageDrawable(intermedio.getDrawable());
+                            audio_bool = true;
+                        }
                     }
-
                 }
 
                 if (v == btn_imagen) {
@@ -236,10 +275,27 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 }
 
                 if (v == btn_animacion) {
-                    geoImage.setVisibility(View.VISIBLE);
-                    playAudio();
-                    gifDrawable = (GifDrawable) geoImage.getDrawable();
-                    gifDrawable.start();
+                    if (audio_bool) {
+                        ImageView intermedio = new ImageView(CameraOSMaps.this);
+                        if (anim_bool) {
+                            //reproduzco
+                            geoImage.setVisibility(View.VISIBLE);
+                            playAudio();
+                            gifDrawable = (GifDrawable) geoImage.getDrawable();
+                            gifDrawable.start();
+                            intermedio.setImageResource(R.mipmap.mute_percy);
+                            animacionIcon.setImageDrawable(intermedio.getDrawable());
+                            anim_bool = false;
+                        } else {
+                            //cambio icono y stop animacion
+                            gifDrawable.stop();
+                            geoImage.setVisibility(View.INVISIBLE);
+                            stopAudio();
+                            intermedio.setImageResource(R.mipmap.percy);
+                            animacionIcon.setImageDrawable(intermedio.getDrawable());
+                            anim_bool = true;
+                        }
+                    }
                 }
 
             }
@@ -325,12 +381,13 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         if (beyondarObjects.size() > 0) {
             idPunto = (int) beyondarObjects.get(0).getId() - 99;
-            idPunto = idPunto + 1;
             nPunto = beyondarObjects.get(0).getName();
-            if (isMenuOpen) {
-                actionButton.performClick();
+            if (idPunto != 1) {
+                if (isMenuOpen) {
+                    actionButton.performClick();
+                }
+                crearFab();
             }
-            crearFab();
         }
     }
 
@@ -366,6 +423,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                     stopAudio();
                     gifDrawable.stop();
                     geoImage.setVisibility(View.INVISIBLE);
+                    audioIcon.setImageResource(R.mipmap.audio);
+                    animacionIcon.setImageResource(R.mipmap.percy);
+                    anim_bool = true;
                     audio_bool = true;
                 }
             };

@@ -7,14 +7,16 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
         android:id="@+id/cv"
         android:elevation="@dimen/margen_multimedia"
+        android:layout_margin="5dp"
         >
 
-        <!--<android.support.constraint.ConstraintLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/constrainCV"
             >
 
@@ -37,7 +39,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>-->
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 

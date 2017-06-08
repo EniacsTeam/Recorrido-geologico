@@ -1,5 +1,6 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.location.Location;
 import android.net.Uri;
 import android.app.Activity;
 import android.app.Dialog;
@@ -35,6 +36,8 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.eniacs_team.rutamurcielago.DatosGeo.ubicacionListener;
+
 /**
  * Esta clase se encarga de inicializar el mapa y su base de datos asociada, ademas crea un enlace a la actividad encargada
  * de realidad aumentada.
@@ -44,7 +47,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     MapView mapView;
     //Se ocupan en el onResume
-    Ubicacion ubicacionListener;
+    //Ubicacion ubicacionListener;
     LocationManager mlocManager;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -94,9 +97,14 @@ public class MainActivity extends AppCompatActivity {
 
         //se inicializa la escucha del GPS
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+       // Location location= new Location("");
+       // location.setLatitude(11.018081); location.setLongitude(-85.445809);
+       // if(mlocManager!= null){
+       //     location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+       // }
         ubicacionListener = new Ubicacion(mapView,this,findViewById(R.id.fab),marcadores,currentMarker,findViewById(R.id.ic_center_map),this);
-       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         }*/
         if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -156,7 +164,16 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_pag_web) {
+            Uri uriUrl = Uri.parse("http://www.geologia.ucr.ac.cr/");
+            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+            this.startActivity(launchBrowser);
+            return true;
+        }else if (id == R.id.action_sobre_nosotros) {
+            Intent nosotros = new Intent(this, Sobre_nosotros.class);
+            this.startActivity(nosotros);
+            return true;
+        }else if (id == R.id.action_ver_recomendaciones) {
             return true;
         }
 

@@ -7,15 +7,56 @@
 
 
     <color name="naranja_light">#e5b365</color>
-    <color name="naranja_medium">#f99d1c</color>
-    <color name="naranja_dark">#f37021</color>
+    <color name="naranja_morelight">#ffc770</color>
+
+    <color name="naranja_3">#f37021</color>
+
+    <color name="naranja_moredark">#d4a65e</color>
     <color name="rojo">#EF5350</color>
-    <color name="verde">#8dc63f</color>
+    <color name="verde">#b9d989</color>
     <color name="celeste">#bad2cd</color>
-    <color name="amarillo">#fdb912</color>
+
+
+
+    <color name="amarillo_ligth">#ffe06a</color>
     <color name="blanco">#FFFFFF</color>
     <color name="gris">#808080</color>
+    <color name="celeste4">#bad2cd</color>
+    <color name="celeste4_dark">#80a9ba</color>
+    <color name="verde_dark">#8dc63f</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen3</item>
+        <item>@color/dot_dark_screen4</item>
+    </array>
+
+    <!-- Colores de los slides -->
+    <color name="amarillo">#e9c31e</color>
+    <color name="amarillo_dark">#fdb912</color>
+    <color name="naranja_medium">#f99d1c</color>
+    <color name="naranja_dark">#f37021</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#d4b21c</color>
+    <color name="dot_dark_screen2">#cf9810</color>
+    <color name="dot_dark_screen3">#ce831a</color>
+    <color name="dot_dark_screen4">#c75d1d</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#a0d4b21c</color>
+    <color name="dot_light_screen2">#a0cf9810</color>
+    <color name="dot_light_screen3">#a0ce831a</color>
+    <color name="dot_light_screen4">#a0c75d1d</color>
 
 </resources>

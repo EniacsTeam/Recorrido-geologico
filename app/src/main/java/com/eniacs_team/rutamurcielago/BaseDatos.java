@@ -30,7 +30,8 @@ public class BaseDatos extends SQLiteOpenHelper {
     BaseDatos(Context context) {
         super(context, "IslaMurcielagoDB", null,1);
         this.context=context.getApplicationContext();
-        context.deleteDatabase("IslaMurcielagoDB");
+        // Al quitar el comentario de la siguiente linea, se borran los datos que hayan sido actualizados en la aplicacion
+        //context.deleteDatabase("IslaMurcielagoDB");
         cargarBase();
     }
 
@@ -122,7 +123,7 @@ public class BaseDatos extends SQLiteOpenHelper {
     /**
      * Devuelve las imagenes ordenadas disponibles para un punto dado
      * @param id El identificador del lugar de consulta
-     * @return imagen como array de Drawable
+     * @return map de Drawable y String
      */
     public Map selectImagen(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -245,6 +246,88 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
+     * Devuelve la informacion disponible sobre los audios adicionales
+     * @return audios como un map <String, String[]>
+     */
+    public Map audiosExtraDisponibles() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "AudiosAdicionales";
+        String[] columns = {"IDAudio","Descripcion", "Texto"};
+        String selection = "IDAudio =?";
+        String[] selectionArgs = {"1"};
+        String groupBy = null;
+        String having = null;
+        String orderBy = "IDAudio";
+        String limit = null;
+
+
+        Map<String,String[]> audios = new LinkedHashMap<String, String[]>();
+
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String id = cursor.getString(0);
+                    String[] textos = new String [2];
+                    textos[0] = cursor.getString(1);
+                    textos[1] = cursor.getString(2);
+                    audios.put(id,textos);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        }
+
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+
+        return audios;
+    }
+
+
+    /**
+     * Devuelve el audio adicional indicado
+     * @param id El identificador del audio
+     * @return ruta como descriptor
+     */
+    public AssetFileDescriptor selectAudioExtra(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "AudiosAdicionales";
+        String[] columns = {"Ruta"};
+        String selection = "IDAudio =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+
+        String rutaAudio = null;
+        AssetFileDescriptor descriptor = null;
+        AssetManager assetManager = context.getAssets();
+
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                rutaAudio = cursor.getString(0);
+                descriptor = assetManager.openFd(rutaAudio);
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        return descriptor;
+    }
+
+    /**
      * Devuelve la transcripcion del audio para un punto dado
      * @param id El identificador del lugar de consulta
      * @return textoAudio como String
@@ -337,7 +420,6 @@ public class BaseDatos extends SQLiteOpenHelper {
         {
             Log.i("Base de datos", "No hay datos en la base");
         }
-        Log.i("Base de datos", Integer.toString(estado));
         return estado;
     }
 

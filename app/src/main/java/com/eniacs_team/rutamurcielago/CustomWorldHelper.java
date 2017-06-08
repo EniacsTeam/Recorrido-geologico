@@ -21,10 +21,10 @@ public class CustomWorldHelper {
     private static final double[] latitudes = DatosGeo.latitudes();
 
     private static final int[] resources
-            = {R.drawable.descartes,R.drawable.vegetacion,R.drawable.peridotitas,R.drawable.santa_ana,R.drawable.piedras_blancas,
-            R.drawable.rivas,R.drawable.rocas_sedimentarias,R.drawable.descartes2,R.drawable.pliegues,R.drawable.maravillas,
+            = {R.drawable.inicial,R.drawable.descartes,R.drawable.vegetacion,R.drawable.peridotitas,R.drawable.santa_ana,
+            R.drawable.rocas_sedimentarias,R.drawable.descartes2,R.drawable.pliegues,R.drawable.maravillas,
             R.drawable.rocas_inclinadas,R.drawable.erosion,R.drawable.intrusiones,R.drawable.peridotitas2, R.drawable.dunas,
-            R.drawable.santa_rosa,R.drawable.isla,R.drawable.sobrecorrimientos,R.drawable.arcos};
+            R.drawable.santa_rosa,R.drawable.isla,R.drawable.arcos,R.drawable.upwelling,R.drawable.paleodunas};
 
     /**
      * Metodo que agrega los carteles de realidad aumentada a puntos georeferenciados

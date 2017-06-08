@@ -61,13 +61,14 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
         listItemMenuMultimedia listItem = listItems.get(position);
 
         if(listItem.getTitulo().equals("Audio")){
-            holder.cardView.setBackground(context.getDrawable(R.drawable.audios));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.naranja_dark));
+            holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Imagen")){
-            holder.cardView.setBackground(context.getDrawable(R.drawable.imagenes));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.rojo));
+            holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Video")){
-            holder.cardView.setBackground(context.getDrawable(R.drawable.videos));
-        }else if(listItem.getTitulo().equals("Animacion")){
-            holder.cardView.setBackground(context.getDrawable(R.drawable.animaciones));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.naranja_light));
+            holder.titulo.setText(listItem.getTitulo());
         }
 
 
@@ -86,15 +87,16 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        //public TextView titulo;
+        public TextView titulo;
         public CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            //titulo = (TextView) itemView.findViewById(R.id.titulo_multimedia);
+            titulo = (TextView) itemView.findViewById(R.id.titulo_multimedia);
             cardView = (CardView) itemView.findViewById(R.id.cv);
             cardView.setOnClickListener(this);
+
 
             cardView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
 
@@ -104,12 +106,9 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
 
                     ViewGroup.LayoutParams Lp =  v.getLayoutParams();
-                    Bitmap backgroundBitmap = BitmapFactory.decodeResource(context.getResources(),
-                            R.drawable.animaciones);
 
-                    float imageRatio = (float) backgroundBitmap.getWidth() / (float) backgroundBitmap.getHeight();
 
-                    int imageRealHeight = (int) (right / imageRatio);
+                    int imageRealHeight = right / 3;
 
 
                     Lp.height = imageRealHeight;

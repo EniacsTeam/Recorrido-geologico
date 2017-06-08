@@ -27,9 +27,11 @@ import android.widget.Toast;
  */
 public class SplashActivity extends AppCompatActivity {
     CustomDialogClass dialogo;
+    BaseDatos baseDatos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        baseDatos = new BaseDatos(this);
         String Permiso[] = {"android.permission.WRITE_EXTERNAL_STORAGE","android.permission.ACCESS_FINE_LOCATION"};
         // Start home activity
         requestPermission(Permiso,1);
@@ -52,7 +54,18 @@ public class SplashActivity extends AppCompatActivity {
         else
         {
             //se crea bien
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            int res = baseDatos.selectEstadoDatos(2);
+            if (res == 0)
+            {
+                baseDatos = null;
+                startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+            }
+            else
+            {
+                baseDatos = null;
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            }
+
             // close splash activity
             finish();
         }
@@ -89,7 +102,19 @@ public class SplashActivity extends AppCompatActivity {
                 Boolean location = this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
                 if (storage && location) {
                     //se crea bien
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+                    int res = baseDatos.selectEstadoDatos(2);
+                    if (res == 0)
+                    {
+                        baseDatos.actualizarEstado(2);
+                        baseDatos = null;
+                        startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                    }
+                    else
+                    {
+                        baseDatos = null;
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    }
                     // close splash activity
 
                     if (dialogo!= null) {
