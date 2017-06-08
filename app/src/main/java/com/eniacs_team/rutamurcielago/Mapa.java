@@ -74,7 +74,7 @@ public class Mapa implements MapEventsReceiver {
 
     MapView mapView;
     Context mContext;
-    public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
+    public static final GeoPoint routeCenter = new GeoPoint(10.949762, -85.707785);
     List<GeoPoint> locations;
     List<Marker> marcadores;
     Activity activity;
@@ -194,6 +194,8 @@ public class Mapa implements MapEventsReceiver {
         mapViewController.setZoom(13);
         mapViewController.animateTo(routeCenter);
         mapViewController.setCenter(routeCenter);
+
+
         mapView.setMinZoomLevel(12);
         mapView.setMaxZoomLevel(15);
 
@@ -316,6 +318,11 @@ public class Mapa implements MapEventsReceiver {
             mapView.getOverlays().add(marcador);
             marcadores.set(i, marcador);
         }
+
+        //se muestra el infowindow del punto inicial.
+        marcador_anterior= new Marker(mapView);
+        marcador_actual=marcadores.get(0);
+        marcador_actual.showInfoWindow();
         //se agregan acá porqué se necesita sobre los marcadores
         mapView.getOverlays().add(this.mCompassOverlay);
         mCompassOverlay.enableCompass();

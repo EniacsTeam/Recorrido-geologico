@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="34d29185eeb070a8e4ebf8423448530e3f1ed037">
+        <dex dex="C:\Users\Johan Duran Cerdas\Codigo\AndroidStudioProjects\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_0c2e812f1a899241eb5ad5719225eb72acb1c6b1\classes.dex" />
+    </item>
+
+</items>
