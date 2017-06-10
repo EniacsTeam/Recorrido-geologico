@@ -9,6 +9,8 @@ import android.widget.VideoView;
 
 import com.beyondar.android.util.location.BeyondarLocationManager;
 
+import static com.eniacs_team.rutamurcielago.R.mipmap.video;
+
 /**
  * Created by Francisco on 6/8/2017.
  */
@@ -17,6 +19,7 @@ public class VideoPlayerController extends Activity {
 
     private VideoView videoView;
     private MediaController mediaController;
+    private static int idPunto;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,18 +28,28 @@ public class VideoPlayerController extends Activity {
 
         videoView = (VideoView) findViewById(R.id.VideoView);
         mediaController = new MediaController(this);
-        playvideo();
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            idPunto = extras.getInt("id");
+        }
         if (savedInstanceState != null) {
             int buffer = savedInstanceState.getInt("Buffer");
+            idPunto = savedInstanceState.getInt("IDpunto");
+            playvideo();
             videoView.seekTo(buffer);
             videoView.start();
+        }
+        else
+        {
+            playvideo();
         }
 
     }
 
     private void playvideo(){
         try{
-            String videopath = "android.resource://" + this.getPackageName() + "/raw/test";
+            String videopath = "android.resource://" + this.getPackageName() + "/raw/video"+Integer.toString(idPunto);
             Uri uri = Uri.parse(videopath);
             videoView.setVideoURI(uri);
             videoView.setMediaController(mediaController);
@@ -53,6 +66,7 @@ public class VideoPlayerController extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("Buffer",videoView.getCurrentPosition());
+        savedInstanceState.putInt("IDpunto",idPunto);
         super.onSaveInstanceState(savedInstanceState);
     }
 
