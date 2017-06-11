@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,13 +62,20 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
         listItemMenuMultimedia listItem = listItems.get(position);
 
         if(listItem.getTitulo().equals("Audio")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.naranja_dark));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen3));
+            holder.iconoMultimedia.setImageResource(R.mipmap.audio);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Imagen")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.rojo));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen4));
+            holder.iconoMultimedia.setImageResource(R.mipmap.imagen);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Video")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.naranja_light));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen2));
+            holder.iconoMultimedia.setImageResource(R.mipmap.video);
+            holder.titulo.setText(listItem.getTitulo());
+        }else if(listItem.getTitulo().equals("Animación")){
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen1));
+            holder.iconoMultimedia.setImageResource(R.mipmap.imagen);
             holder.titulo.setText(listItem.getTitulo());
         }
 
@@ -89,12 +97,14 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
         public TextView titulo;
         public CardView cardView;
+        public ImageView iconoMultimedia;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             titulo = (TextView) itemView.findViewById(R.id.titulo_multimedia);
             cardView = (CardView) itemView.findViewById(R.id.cv);
+            iconoMultimedia = (ImageView) itemView.findViewById(R.id.iconoMultimedia);
             cardView.setOnClickListener(this);
 
 

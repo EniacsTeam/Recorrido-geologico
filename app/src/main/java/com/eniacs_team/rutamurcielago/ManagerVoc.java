@@ -8,15 +8,23 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.eniacs_team.rutamurcielago.R.mipmap.audio;
 
 public class ManagerVoc {
 
-    final String MEDIA_PATH = new String("/sdcard/");
+    //final String MEDIA_PATH = new String("/sdcard/");
+    private BaseDatos baseDatos;
     private ArrayList<HashMap<String, String>> vocList = new ArrayList<HashMap<String, String>>();
+    Map<String,String[]> audios = new LinkedHashMap<String, String[]>();
 
     // Constructor
     public ManagerVoc(){
-
+        baseDatos = BaseDatos.getInstancia();
+        baseDatos.cargarBase();
     }
 
     /**
@@ -24,7 +32,25 @@ public class ManagerVoc {
      * and store the details in ArrayList
      * */
     public ArrayList<HashMap<String, String>> getPlayList(){
-        File home = new File(MEDIA_PATH);
+
+        audios = baseDatos.audiosExtraDisponibles();
+
+
+        if(audios.size()!=0){
+            for( Map.Entry<String,String[]> entry : audios.entrySet()){
+                HashMap<String, String> voc = new HashMap<String, String>();
+                voc.put("id", entry.getKey());
+                String[] valores = entry.getValue();
+                voc.put("Title", valores[0]);
+                voc.put("Texto", valores[1]);
+                vocList.add(voc);
+            }
+        }
+
+
+
+
+        /*File home = new File(MEDIA_PATH);
 
         if (home.listFiles(new FileExtensionFilter()).length > 0) {
             for (File file : home.listFiles(new FileExtensionFilter())) {
@@ -35,18 +61,9 @@ public class ManagerVoc {
                 // Adding each song to SongList
                 vocList.add(voc);
             }
-        }
+        }*/
         // return songs list array
         return vocList;
-    }
-
-    /**
-     * Class to filter files which are having .mp3 extension
-     * */
-    class FileExtensionFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
-            return (name.endsWith(".mp3") || name.endsWith(".MP3"));
-        }
     }
 
 
