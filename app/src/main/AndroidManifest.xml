@@ -43,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MenuMultimediaMapa" />
         <activity android:name=".Gallery" />
+        <activity android:name=".VideoPlayerController" />
         <activity
             android:name=".FullscreenImage"
             android:configChanges="orientation|keyboardHidden|screenSize"

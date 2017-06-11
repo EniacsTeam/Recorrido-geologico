@@ -6,6 +6,7 @@ import android.content.res.AssetFileDescriptor;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +66,8 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
     private boolean isMenuOpen = false;
 
+    final Handler handler = new Handler();
+
     /**
      * Inicializa la vista, crea el mundo de realidad aumentada y asocia este mundo al fragmento de la camara.
      *
@@ -95,6 +98,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         BeyondarLocationManager
                 .setLocationManager((LocationManager) getSystemService(Context.LOCATION_SERVICE));
 
+        crearFab();
+        setAvailabilityFab(false);
+
         if (savedInstanceState != null) {
             audio_bool = savedInstanceState.getBoolean("Bool_audio");
             anim_bool = savedInstanceState.getBoolean("Bool_anim");
@@ -102,7 +108,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             nPunto = savedInstanceState.getString("N_Punto");
             geoImage.setVisibility(savedInstanceState.getInt("Gif_visible"));
             if (idPunto != -1) {
-                crearFab();
+                setAvailabilityFab(true);
             }
 
         }
@@ -380,16 +386,57 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> beyondarObjects) {
         if (beyondarObjects.size() > 0) {
-            idPunto = (int) beyondarObjects.get(0).getId() - 99;
-            nPunto = beyondarObjects.get(0).getName();
-            if (idPunto != 1) {
-                if (isMenuOpen) {
-                    actionButton.performClick();
-                }
-                crearFab();
+            int tempId = (int) beyondarObjects.get(0).getId() - 99;
+            int wait = 300;
+
+            if (isMenuOpen)
+            {
+                wait = 1000;
+                actionButton.performClick();
+            }
+
+            if (baseDatos.visitadoPreviamente(tempId) != 0)
+            {
+                idPunto = tempId;
+                nPunto = beyondarObjects.get(0).getName();
+                setAvailabilityFab(false);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after wait ms
+                        if (idPunto != 1)
+                        {
+                            setAvailabilityFab(true);
+                            fabBuilder();
+                        }
+                    }
+                }, wait);
+            }
+            else
+            {
+                setAvailabilityFab(false);
+                Toast msj = Toast.makeText(this,"Debe visitar el punto antes de poder ver más información", Toast.LENGTH_SHORT);
+                msj.show();
             }
         }
     }
+
+    public void setAvailabilityFab(boolean available)
+    {
+        if (actionButton != null)
+        {
+            if (available)
+            {
+                actionButton.setEnabled(true);
+                actionButton.setVisibility(View.VISIBLE);
+            }
+            else {
+                actionButton.setEnabled(false);
+                actionButton.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
 
     private void playAudio() {
         try {

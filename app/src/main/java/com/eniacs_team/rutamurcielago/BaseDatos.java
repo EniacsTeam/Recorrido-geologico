@@ -1,6 +1,5 @@
 package com.eniacs_team.rutamurcielago;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -139,7 +138,6 @@ public class BaseDatos extends SQLiteOpenHelper {
 
         Map<Drawable,String> imagenes = new LinkedHashMap<Drawable, String>();
 
-
         try {
             Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
 
@@ -171,6 +169,47 @@ public class BaseDatos extends SQLiteOpenHelper {
         }
 
         return imagenes;
+    }
+
+    /**
+     * Devuelve las imagenes ordenadas disponibles para un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return map de Drawable y String
+     */
+    public Map selectAnimacion(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "Animaciones";
+        String[] columns = {"Ruta"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = "IDLugar";
+        String limit = null;
+
+        Map<String,String> animaciones = new LinkedHashMap<String, String>();
+
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String descripcion = cursor.getString(0);
+                    String ruta = cursor.getString(1);
+                    animaciones.put(ruta,"Sin descripcion");
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        }
+
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+
+        return animaciones;
     }
 
     /**
@@ -246,6 +285,41 @@ public class BaseDatos extends SQLiteOpenHelper {
     }
 
     /**
+     * Devuelve el video para un punto dado
+     * @param id El identificador del lugar de consulta
+     * @return ruta como String
+     */
+    public String selectVideo(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String table = "Lugares";
+        String[] columns = {"Video"};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+        String limit = null;
+
+        String rutaVideo = null;
+
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                rutaVideo = cursor.getString(0);
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        return rutaVideo;
+    }
+
+    /**
      * Devuelve la informacion disponible sobre los audios adicionales
      * @return audios como un map <String, String[]>
      */
@@ -254,13 +328,12 @@ public class BaseDatos extends SQLiteOpenHelper {
 
         String table = "AudiosAdicionales";
         String[] columns = {"IDAudio","Descripcion", "Texto"};
-        String selection = "IDAudio =?";
+        String selection = "IDAudio <>?";
         String[] selectionArgs = {"1"};
         String groupBy = null;
         String having = null;
         String orderBy = "IDAudio";
         String limit = null;
-
 
         Map<String,String[]> audios = new LinkedHashMap<String, String[]>();
 
@@ -371,6 +444,39 @@ public class BaseDatos extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String table = "Lugares";
         String[] columns = {tipoMedia};
+        String selection = "IDLugar =?";
+        String[] selectionArgs = {Integer.toString(punto)};
+        int estado = 0;
+        try {
+            Cursor cursor = db.query(table, columns, selection, selectionArgs, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                if (cursor.getString(0).isEmpty()){
+                    estado = 0;
+                } else {
+                    estado = 1;
+                }
+            }
+            cursor.close();
+            db.close();
+        }
+        catch(Exception e)
+        {
+            Log.i("Base de datos", "No hay datos en la base");
+        }
+        Log.i("Base de datos", Integer.toString(estado));
+        return estado;
+    }
+
+    /**
+     * Verifica si hay animaciones para un punto especifico
+     * @param punto El lugar de consulta
+     * @return existe como entero 1->Existe, 0->No existe
+     */
+    public int existenciaAnimacion(int punto) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String table = "Animaciones";
+        String[] columns = {"IDLugar"};
         String selection = "IDLugar =?";
         String[] selectionArgs = {Integer.toString(punto)};
         int estado = 0;
