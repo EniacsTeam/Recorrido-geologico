@@ -58,6 +58,7 @@ public class PlayListActivity extends ListActivity {
                 // getting listitem index
                 int vocIndex = position;
 
+
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(),
                         VocPlayerActivity.class);

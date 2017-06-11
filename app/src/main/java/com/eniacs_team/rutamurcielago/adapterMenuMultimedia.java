@@ -63,19 +63,19 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
         if(listItem.getTitulo().equals("Audio")){
             holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen3));
-            holder.iconoMultimedia.setImageResource(R.mipmap.audio);
+            holder.iconoMultimedia.setImageResource(R.mipmap.audio_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Imagen")){
             holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen4));
-            holder.iconoMultimedia.setImageResource(R.mipmap.imagen);
+            holder.iconoMultimedia.setImageResource(R.mipmap.imagen_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Video")){
             holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen2));
-            holder.iconoMultimedia.setImageResource(R.mipmap.video);
+            holder.iconoMultimedia.setImageResource(R.mipmap.video_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Animación")){
             holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen1));
-            holder.iconoMultimedia.setImageResource(R.mipmap.imagen);
+            holder.iconoMultimedia.setImageResource(R.mipmap.animacion_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }
 

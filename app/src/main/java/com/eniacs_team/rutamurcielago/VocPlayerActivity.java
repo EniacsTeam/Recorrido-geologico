@@ -241,7 +241,10 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == 100){
             currentVocIndex = data.getExtras().getInt("vocIndex");
+            //int indice = Integer.parseInt(vocsList.get(currentVocIndex).get("id"));
+
             // play selected voc
+            //playVoc(indice);
             playVoc(currentVocIndex);
         }
 

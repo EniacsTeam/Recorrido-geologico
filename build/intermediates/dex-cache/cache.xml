@@ -3,6 +3,15 @@
 
     <item
         is-multidex="true"
+        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
+        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_0a02f3b6088ab8d17719749d82edb32076a91703\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\libs\beyondar-radar-plugin-v0.9.1.jar"
         jumboMode="true"
         optimize="true"
@@ -21,30 +30,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="36fc556ea1d37519da9fd7c4436869a28980b9e6">
-        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_fd047a8f45d996d7a1ad1f6837fd87564d86b860\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="caff8e51a24901cfc9cd7e1cf83d84f4cb0c103b">
-        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_0a02f3b6088ab8d17719749d82edb32076a91703\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\libs\gradle-wrapper.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
         sha1="e614e3b2edc63a9cc423437dea087c91962254f5">
         <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\2\gradle-wrapper_685a58d904ebbbd71fa5d1c0ea1b3a119ff49672\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="e6a066989d9960c2d4a514d5345c5bda78a42e0d">
+        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_fd047a8f45d996d7a1ad1f6837fd87564d86b860\classes.dex" />
     </item>
 
 </items>
