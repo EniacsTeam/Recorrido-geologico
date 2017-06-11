@@ -8,6 +8,11 @@
         android:title="@string/ver_recomendaciones"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_glosario"
+        android:orderInCategory="100"
+        android:title="@string/glosario"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_pag_web"
         android:orderInCategory="100"
         android:title="@string/pagina_web"
