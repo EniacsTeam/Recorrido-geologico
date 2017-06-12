@@ -285,7 +285,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
      * */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-            long totalDuration = mp.getDuration();
+            if(mp!= null){long totalDuration = mp.getDuration();
             long currentDuration = mp.getCurrentPosition();
 
             // Displaying Total Duration time
@@ -300,6 +300,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
 
             // Running this thread after 100 milliseconds
             mHandler.postDelayed(this, 100);
+            }
         }
     };
 
@@ -370,11 +371,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
     @Override
     public void onBackPressed() {
         stopAudio();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        this.startActivity(intent);
-        //this.finish();
-        //super.onBackPressed();
+        super.onBackPressed();
     }
 
     private void stopAudio() {
