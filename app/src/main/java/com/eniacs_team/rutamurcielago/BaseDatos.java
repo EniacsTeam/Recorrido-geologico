@@ -180,7 +180,7 @@ public class BaseDatos extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String table = "Animaciones";
-        String[] columns = {"Ruta"};
+        String[] columns = {"Ruta", "TextoAnimacion"};
         String selection = "IDLugar =?";
         String[] selectionArgs = {Integer.toString(id)};
         String groupBy = null;
@@ -196,7 +196,8 @@ public class BaseDatos extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     String ruta = cursor.getString(0);
-                    animaciones.put(ruta,"Sin descripcion");
+                    String texto = cursor.getString(1);
+                    animaciones.put(ruta, texto);
                 } while (cursor.moveToNext());
             }
             cursor.close();
