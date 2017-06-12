@@ -47,6 +47,9 @@ public class VideoPlayerController extends Activity {
 
     }
 
+    /**
+     * Metodo para reproducir el video
+     */
     private void playvideo(){
         try{
             String videopath = "android.resource://" + this.getPackageName() + "/raw/video"+Integer.toString(idPunto);
@@ -73,8 +76,6 @@ public class VideoPlayerController extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // To avoid unnecessary battery usage disable BeyondarLocationManager
-        // when the activity goes on pause.
         if(videoView != null)
         {
             videoView = null;

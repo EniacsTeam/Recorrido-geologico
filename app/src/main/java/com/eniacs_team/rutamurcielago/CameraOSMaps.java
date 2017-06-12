@@ -43,6 +43,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private BaseDatos baseDatos;
     private int idPunto = -1;
     private String nPunto;
+    //private int length = 0;
 
     private FloatingActionButton actionButton;
     private SubActionButton btn_video;
@@ -180,6 +181,11 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // When the activity is resumed it is time to enable the
         // BeyondarLocationManager
         BeyondarLocationManager.enable();
+        if(mPlayer != null)
+        {
+            mPlayer.seekTo(0);
+            mPlayer.start();
+        }
     }
 
     @Override
@@ -188,6 +194,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // To avoid unnecessary battery usage disable BeyondarLocationManager
         // when the activity goes on pause.
         BeyondarLocationManager.disable();
+        if(mPlayer != null)
+        {
+            mPlayer.pause();
+            //length = mPlayer.getCurrentPosition();
+        }
+
     }
 
     /**
