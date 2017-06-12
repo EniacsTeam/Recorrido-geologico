@@ -56,6 +56,7 @@ public class reproductor_audio extends AppCompatActivity {
         }else{
             onBackPressed();
         }
+        setTitle(extras.getString("nombre"));
 
 
         handler = new Handler();

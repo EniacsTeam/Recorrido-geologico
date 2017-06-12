@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,14 +61,21 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
     public void onBindViewHolder(ViewHolder holder, int position) {
         listItemMenuMultimedia listItem = listItems.get(position);
 
-        if(listItem.getTitulo().equals("Audio")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.naranja_dark));
+        if(listItem.getTitulo().equals("Imagen")){
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen4));
+            holder.iconoMultimedia.setImageResource(R.mipmap.imagen_multimedia);
             holder.titulo.setText(listItem.getTitulo());
-        }else if(listItem.getTitulo().equals("Imagen")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.rojo));
+        }else if(listItem.getTitulo().equals("Audio")){
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen3));
+            holder.iconoMultimedia.setImageResource(R.mipmap.audio_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Video")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.naranja_light));
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen2));
+            holder.iconoMultimedia.setImageResource(R.mipmap.video_multimedia);
+            holder.titulo.setText(listItem.getTitulo());
+        }else if(listItem.getTitulo().equals("Animación")){
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen1));
+            holder.iconoMultimedia.setImageResource(R.mipmap.animacion_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }
 
@@ -89,12 +97,14 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
 
         public TextView titulo;
         public CardView cardView;
+        public ImageView iconoMultimedia;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             titulo = (TextView) itemView.findViewById(R.id.titulo_multimedia);
             cardView = (CardView) itemView.findViewById(R.id.cv);
+            iconoMultimedia = (ImageView) itemView.findViewById(R.id.iconoMultimedia);
             cardView.setOnClickListener(this);
 
 
@@ -137,17 +147,30 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
             if(listItems.get(getAdapterPosition()).getTitulo().equals("Audio")){
                 Intent intent = new Intent(context, reproductor_audio.class);
                 intent.putExtra("id", Integer.parseInt(listItems.get(getAdapterPosition()).getId()));
+                intent.putExtra("nombre", listItems.get(getAdapterPosition()).getNombre());
                 context.startActivity(intent);
-            }else if(listItems.get(getAdapterPosition()).getTitulo().equals("Imagen")){
+            }else if(listItems.get(getAdapterPosition()).getTitulo().equals("Video")) {
+                Intent intent = new Intent(context, VideoPlayerController.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("id", Integer.parseInt(listItems.get(getAdapterPosition()).getId()));
+                //intent.putExtra("nombre", listItems.get(getAdapterPosition()).getNombre());
+                context.startActivity(intent);
+            }
+            else {
                 Intent intent = new Intent(context, Gallery.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (listItems.get(getAdapterPosition()).getTitulo().equals("Imagen"))
+                {
+                    intent.putExtra("image", true);
+                }
+                else
+                {
+                    intent.putExtra("image", false);
+                }
                 intent.putExtra("id", Integer.parseInt(listItems.get(getAdapterPosition()).getId()));
                 intent.putExtra("nombre", listItems.get(getAdapterPosition()).getNombre());
                 context.startActivity(intent);
-            }else{
-                Toast.makeText(context, listItems.get(getAdapterPosition()).getTitulo(), Toast.LENGTH_SHORT).show();
             }
-           /* */
         }
     }
 }

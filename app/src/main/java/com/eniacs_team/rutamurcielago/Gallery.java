@@ -9,9 +9,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+
+import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * Esta actividad proporciona una galeria de imagenes con descripciones relacionadas a un sitio geologico especifico.
@@ -23,6 +26,7 @@ public class Gallery extends AppCompatActivity {
     private BaseDatos baseDatos;
     private int idPunto;
     private String nPunto;
+    private boolean isImage;
 
     /*
      * Inicializa la vista, crea la galeria y habilita el back button del action bar.
@@ -39,13 +43,23 @@ public class Gallery extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         idPunto = extras.getInt("id");
         nPunto = extras.getString("nombre");
+        isImage = extras.getBoolean("image");
         setTitle(nPunto);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);
-        ArrayList<CreateList> createLists = prepareData();
-        MyAdapter adapter = new MyAdapter(getApplicationContext(), createLists, idPunto);
-        recyclerView.setAdapter(adapter);
+        if (isImage)
+        {
+            ArrayList<CreateList> createLists = prepareData();
+            MyAdapter adapter = new MyAdapter(getApplicationContext(), createLists, idPunto);
+            recyclerView.setAdapter(adapter);
+        }
+        else
+        {
+            ArrayList<CreateListAnim> createListsAnim = prepareDataAnim();
+            AnimAdapter animAdapter = new AnimAdapter(getApplicationContext(), createListsAnim, idPunto);
+            recyclerView.setAdapter(animAdapter);
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -68,6 +82,32 @@ public class Gallery extends AppCompatActivity {
         }
 
         return theimage;
+    }
+
+    /*
+     * Se encarga de conseguir de la base los datos que contiene el sitio geologico actual y preparar cada celda de la galeria de animaciones.
+     */
+    private ArrayList<CreateListAnim> prepareDataAnim(){
+        Map animaciones = baseDatos.selectAnimacion(idPunto);
+
+        ArrayList<CreateListAnim> theanim = new ArrayList<>();
+        Iterator<Map.Entry<String, String>> it = animaciones.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, String> par = it.next();
+            CreateListAnim createList = new CreateListAnim();
+            createList.setAnim_title(par.getValue());
+            String gifPath = par.getKey();
+            GifDrawable gifFromAssets = null;
+
+            try{
+                gifFromAssets = new GifDrawable( getAssets(), gifPath );
+            } catch (IOException ex) { ex.printStackTrace(); }
+
+            createList.setAnim_drawable(gifFromAssets);
+            theanim.add(createList);
+        }
+
+        return theanim;
     }
 
     /*

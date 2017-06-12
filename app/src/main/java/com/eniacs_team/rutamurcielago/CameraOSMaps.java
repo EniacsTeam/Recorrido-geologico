@@ -275,6 +275,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
 
                 if (v == btn_imagen) {
                     Intent intent = new Intent(getApplicationContext(), Gallery.class);
+                    intent.putExtra("image", true);
                     intent.putExtra("id", idPunto);
                     intent.putExtra("nombre", nPunto);
                     startActivity(intent);

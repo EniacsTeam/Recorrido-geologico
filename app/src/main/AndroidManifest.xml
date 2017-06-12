@@ -33,6 +33,7 @@
         <activity android:name=".WelcomeActivity"/>
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -42,17 +43,24 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MenuMultimediaMapa" />
         <activity android:name=".Gallery" />
+        <activity android:name=".VideoPlayerController" />
         <activity
             android:name=".FullscreenImage"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".FullscreenAnim"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".reproductor_audio" />
         <activity android:name=".Sobre_nosotros"/>
         <activity
-            android:name=".VocPlayerActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/vocActivity"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:name=".VocPlayerActivity"
+            />
         <activity
             android:name=".PlayListActivity" />
 

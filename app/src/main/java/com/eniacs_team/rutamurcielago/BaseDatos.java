@@ -195,8 +195,7 @@ public class BaseDatos extends SQLiteOpenHelper {
 
             if (cursor.moveToFirst()) {
                 do {
-                    String descripcion = cursor.getString(0);
-                    String ruta = cursor.getString(1);
+                    String ruta = cursor.getString(0);
                     animaciones.put(ruta,"Sin descripcion");
                 } while (cursor.moveToNext());
             }

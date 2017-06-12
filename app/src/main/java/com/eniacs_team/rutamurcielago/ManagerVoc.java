@@ -4,49 +4,44 @@ package com.eniacs_team.rutamurcielago;
  * Created by kenca on 04/06/2017.
  */
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 public class ManagerVoc {
 
-    final String MEDIA_PATH = new String("/sdcard/");
+    private BaseDatos baseDatos;
     private ArrayList<HashMap<String, String>> vocList = new ArrayList<HashMap<String, String>>();
+    Map<String,String[]> audios = new LinkedHashMap<String, String[]>();
 
     // Constructor
     public ManagerVoc(){
-
+        baseDatos = BaseDatos.getInstancia();
+        baseDatos.cargarBase();
     }
 
     /**
-     * Function to read all mp3 files from sdcard
-     * and store the details in ArrayList
+     * Pide los datos a la base de datos para las actividades VocPlayerActivity y PlayListActivity
+     *
      * */
     public ArrayList<HashMap<String, String>> getPlayList(){
-        File home = new File(MEDIA_PATH);
 
-        if (home.listFiles(new FileExtensionFilter()).length > 0) {
-            for (File file : home.listFiles(new FileExtensionFilter())) {
+        audios = baseDatos.audiosExtraDisponibles();
+
+
+        if(audios.size()!=0){
+            for( Map.Entry<String,String[]> entry : audios.entrySet()){
                 HashMap<String, String> voc = new HashMap<String, String>();
-                voc.put("Title", file.getName().substring(0, (file.getName().length() - 4)));
-                voc.put("Path", file.getPath());
-
-                // Adding each song to SongList
+                voc.put("id", entry.getKey());
+                String[] valores = entry.getValue();
+                voc.put("Title", valores[0]);
+                voc.put("Texto", valores[1]);
                 vocList.add(voc);
             }
         }
-        // return songs list array
         return vocList;
-    }
-
-    /**
-     * Class to filter files which are having .mp3 extension
-     * */
-    class FileExtensionFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
-            return (name.endsWith(".mp3") || name.endsWith(".MP3"));
-        }
     }
 
 
