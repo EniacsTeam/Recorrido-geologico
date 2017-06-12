@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_pag_web) {
-            Uri uriUrl = Uri.parse("http://www.geologia.ucr.ac.cr/");
+            Uri uriUrl = Uri.parse("http://rutageologica.ucr.ac.cr/");
             Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
             this.startActivity(launchBrowser);
         }else if (id == R.id.action_glosario) {

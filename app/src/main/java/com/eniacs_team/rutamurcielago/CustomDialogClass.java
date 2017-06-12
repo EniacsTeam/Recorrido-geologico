@@ -50,7 +50,7 @@ public class CustomDialogClass extends Dialog implements android.view.View.OnCli
                 dismiss();
                 break;
             case R.id.visitar_sitio:
-                Uri uriUrl = Uri.parse("http://www.geologia.ucr.ac.cr/");
+                Uri uriUrl = Uri.parse("http://rutageologica.ucr.ac.cr/");
                 Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
                 c.startActivity(launchBrowser);
                 break;
