@@ -425,9 +425,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                this.startActivity(intent);
+                super.onBackPressed();
                 //this.finish();
                 return true;
         }
