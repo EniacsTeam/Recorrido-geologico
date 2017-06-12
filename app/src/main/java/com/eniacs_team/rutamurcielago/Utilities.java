@@ -7,8 +7,7 @@ package com.eniacs_team.rutamurcielago;
 public class Utilities {
 
     /**
-     * Function to convert milliseconds time to
-     * Timer Format
+     * Función para convertir de miliseguntos a Timer Format
      * Hours:Minutes:Seconds
      * */
     public String milliSecondsToTimer(long milliseconds){
@@ -37,7 +36,7 @@ public class Utilities {
     }
 
     /**
-     * Function to get Progress percentage
+     * Función para obtener el porcentaje del progreso.
      * @param currentDuration
      * @param totalDuration
      * */
@@ -55,10 +54,10 @@ public class Utilities {
     }
 
     /**
-     * Function to change progress to timer
+     * Funcion para cambiar de progreso a Timer.
      * @param progress -
      * @param totalDuration
-     * returns current duration in milliseconds
+     * @return currentDuration
      * */
     public int progressToTimer(int progress, int totalDuration) {
         int currentDuration = 0;

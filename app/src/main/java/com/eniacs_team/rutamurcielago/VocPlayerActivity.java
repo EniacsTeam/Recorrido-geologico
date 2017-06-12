@@ -1,21 +1,17 @@
 package com.eniacs_team.rutamurcielago;
 
-import android.app.Activity;
-import android.content.res.AssetFileDescriptor;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.widget.SeekBar;
 
 /**
  * Created by kenca on 04/06/2017.
  */
 
+import android.content.res.AssetFileDescriptor;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.widget.SeekBar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -23,11 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import static android.R.attr.id;
 
 public class VocPlayerActivity extends AppCompatActivity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
@@ -48,11 +40,9 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
     private Handler mHandler = new Handler();
     private ManagerVoc vocManager;
     private Utilities utils;
-    private int seekForwardTime = 5000; // 5000 milliseconds
-    private int seekBackwardTime = 5000; // 5000 milliseconds
+    private int seekForwardTime = 2000; // 2000 milisegundos
+    private int seekBackwardTime = 2000; // 2000 milisegundos
     private int currentVocIndex = 0;
-    private boolean isShuffle = false;
-    private boolean isRepeat = false;
     private ArrayList<HashMap<String, String>> vocsList = new ArrayList<HashMap<String, String>>();
     private BaseDatos baseDatos;
 
@@ -64,6 +54,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         // All player buttons
         btnPlay = (ImageButton) findViewById(R.id.btnPlay);
@@ -101,9 +92,9 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
 
 
         /**
-         * Play button click event
-         * plays a voc and changes button to pause image
-         * pauses a voc and changes button to play image
+         * Evento click play
+         * reproduce un audio y cambia al boton pausa
+         * pausa un audio y cambia a reproducir.
          * */
         btnPlay.setOnClickListener(new View.OnClickListener() {
 
@@ -129,8 +120,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         });
 
         /**
-         * Forward button click event
-         * Forwards voc specified seconds
+         * Adelanta el audio una cantidad de segundos predeterminada
          * */
         btnForward.setOnClickListener(new View.OnClickListener() {
 
@@ -150,8 +140,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         });
 
         /**
-         * Backward button click event
-         * Backward voc to specified seconds
+         * Retrocede el audio una cantidad de segundos predeterminada
          * */
         btnBackward.setOnClickListener(new View.OnClickListener() {
 
@@ -172,8 +161,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         });
 
         /**
-         * Next button click event
-         * Plays next voc by taking currentVocIndex + 1
+         * Reproduce el siguiente audio
          * */
         btnNext.setOnClickListener(new View.OnClickListener() {
 
@@ -193,8 +181,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         });
 
         /**
-         * Back button click event
-         * Plays previous voc by currentVocIndex - 1
+         * Reproduce el audio anterior.
          * */
         btnPrevious.setOnClickListener(new View.OnClickListener() {
 
@@ -217,8 +204,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
 
 
         /**
-         * Button Click event for Play list click event
-         * Launches list activity which displays list of vocs
+         * Abre la lista de reproducción.
          * */
         btnPlaylist.setOnClickListener(new View.OnClickListener() {
 
@@ -257,6 +243,7 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
     public void  playVoc(int indice){
         // Play voc
         try {
+            mPlayerBuilder();
             mp.reset();
             AssetFileDescriptor descriptor = baseDatos.selectAudioExtra( Integer.parseInt(vocsList.get(indice).get("id")));
             mp.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(),descriptor.getLength());
@@ -371,10 +358,65 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
 
     @Override
     public void onDestroy(){
+        stopAudio();
         super.onDestroy();
-        mp.release();
     }
 
+
+    /**
+     * Método llamado cuando se da "click" en el boton de atrás.
+     * Mata al media player.
+     */
+    @Override
+    public void onBackPressed() {
+        stopAudio();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        this.startActivity(intent);
+        //this.finish();
+        //super.onBackPressed();
+    }
+
+    private void stopAudio() {
+        if(mp != null)
+        {
+            mp.release();
+            vocProgressBar = null;
+            mp = null;
+        }
+    }
+
+
+    /**
+     * Método llamado cuando la aplicación vuelve a ejecución.
+     * Vuelve a poner el audio en play y llama a playCycle para que se actualize el seekBar.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mp != null)
+        {
+            mp.start();
+            btnPlay.setImageResource(R.drawable.btn_pause);
+            // Updating progress bar
+            updateProgressBar();
+        }
+
+    }
+
+    /**
+     * Metodo llamado cuando la aplicación se pone en pausa.
+     * se pone en pasusa el reproductor.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mp != null)
+        {
+            mp.pause();
+        }
+
+    }
 
     /**
      * Método para tomar la accion de un item, en este caso para devolverse a la activity anterior.
@@ -386,11 +428,24 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                this.finish();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                this.startActivity(intent);
+                //this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    /**
+     * Método que construye el media player.
+     */
+    private void mPlayerBuilder() {
+        //Creo reproductor de audio
+        if (mp == null) {
+            mp = new MediaPlayer();
+        }
     }
 
 }

@@ -61,13 +61,13 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
     public void onBindViewHolder(ViewHolder holder, int position) {
         listItemMenuMultimedia listItem = listItems.get(position);
 
-        if(listItem.getTitulo().equals("Audio")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen3));
-            holder.iconoMultimedia.setImageResource(R.mipmap.audio_multimedia);
-            holder.titulo.setText(listItem.getTitulo());
-        }else if(listItem.getTitulo().equals("Imagen")){
+        if(listItem.getTitulo().equals("Imagen")){
             holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen4));
             holder.iconoMultimedia.setImageResource(R.mipmap.imagen_multimedia);
+            holder.titulo.setText(listItem.getTitulo());
+        }else if(listItem.getTitulo().equals("Audio")){
+            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen3));
+            holder.iconoMultimedia.setImageResource(R.mipmap.audio_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Video")){
             holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen2));

@@ -168,15 +168,12 @@ public class MainActivity extends AppCompatActivity {
             Uri uriUrl = Uri.parse("http://www.geologia.ucr.ac.cr/");
             Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
             this.startActivity(launchBrowser);
-            return true;
         }else if (id == R.id.action_glosario) {
             Intent glosario = new Intent(this, VocPlayerActivity.class);
             this.startActivity(glosario);
-            return true;
         }else if (id == R.id.action_sobre_nosotros) {
             Intent nosotros = new Intent(this, Sobre_nosotros.class);
             this.startActivity(nosotros);
-            return true;
         }else if (id == R.id.action_ver_recomendaciones) {
             return true;
         }
