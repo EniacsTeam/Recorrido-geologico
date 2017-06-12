@@ -49,6 +49,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".FullscreenAnim"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/FullscreenTheme" />
         <activity android:name=".reproductor_audio" />
         <activity android:name=".Sobre_nosotros"/>
         <activity
