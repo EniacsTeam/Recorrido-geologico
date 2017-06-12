@@ -263,7 +263,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             @Override
             public void onClick(View v) {
                 if (v == btn_video) {
-                    Toast.makeText(getApplicationContext(), "Toque video", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), VideoPlayerController.class);
+                    intent.putExtra("id", idPunto);
+                    startActivity(intent);
                 }
 
                 if (v == btn_audio) {

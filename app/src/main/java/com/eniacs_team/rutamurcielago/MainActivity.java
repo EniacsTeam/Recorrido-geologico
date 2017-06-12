@@ -177,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
             Intent nosotros = new Intent(this, Sobre_nosotros.class);
             this.startActivity(nosotros);
         }else if (id == R.id.action_ver_recomendaciones) {
-            return true;
+            Intent recomendaciones = new Intent(this, WelcomeActivity.class);
+            this.startActivity(recomendaciones);
         }
 
         return super.onOptionsItemSelected(item);
