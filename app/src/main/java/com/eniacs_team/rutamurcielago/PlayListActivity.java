@@ -16,6 +16,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+/**
+ * Clase para controlar la lista de reproducción de los audios del Glosario.
+ */
 public class PlayListActivity extends ListActivity {
     // Vocs list
     public ArrayList<HashMap<String, String>> vocList = new ArrayList<HashMap<String, String>>();

@@ -52,9 +52,10 @@
         <activity android:name=".reproductor_audio" />
         <activity android:name=".Sobre_nosotros"/>
         <activity
-            android:name=".VocPlayerActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/vocActivity"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:name=".VocPlayerActivity"
+            />
         <activity
             android:name=".PlayListActivity" />
 
