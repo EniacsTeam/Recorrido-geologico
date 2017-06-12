@@ -64,7 +64,7 @@ public class Ubicacion implements LocationListener {
     CustomDialogClass dialog;
     FloatingActionButton btFollowMe;
     Marker currentPosition;
-    public static final GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
+    GeoPoint routeCenter = new GeoPoint(10.904823, -85.867302);
 
     /**
      * Constructor de clase, Se inicializan variables globales.
@@ -170,7 +170,7 @@ public class Ubicacion implements LocationListener {
         currentPosition.setPosition(new GeoPoint(location.getLatitude(), location.getLongitude()));
 
         int marcador = distanciaEntrePuntos(location);
-        map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
+        //map.getController().animateTo(new GeoPoint(map.getMapCenter().getLatitude()+0.0001,map.getMapCenter().getLongitude()));
 
         if(isFollowing) {
             map.getController().animateTo(new GeoPoint(location.getLatitude() + 0.0001, location.getLongitude()));

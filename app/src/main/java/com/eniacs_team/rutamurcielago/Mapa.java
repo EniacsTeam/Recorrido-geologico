@@ -57,6 +57,7 @@ import java.util.Set;
 
 import static android.content.Context.SENSOR_SERVICE;
 import static android.os.Build.VERSION_CODES.M;
+import static com.eniacs_team.rutamurcielago.R.id.map;
 import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
 
@@ -106,10 +107,13 @@ public class Mapa implements MapEventsReceiver {
         this.activity = activity;
         marcador_actual = null;
         this.mScaleBarOverlay = new ScaleBarOverlay(mapView);
-        this.mRotationGestureOverlay = new RotationGestureOverlay(mapView);
 
+        final MapController mapViewController = (MapController) mapView.getController();
+        mapViewController.setZoom(13);
+        mapViewController.animateTo(routeCenter);
+
+        this.mRotationGestureOverlay = new RotationGestureOverlay(mapView);
         double[] latitude = DatosGeo.latitudes();
-        ;
         double[] longitud = DatosGeo.longitudes();
 
         currentLocationM=new Marker(this.mapView);
@@ -126,27 +130,22 @@ public class Mapa implements MapEventsReceiver {
                 if (marcador_anterior == null) {
                     marcador_anterior = new Marker(map);
                     marcador_actual = marker;
-                    //marker.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marker.setAlpha(1);
                     mapView.getController().animateTo(marker.getPosition());
                     marker.showInfoWindow();
                 } else if (marker != marcador_actual) {
                     marcador_anterior = marcador_actual;
                     marcador_anterior.closeInfoWindow();
-                    //marcador_anterior.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
                     marcador_anterior.setAlpha(0.5f);
                     marcador_actual = marker;
-                    //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                     marcador_actual.setAlpha(1);
                     mapView.getController().animateTo(marcador_actual.getPosition());
                     marcador_actual.showInfoWindow();
                 } else {
                     if (marcador_actual.isInfoWindowShown()) {
                         marcador_actual.closeInfoWindow();
-                        //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
                         marcador_actual.setAlpha(0.5f);
                     } else {
-                        //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_selected));
                         marcador_actual.setAlpha(1);
                         mapView.getController().animateTo(marcador_actual.getPosition());
                         marker.showInfoWindow();
@@ -190,10 +189,9 @@ public class Mapa implements MapEventsReceiver {
         mLocationOverlay.setOptionsMenuEnabled(true);
 
         /*Ajustes en el zoom y el enfoque inicial*/
-        final MapController mapViewController = (MapController) mapView.getController();
-        mapViewController.setZoom(13);
-        mapViewController.animateTo(routeCenter);
-        mapViewController.setCenter(routeCenter);
+        //final MapController mapViewController = (MapController) mapView.getController();
+       // mapViewController.setZoom(13);
+       // mapViewController.animateTo(routeCenter);
 
 
         mapView.setMinZoomLevel(12);
