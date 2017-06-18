@@ -429,6 +429,19 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             }
             else
             {
+                stopAudio();
+                if (gifDrawable != null)
+                {
+                    gifDrawable.stop();
+                }
+                ImageView intermedio = new ImageView(CameraOSMaps.this);
+                geoImage.setVisibility(View.INVISIBLE);
+                intermedio.setImageResource(R.mipmap.audio);
+                audioIcon.setImageDrawable(intermedio.getDrawable());
+                intermedio.setImageResource(R.mipmap.percy);
+                animacionIcon.setImageDrawable(intermedio.getDrawable());
+                anim_bool = true;
+                audio_bool = true;
                 setAvailabilityFab(false);
                 Toast msj = Toast.makeText(this,"Debe visitar el punto antes de poder ver más información", Toast.LENGTH_SHORT);
                 msj.show();
@@ -483,7 +496,10 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     stopAudio();
-                    gifDrawable.stop();
+                    if (gifDrawable != null)
+                    {
+                        gifDrawable.stop();
+                    }
                     geoImage.setVisibility(View.INVISIBLE);
                     audioIcon.setImageResource(R.mipmap.audio);
                     animacionIcon.setImageResource(R.mipmap.percy);
