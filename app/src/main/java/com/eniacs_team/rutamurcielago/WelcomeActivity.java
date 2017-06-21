@@ -31,6 +31,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beyondar.android.util.location.BeyondarLocationManager;
+
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +52,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private MediaPlayer mPlayer;
     private Handler handler;
     private Runnable runnable;
+    private int length = 0;
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -254,6 +257,33 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // When the activity is resumed it is time to enable the
+        // BeyondarLocationManager
+        if(mPlayer != null)
+        {
+            runnable = null;
+            mPlayer.seekTo(length);
+            mPlayer.start();
+            playCycle();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // To avoid unnecessary battery usage disable BeyondarLocationManager
+        // when the activity goes on pause.
+        if(mPlayer != null)
+        {
+            mPlayer.pause();
+            length = mPlayer.getCurrentPosition();
+        }
+
+    }
+
     /**
      * Metodo para reproducir el audio.
      */
@@ -328,7 +358,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         playCycle();
                     }
                 };
-                handler.postDelayed(runnable, 100);
+                handler.postDelayed(runnable, 10);
             }
         }
 
