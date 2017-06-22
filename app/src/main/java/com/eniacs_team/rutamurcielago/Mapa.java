@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -92,6 +93,12 @@ public class Mapa implements MapEventsReceiver {
     Marker.OnMarkerClickListener markerClickListener;
     MapView.OnClickListener mapViewListener;
     MapEventsOverlay mapEventsOverlay;
+
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
 
     /**
      * Constructor de la clase mapa

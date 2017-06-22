@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,19 +63,19 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
         listItemMenuMultimedia listItem = listItems.get(position);
 
         if(listItem.getTitulo().equals("Imagen")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen4));
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(context,R.color.dot_light_screen4));
             holder.iconoMultimedia.setImageResource(R.mipmap.imagen_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Audio")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen3));
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(context,R.color.dot_light_screen3));
             holder.iconoMultimedia.setImageResource(R.mipmap.audio_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Video")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen2));
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(context,R.color.dot_light_screen2));
             holder.iconoMultimedia.setImageResource(R.mipmap.video_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }else if(listItem.getTitulo().equals("Animación")){
-            holder.cardView.setBackgroundColor(context.getColor(R.color.dot_light_screen1));
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(context,R.color.dot_light_screen1));
             holder.iconoMultimedia.setImageResource(R.mipmap.animacion_multimedia);
             holder.titulo.setText(listItem.getTitulo());
         }

@@ -1,11 +1,13 @@
 package com.eniacs_team.rutamurcielago;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +32,7 @@ public class reproductor_audio extends AppCompatActivity {
     SeekBar seekBar;
     ImageButton reproductor;
     TextView texto;
+    Context mContext;
 
     private MediaPlayer mediaPlayer;
     private BaseDatos baseDatos;
@@ -146,7 +149,8 @@ public class reproductor_audio extends AppCompatActivity {
         if(mediaPlayer != null)
         {
             mediaPlayer.start();
-            reproductor.setImageDrawable(getDrawable(R.drawable.ic_pause_white_24px));
+            mContext = this;
+            reproductor.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_pause_white_24px));
             playCycle();
         }
 
@@ -234,7 +238,7 @@ public class reproductor_audio extends AppCompatActivity {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mediaPlayer.seekTo(0);
-                    reproductor.setImageDrawable(getDrawable(R.drawable.ic_play_arrow_white_24px));
+                    reproductor.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_play_arrow_white_24px));
                     seekBar.setProgress(0);
                 }
             };
