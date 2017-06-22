@@ -84,11 +84,11 @@ public class reproductor_audio extends AppCompatActivity {
             public void onClick(View v) {
                 if(mediaPlayer.isPlaying()){ // si se esta reproduciendo se pausa y se cambia el icono al de play
                     mediaPlayer.pause();
-                    reproductor.setImageDrawable(getDrawable(R.drawable.ic_play_arrow_white_24px));
+                    reproductor.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_play_arrow_white_24px));
                 }else{// si no, se reproduce el audio y se cambia el icono al de pausa.
                     mediaPlayer.start();
                     playCycle();
-                    reproductor.setImageDrawable(getDrawable(R.drawable.ic_pause_white_24px));
+                    reproductor.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_pause_white_24px));
                 }
             }
         });
