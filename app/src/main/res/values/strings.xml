@@ -36,5 +36,5 @@
     <string name="anno">2017</string>
     <string name="vocActivity">Glosario</string>
     <string name="glosario">Glosario</string>
-    <string name="lista_vacia">Lista Vacía</string>
+    <string name="lista_vacia">No se encuentran audios.</string>
 </resources>
