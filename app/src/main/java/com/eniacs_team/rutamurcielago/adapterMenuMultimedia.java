@@ -49,6 +49,12 @@ public class adapterMenuMultimedia extends RecyclerView.Adapter<adapterMenuMulti
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_multimedia, parent,false);
+
+        int height = parent.getMeasuredHeight() / getItemCount();
+        int width = parent.getMeasuredWidth();
+
+        v.setLayoutParams(new RecyclerView.LayoutParams(width, height));
+
         return new ViewHolder(v);
     }
 
