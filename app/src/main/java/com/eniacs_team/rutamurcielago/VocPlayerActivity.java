@@ -85,8 +85,12 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         // Getting all vocs list
         vocsList = vocManager.getPlayList();
 
-        if(vocsList.size() > 0){
-            playVoc(0);
+        if(vocsList.size() > 0) {
+            //playVoc(0);
+            mp.pause();
+            btnPlay.setImageResource(R.drawable.btn_play);
+            Intent i = new Intent(getApplicationContext(), PlayListActivity.class);
+            startActivityForResult(i, 100);
         }
         // By default play first voc
 
@@ -227,10 +231,6 @@ public class VocPlayerActivity extends AppCompatActivity implements OnCompletion
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == 100){
             currentVocIndex = data.getExtras().getInt("vocIndex");
-            //int indice = Integer.parseInt(vocsList.get(currentVocIndex).get("id"));
-
-            // play selected voc
-            //playVoc(indice);
             playVoc(currentVocIndex);
         }
 

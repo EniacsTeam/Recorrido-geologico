@@ -57,6 +57,7 @@ public class SplashActivity extends AppCompatActivity {
             int res = baseDatos.selectEstadoDatos(2);
             if (res == 0)
             {
+                baseDatos.actualizarEstado(2);
                 baseDatos = null;
                 startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
             }

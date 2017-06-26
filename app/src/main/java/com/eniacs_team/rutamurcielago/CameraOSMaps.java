@@ -43,6 +43,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
     private BaseDatos baseDatos;
     private int idPunto = -1;
     private String nPunto;
+    //private int length = 0;
 
     private FloatingActionButton actionButton;
     private SubActionButton btn_video;
@@ -180,6 +181,11 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // When the activity is resumed it is time to enable the
         // BeyondarLocationManager
         BeyondarLocationManager.enable();
+        if(mPlayer != null)
+        {
+            mPlayer.seekTo(0);
+            mPlayer.start();
+        }
     }
 
     @Override
@@ -188,6 +194,12 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         // To avoid unnecessary battery usage disable BeyondarLocationManager
         // when the activity goes on pause.
         BeyondarLocationManager.disable();
+        if(mPlayer != null)
+        {
+            mPlayer.pause();
+            //length = mPlayer.getCurrentPosition();
+        }
+
     }
 
     /**
@@ -251,7 +263,9 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             @Override
             public void onClick(View v) {
                 if (v == btn_video) {
-                    Toast.makeText(getApplicationContext(), "Toque video", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), VideoPlayerController.class);
+                    intent.putExtra("id", idPunto);
+                    startActivity(intent);
                 }
 
                 if (v == btn_audio) {
@@ -415,6 +429,19 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
             }
             else
             {
+                stopAudio();
+                if (gifDrawable != null)
+                {
+                    gifDrawable.stop();
+                }
+                ImageView intermedio = new ImageView(CameraOSMaps.this);
+                geoImage.setVisibility(View.INVISIBLE);
+                intermedio.setImageResource(R.mipmap.audio);
+                audioIcon.setImageDrawable(intermedio.getDrawable());
+                intermedio.setImageResource(R.mipmap.percy);
+                animacionIcon.setImageDrawable(intermedio.getDrawable());
+                anim_bool = true;
+                audio_bool = true;
                 setAvailabilityFab(false);
                 Toast msj = Toast.makeText(this,"Debe visitar el punto antes de poder ver más información", Toast.LENGTH_SHORT);
                 msj.show();
@@ -469,7 +496,10 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     stopAudio();
-                    gifDrawable.stop();
+                    if (gifDrawable != null)
+                    {
+                        gifDrawable.stop();
+                    }
                     geoImage.setVisibility(View.INVISIBLE);
                     audioIcon.setImageResource(R.mipmap.audio);
                     animacionIcon.setImageResource(R.mipmap.percy);
