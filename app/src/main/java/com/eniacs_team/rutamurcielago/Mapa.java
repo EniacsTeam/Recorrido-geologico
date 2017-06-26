@@ -1,29 +1,17 @@
 package com.eniacs_team.rutamurcielago;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ZoomButtonsController;
 
-import com.beyondar.android.world.GeoObject;
 import com.beyondar.android.world.World;
 
 import org.osmdroid.events.MapEventsReceiver;
@@ -35,14 +23,12 @@ import org.osmdroid.tileprovider.modules.OfflineTileProvider;
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
-import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
-import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
@@ -53,14 +39,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import static android.content.Context.SENSOR_SERVICE;
-import static android.os.Build.VERSION_CODES.M;
-import static com.eniacs_team.rutamurcielago.R.id.map;
-import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
-import static org.osmdroid.views.overlay.infowindow.InfoWindow.getOpenedInfoWindowsOn;
 
 /**
  * Esta clase representa un mapa de OpenStreet Maps. Contiene distintos metodos para su correcto funcionamiento en la aplicacion.
@@ -307,10 +286,10 @@ public class Mapa implements MapEventsReceiver {
             marcador.setPosition(locations.get(i));
 
             BaseDatos base = BaseDatos.getInstancia();
-            Drawable marker = activity.getResources().getDrawable(R.drawable.ic_marker_naranja);
+            Drawable marker = activity.getResources().getDrawable(R.drawable.ic_marker_azul);
             marcador.setIcon(marker);
             if(base.visitadoPreviamente(i+1)==0){
-                marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_naranja));
+                marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_azul));
             }else{
                 marcador.setIcon(this.activity.getResources().getDrawable(R.drawable.ic_marker_verde));
             }
@@ -338,7 +317,7 @@ public class Mapa implements MapEventsReceiver {
     public boolean singleTapConfirmedHelper(GeoPoint p) {
         if (!isMarker) {
             InfoWindow.closeAllInfoWindowsOn(mapView);
-            //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_naranja));
+            //marcador_actual.setIcon(activity.getDrawable(R.drawable.ic_marker_azul));
             marcador_actual.setAlpha(0.5f);
         }
         isMarker = false;

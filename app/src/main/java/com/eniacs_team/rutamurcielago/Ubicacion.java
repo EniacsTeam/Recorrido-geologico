@@ -1,44 +1,29 @@
 package com.eniacs_team.rutamurcielago;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.LOCATION_SERVICE;
 import static android.media.CamcorderProfile.get;
-
-import static android.os.Build.VERSION_CODES.M;
-import static com.eniacs_team.rutamurcielago.R.mipmap.marker;
 
 /**
  * Esta clase se encarga de obtener la ubicación del usuario y controlar lo que sucede en el onLocationChanged.
@@ -202,7 +187,7 @@ public class Ubicacion implements LocationListener {
 
                     marcadores.set(marcadorActual, marker);
                     marker = marcadores.get(marcador);
-                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_rosa));
                     ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
                     marcadores.set(marcador, marker);
@@ -212,7 +197,7 @@ public class Ubicacion implements LocationListener {
                     marker = marcadores.get(marcador);
                     ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
-                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_azul));
+                    marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_rosa));
                     marcadores.set(marcador, marker);
 
                 }
