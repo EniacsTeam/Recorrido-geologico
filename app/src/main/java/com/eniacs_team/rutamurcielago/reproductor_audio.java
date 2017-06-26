@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
@@ -74,6 +75,7 @@ public class reproductor_audio extends AppCompatActivity {
         String texto_del_audio = baseDatos.selectTextoAudio(id); //Obtiene el texto relacionado al audio para ser mostrado en el textView
         if(texto_del_audio != null){
             texto.setText(texto_del_audio);
+            texto.setMovementMethod(new ScrollingMovementMethod());
         }
 
         playAudio();
