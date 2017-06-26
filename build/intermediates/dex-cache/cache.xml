@@ -2,13 +2,31 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\beyondar-radar-plugin-v0.9.1.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="d5e439460af55c7b2e5b0f6af120c38759cef6bf">
-        <dex dex="C:\Users\kenca\Documents\GitHub\Recorrido-geologico\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_fd047a8f45d996d7a1ad1f6837fd87564d86b860\classes.dex" />
+        sha1="25ce04f5845c01910b0f3600914c0c8e8e4f37c2">
+        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-radar-plugin-v0.9.1_1c5c261df5f0c68cbcb7300a231981ed0de123ed.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\gradle-wrapper.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="e614e3b2edc63a9cc423437dea087c91962254f5">
+        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\gradle-wrapper_601b5a4d2cfb5bc090c99209be88a466c44fa6be.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\libs\beyondar-v0.9.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="89b52007a0824ecf65ea57f01b6ace1c8ed400b9">
+        <dex dex="C:\Users\acer main\Documents\GitHub\Recorrido-geologico\app\build\intermediates\pre-dexed\debug\beyondar-v0.9.3_03af6cbb41d91c7cce2317426d25707b5d2fff3b.jar" />
     </item>
 
 </items>
