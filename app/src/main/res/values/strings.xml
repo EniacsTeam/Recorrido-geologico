@@ -17,19 +17,24 @@
     <string name="pagina_web">Ir a sitio web</string>
     <string name="sobre_nosotros">Sobre nosotros</string>
     <string name="ver_recomendaciones">Seguridad</string>
-    <string name="info_aplicacion">Información general de la aplicación.</string>
-    <string name="desarrollado_por">Desarrollada por:</string>
+    <string name="info_aplicacion">Este  producto  ha  sido  desarrollado  por  medio  de  la  cooperación  del  Centro  de  Investigación  en Ciencias Geológicas, Museo + UCR, Escuela de Ciencias de la Computación e Informática y el Área de Conservación Guanacaste, con el fin de educar sobre el conocimiento geológico del noroeste de Costa Rica, que constituye uno de los sitios más emblemáticos y enmarca la historia geológica de la parte Sur de América Central. Es así como la Universidad de Costa Rica y el Ministerio de Ambiente y Energía se unen para promover la cultura científica a través de paisajes geológicos de una belleza y geodiversidad magnificente.</string>
+    <string name="creditos">Créditos</string>
+
+
+    <string name="CICG">Centro de Investigación en Ciencias Geológicas(CICG)</string>
+    <string name="museo">Museo + UCR</string>
+    <string name="ACG">Área de Conservación Guanacaste (ACG)</string>
+    <string name="ECCI">Escuela de Ciencias de la Computación e Informática (ECCI)</string>
+
+    <string name="integrantesCICG">Percy Denyer Chavarría\nJuan Pablo Solano Monge</string>
+    <string name="integrantesMuseo">Eugenia Zavaleta Ochoa\nMariano Chinchilla Chavarría\nMarco Díaz Segura</string>
+    <string name="integrantesACG">Alejandro Masís Cuevillas\nRóger Blanco Segura\nMaría Marta Chavarría Díaz\nFelipe Chavarría Díaz</string>
     <string name="Eniacs">ENIACS UCR</string>
     <string name="integrantes">Integrado por:</string>
-    <string name="integrante1">Francisco Arroyo</string>
-    <string name="integrante2">Kenneth Calvo</string>
-    <string name="integrante3">David Chaves</string>
-    <string name="integrante4">Johan Durán</string>
-    <string name="integrante5">Yohel Muñoz</string>
-    <string name="integrante6">Marcelo Solorzano</string>
-    <string name="integrante7">Cesar Vargas</string>
+    <string name="integrantesECCI">Francisco Arroyo Solano\nKenneth Calvo Argüello\nDavid Chaves Campos\nJohan Durán Cerdas\nYohel Muñoz Rodríguez\nMarcelo Solórzano Astorga\nCésar Vargas Arce</string>
+    <string name="profesor">Alan Calderón Castro</string>
     <string name="anno">2017</string>
     <string name="vocActivity">Glosario</string>
     <string name="glosario">Glosario</string>
-    <string name="lista_vacia">Lista Vacía</string>
+    <string name="lista_vacia">No se encuentran audios.</string>
 </resources>

@@ -88,6 +88,7 @@ public class Ubicacion implements LocationListener {
         this.btFollowMe = (FloatingActionButton) this.mainActivity.findViewById(R.id.ic_follow_me);
         gpsActivo(v);
         this.btCenterMap = (FloatingActionButton) center;
+        btCenterMap.setBackgroundTintList(ColorStateList.valueOf(mainActivity.getResources().getColor(R.color.blanco)));
         btCenterMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View center) {

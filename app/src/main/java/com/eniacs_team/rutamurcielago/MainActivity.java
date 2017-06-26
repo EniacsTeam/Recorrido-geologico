@@ -207,6 +207,10 @@ public class MainActivity extends AppCompatActivity {
         {
             ActivityCompat.requestPermissions(this, new String[]{permiso}, permissionRequestCode);
         }
+        else {
+            final Intent intent = new Intent(this, CameraOSMaps.class);
+            startActivity(intent);
+        }
     }
 
     /**
