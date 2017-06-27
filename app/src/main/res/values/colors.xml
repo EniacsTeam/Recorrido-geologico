@@ -49,15 +49,15 @@
     <color name="naranja_dark">#26698D</color>
 
     <!-- dots inactive colors -->
-    <color name="dot_dark_screen1">#3BA2DA</color>
-    <color name="dot_dark_screen2">#3899CD</color>
-    <color name="dot_dark_screen3">#3186B3</color>
-    <color name="dot_dark_screen4">#26698D</color>
+    <color name="dot_dark_screen1">#7dc1f5</color>
+    <color name="dot_dark_screen2">#42ade9</color>
+    <color name="dot_dark_screen3">#44b4f1</color>
+    <color name="dot_dark_screen4">#913792c2</color>
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#6DAADA</color>
-    <color name="dot_light_screen2">#67A0CD</color>
-    <color name="dot_light_screen3">#5A8CB3</color>
-    <color name="dot_light_screen4">#476E8D</color>
+    <color name="dot_light_screen1">#6299c4</color>
+    <color name="dot_light_screen2">#3287b6</color>
+    <color name="dot_light_screen3">#2f7ea9</color>
+    <color name="dot_light_screen4">#1e526e</color>
 
 </resources>
