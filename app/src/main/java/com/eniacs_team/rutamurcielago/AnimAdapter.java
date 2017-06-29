@@ -41,9 +41,9 @@ public class AnimAdapter extends RecyclerView.Adapter<AnimAdapter.ViewHolder> {
     public void onBindViewHolder(final AnimAdapter.ViewHolder viewHolder, int i) {
 
         StringBuilder sb = new StringBuilder(galleryList.get(i).getAnim_title());
-        if (sb.length() > 21)
+        if (sb.length() > 28)
         {
-            sb = new StringBuilder(sb.substring(0, 20));
+            sb = new StringBuilder(sb.substring(0, 27));
             sb.append("...");
         }
 
