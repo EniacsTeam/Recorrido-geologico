@@ -40,9 +40,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(final MyAdapter.ViewHolder viewHolder, int i) {
 
         StringBuilder sb = new StringBuilder(galleryList.get(i).getImage_title());
-        if (sb.length() > 28)
+        if (sb.length() > 21)
         {
-            sb = new StringBuilder(sb.substring(0, 27));
+            sb = new StringBuilder(sb.substring(0, 20));
             sb.append("...");
         }
 
