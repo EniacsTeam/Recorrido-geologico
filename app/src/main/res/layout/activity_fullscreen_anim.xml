@@ -40,6 +40,7 @@
                 android:layout_gravity="start"
                 android:paddingEnd="25dp"
                 android:paddingStart="25dp"
+                android:textSize="20sp"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"
                 android:textColor="#fff"
