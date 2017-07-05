@@ -90,7 +90,7 @@ public class CameraOSMaps extends FragmentActivity implements OnClickListener, O
         mBeyondarFragment.setMaxDistanceToRender(3000);
         mBeyondarFragment.setDistanceFactor(20);
         mBeyondarFragment.setPushAwayDistance(15);
-        //mBeyondarFragment.setPullCloserDistance(progress);
+        mBeyondarFragment.setPullCloserDistance(50);
         mBeyondarFragment.setWorld(mWorld);
 
         BeyondarLocationManager.addWorldLocationUpdate(mWorld);

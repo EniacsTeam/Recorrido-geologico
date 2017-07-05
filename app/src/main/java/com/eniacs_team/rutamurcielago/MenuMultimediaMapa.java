@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -46,7 +48,14 @@ public class MenuMultimediaMapa extends AppCompatActivity {
             id = extras.getInt("id"); // id del punto.
             nPunto = extras.getString("nombre");
         }
-        setTitle(nPunto);
+
+        View customBar = getLayoutInflater().inflate(R.layout.titlebar_text, null);
+        TextView tv = (TextView) customBar.findViewById(R.id.textTitle);
+        tv.setText(nPunto);
+
+        actionBar.setCustomView(customBar);
+        actionBar.setDisplayShowCustomEnabled(true);
+        //setTitle(nPunto);
         
         loadRecyclerViewData();
         

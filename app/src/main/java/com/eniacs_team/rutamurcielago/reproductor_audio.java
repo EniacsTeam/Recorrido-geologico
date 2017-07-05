@@ -60,8 +60,14 @@ public class reproductor_audio extends AppCompatActivity {
         }else{
             onBackPressed();
         }
-        setTitle(extras.getString("nombre"));
 
+        View customBar = getLayoutInflater().inflate(R.layout.titlebar_text, null);
+        TextView tv = (TextView) customBar.findViewById(R.id.textTitle);
+        tv.setText(extras.getString("nombre"));
+
+        getSupportActionBar().setCustomView(customBar);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        //setTitle(extras.getString("nombre"));
 
         handler = new Handler();
 

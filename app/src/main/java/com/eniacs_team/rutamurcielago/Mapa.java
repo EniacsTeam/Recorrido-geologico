@@ -62,22 +62,17 @@ public class Mapa implements MapEventsReceiver {
     CustomDialogClass dialogo;
     InfoWindow infoWindow;
 
-    private OSMWorldPlugin mOSMapPlugin;
-    private World mWorld;
     Marker marcador_anterior;
     Marker marcador_actual;
     Marker currentLocationM;
     boolean isMarker = true;
 
     Marker.OnMarkerClickListener markerClickListener;
-    MapView.OnClickListener mapViewListener;
     MapEventsOverlay mapEventsOverlay;
-
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-
 
     /**
      * Constructor de la clase mapa

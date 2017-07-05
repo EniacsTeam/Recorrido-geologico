@@ -21,9 +21,15 @@ public class CustomWorldHelper {
     private static final double[] latitudes = DatosGeo.latitudes();
 
     private static final int[] resources
-            = {R.drawable.inicial,R.drawable.descartes,R.drawable.vegetacion,R.drawable.peridotitas,R.drawable.santa_ana,
-            R.drawable.rocas_sedimentarias,R.drawable.descartes2,R.drawable.pliegues,R.drawable.maravillas,
-            R.drawable.rocas_inclinadas,R.drawable.erosion,R.drawable.intrusiones,R.drawable.peridotitas2, R.drawable.dunas,
+            = {R.drawable.vinicial,R.drawable.vdescartes,R.drawable.vvegetacion,R.drawable.vperidotitas,R.drawable.vsanta_elena,
+            R.drawable.vrivas,R.drawable.vdescartes2,R.drawable.vpliegues,R.drawable.vmaravillas,
+            R.drawable.vvista,R.drawable.verosion,R.drawable.vintrusiones,R.drawable.vperidotitas2, R.drawable.vdunas,
+            R.drawable.vsanta_rosa,R.drawable.visla,R.drawable.varcos,R.drawable.vupwelling,R.drawable.vpaleodunas};
+
+    private static final int[] resources2
+            = {R.drawable.inicial,R.drawable.descartes,R.drawable.vegetacion,R.drawable.peridotitas,R.drawable.santa_elena,
+            R.drawable.rivas,R.drawable.descartes2,R.drawable.pliegues,R.drawable.maravillas,
+            R.drawable.vista,R.drawable.erosion,R.drawable.intrusiones,R.drawable.peridotitas2, R.drawable.dunas,
             R.drawable.santa_rosa,R.drawable.isla,R.drawable.arcos,R.drawable.upwelling,R.drawable.paleodunas};
 
     /**
@@ -36,38 +42,18 @@ public class CustomWorldHelper {
             // Create an object with an image in the app resources.
             GeoObject go = new GeoObject(100+i);
             go.setGeoPosition(latitudes[i], longitudes[i]);
-            go.setImageResource(resources[i]);
+            if(baseDatos.visitadoPreviamente(i+1) != 0)
+            {
+                go.setImageResource(resources2[i]);
+            }
+            else
+            {
+                go.setImageResource(resources[i]);
+            }
             go.setName(baseDatos.selectDescripcion(i+1));
             // Add the GeoObjects to the world
             sharedWorld.addBeyondarObject(go);
         }
-
-        /* Para muestra al cliente
-         * Comentar bloque for arriba
-         * Descomentar lo siguiente */
-
-        /*
-        GeoObject go1 = new GeoObject(100);
-        go1.setGeoPosition(10.951271d, -85.709449d);
-        go1.setImageResource(R.drawable.descartes);
-        go1.setName(baseDatos.selectDescripcion(1));
-
-        // Create an object with an image in the app resources.
-        GeoObject go2 = new GeoObject(101);
-        go2.setGeoPosition(10.951394d, -85.709024d);
-        go2.setImageResource(R.drawable.vegetacion);
-        go2.setName(baseDatos.selectDescripcion(2));
-
-        // Create an object with an image in the app resources.
-        GeoObject go3 = new GeoObject(102);
-        go3.setGeoPosition(10.951771d, -85.709807d);
-        go3.setImageResource(R.drawable.peridotitas);
-        go3.setName(baseDatos.selectDescripcion(3));
-
-        sharedWorld.addBeyondarObject(go1);
-        sharedWorld.addBeyondarObject(go2);
-        sharedWorld.addBeyondarObject(go3);
-        */
     }
 
     /**
@@ -83,16 +69,20 @@ public class CustomWorldHelper {
         sharedWorld = new World(context);
         baseDatos = BaseDatos.getInstancia();
 
-        // User position (you can change it using the GPS listeners form Android
-        // API)
-        //sharedWorld.setGeoPosition(10.926201d, -85.818870d);
-        sharedWorld.setGeoPosition(10.951398d, -85.709450d); //Cerca de descartes
-
-        //sharedWorld.setGeoPosition(10.9408d, -85.774d); //Cerquisima de vegetacion
-
         agregarCarteles();
 
         return sharedWorld;
+    }
+
+    /**
+     * Registra un cambio de cartel al visitar un punto.
+     *
+     * @param nObject numero del cartel
+     */
+    public static void changeARObject(int nObject) {
+        if (sharedWorld != null) {
+            sharedWorld.getBeyondarObjectList(World.LIST_TYPE_DEFAULT).get(nObject).setImageResource(resources2[nObject]);
+        }
     }
 
 }

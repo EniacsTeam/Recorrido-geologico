@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beyondar.android.world.World;
+
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
@@ -190,6 +192,9 @@ public class Ubicacion implements LocationListener {
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_rosa));
                     ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
+                    if(base.visitadoPreviamente(marcador+1)!=0){
+                        CustomWorldHelper.changeARObject(marcador);
+                    }
                     marcadores.set(marcador, marker);
                     marcadorActual= marcador;
 
@@ -197,6 +202,9 @@ public class Ubicacion implements LocationListener {
                     marker = marcadores.get(marcador);
                     ma = (Mapa.MyInfoWindow)marker.getInfoWindow();
                     ma.setTipo();
+                    if(base.visitadoPreviamente(marcador+1)!=0){
+                        CustomWorldHelper.changeARObject(marcador);
+                    }
                     marker.setIcon(this.mainActivity.getResources().getDrawable(R.drawable.ic_marker_rosa));
                     marcadores.set(marcador, marker);
 

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +46,14 @@ public class Gallery extends AppCompatActivity {
         idPunto = extras.getInt("id");
         nPunto = extras.getString("nombre");
         isImage = extras.getBoolean("image");
-        setTitle(nPunto);
+
+        View customBar = getLayoutInflater().inflate(R.layout.titlebar_text, null);
+        TextView tv = (TextView) customBar.findViewById(R.id.textTitle);
+        tv.setText(nPunto);
+
+        getSupportActionBar().setCustomView(customBar);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        //setTitle(nPunto);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);
