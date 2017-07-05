@@ -53,9 +53,9 @@ public class MenuMultimediaMapa extends AppCompatActivity {
         TextView tv = (TextView) customBar.findViewById(R.id.textTitle);
         tv.setText(nPunto);
 
+        setTitle("");
         actionBar.setCustomView(customBar);
         actionBar.setDisplayShowCustomEnabled(true);
-        //setTitle(nPunto);
         
         loadRecyclerViewData();
         

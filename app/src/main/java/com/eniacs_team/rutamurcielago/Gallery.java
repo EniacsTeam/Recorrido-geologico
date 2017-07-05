@@ -51,9 +51,9 @@ public class Gallery extends AppCompatActivity {
         TextView tv = (TextView) customBar.findViewById(R.id.textTitle);
         tv.setText(nPunto);
 
+        setTitle("");
         getSupportActionBar().setCustomView(customBar);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        //setTitle(nPunto);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);

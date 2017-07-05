@@ -65,9 +65,9 @@ public class reproductor_audio extends AppCompatActivity {
         TextView tv = (TextView) customBar.findViewById(R.id.textTitle);
         tv.setText(extras.getString("nombre"));
 
+        setTitle("");
         getSupportActionBar().setCustomView(customBar);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        //setTitle(extras.getString("nombre"));
 
         handler = new Handler();
 
