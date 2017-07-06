@@ -182,7 +182,7 @@
             android:paddingRight="10dp"
             android:text="@string/integrantesECCI"/>
 
-
+<!--
         <ImageView
             android:id="@+id/credito1"
             android:layout_width="match_parent"
@@ -203,7 +203,8 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/creditos3" />
-<!--
+            -->
+
         <TextView
             android:id="@+id/anno"
             android:layout_width="match_parent"
@@ -215,7 +216,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/anno"
-            android:textStyle="bold" />-->
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>
