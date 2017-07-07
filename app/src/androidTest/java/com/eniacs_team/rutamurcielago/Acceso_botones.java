@@ -30,103 +30,34 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class OptionsMenuTest {
+public class Acceso_botones {
 
     @Rule
     public ActivityTestRule<SplashActivity> mActivityTestRule = new ActivityTestRule<>(SplashActivity.class);
 
     @Test
-    public void optionsMenuTest() {
-        BaseDatos base = new BaseDatos(mActivityTestRule.getActivity().getApplicationContext());
-        int res = base.selectEstadoDatos(2);
-        if (res == 0)
-        {
-            // Added a sleep statement to match the app's execution delay.
-            // The recommended way to handle such scenarios is to use Espresso idling resources:
-            // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public void acceso_botones() {
+        ViewInteraction viewPager = onView(
+                allOf(withId(R.id.view_pager), isDisplayed()));
+        viewPager.perform(swipeLeft());
 
-            ViewInteraction viewPager = onView(
-                    allOf(withId(R.id.view_pager), isDisplayed()));
-            viewPager.perform(swipeLeft());
+        ViewInteraction viewPager2 = onView(
+                allOf(withId(R.id.view_pager), isDisplayed()));
+        viewPager2.perform(swipeLeft());
 
-            // Added a sleep statement to match the app's execution delay.
-            // The recommended way to handle such scenarios is to use Espresso idling resources:
-            // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        ViewInteraction viewPager3 = onView(
+                allOf(withId(R.id.view_pager), isDisplayed()));
+        viewPager3.perform(swipeLeft());
 
-            ViewInteraction viewPager2 = onView(
-                    allOf(withId(R.id.view_pager), isDisplayed()));
-            viewPager2.perform(swipeLeft());
-
-            // Added a sleep statement to match the app's execution delay.
-            // The recommended way to handle such scenarios is to use Espresso idling resources:
-            // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            ViewInteraction viewPager3 = onView(
-                    allOf(withId(R.id.view_pager), isDisplayed()));
-            viewPager3.perform(swipeLeft());
-
-            // Added a sleep statement to match the app's execution delay.
-            // The recommended way to handle such scenarios is to use Espresso idling resources:
-            // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.btn_next), withText("Listo"), isDisplayed()));
-            appCompatButton.perform(click());
-        }
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.btn_next), withText("Listo"), isDisplayed()));
+        appCompatButton.perform(click());
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.title), withText("Sobre nosotros"), isDisplayed()));
-        appCompatTextView.perform(click());
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        withParent(allOf(withId(R.id.action_bar),
-                                withParent(withId(R.id.action_bar_container)))),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-
-        ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(R.id.title), withText("Glosario"), isDisplayed()));
-        appCompatTextView2.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withId(R.id.btnPlaylist),
-                        withParent(withId(R.id.player_header_bg)),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
+        appCompatTextView.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -140,7 +71,7 @@ public class OptionsMenuTest {
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
                         withId(android.R.id.list),
-                        8),
+                        2),
                         isDisplayed()));
         linearLayout.perform(click());
 
@@ -153,10 +84,35 @@ public class OptionsMenuTest {
             e.printStackTrace();
         }
 
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withId(R.id.btnBackward), isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatImageButton2 = onView(
+                allOf(withId(R.id.btnPrevious), isDisplayed()));
+        appCompatImageButton2.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatImageButton3 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        withParent(allOf(withId(R.id.action_bar),
-                                withParent(withId(R.id.action_bar_container)))),
+                allOf(withId(R.id.btnPlaylist),
+                        withParent(withId(R.id.player_header_bg)),
                         isDisplayed()));
         appCompatImageButton3.perform(click());
 
@@ -169,24 +125,12 @@ public class OptionsMenuTest {
             e.printStackTrace();
         }
 
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-
-        ViewInteraction appCompatTextView3 = onView(
-                allOf(withId(R.id.title), withText("Seguridad"), isDisplayed()));
-        appCompatTextView3.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction viewPager4 = onView(
-                allOf(withId(R.id.view_pager), isDisplayed()));
-        viewPager4.perform(swipeLeft());
+        ViewInteraction linearLayout2 = onView(
+                allOf(childAtPosition(
+                        withId(android.R.id.list),
+                        7),
+                        isDisplayed()));
+        linearLayout2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -197,9 +141,9 @@ public class OptionsMenuTest {
             e.printStackTrace();
         }
 
-        ViewInteraction viewPager5 = onView(
-                allOf(withId(R.id.view_pager), isDisplayed()));
-        viewPager5.perform(swipeLeft());
+        ViewInteraction appCompatImageButton4 = onView(
+                allOf(withId(R.id.btnPlay), isDisplayed()));
+        appCompatImageButton4.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -210,9 +154,12 @@ public class OptionsMenuTest {
             e.printStackTrace();
         }
 
-        ViewInteraction viewPager6 = onView(
-                allOf(withId(R.id.view_pager), isDisplayed()));
-        viewPager6.perform(swipeLeft());
+        ViewInteraction appCompatImageButton5 = onView(
+                allOf(withContentDescription("Navigate up"),
+                        withParent(allOf(withId(R.id.action_bar),
+                                withParent(withId(R.id.action_bar_container)))),
+                        isDisplayed()));
+        appCompatImageButton5.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -222,16 +169,52 @@ public class OptionsMenuTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.btn_next), withText("Listo"), isDisplayed()));
-        appCompatButton2.perform(click());
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
-        ViewInteraction appCompatTextView4 = onView(
-                allOf(withId(R.id.title), withText("Ir a sitio web"), isDisplayed()));
-        appCompatTextView4.perform(click());
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatTextView2 = onView(
+                allOf(withId(R.id.title), withText("Sobre nosotros"), isDisplayed()));
+        appCompatTextView2.perform(click());
+
+        ViewInteraction appCompatImageButton6 = onView(
+                allOf(withContentDescription("Navigate up"),
+                        withParent(allOf(withId(R.id.action_bar),
+                                withParent(withId(R.id.action_bar_container)))),
+                        isDisplayed()));
+        appCompatImageButton6.perform(click());
+
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.ic_follow_me), isDisplayed()));
+        floatingActionButton.perform(click());
+
+        ViewInteraction floatingActionButton2 = onView(
+                allOf(withId(R.id.ic_follow_me), isDisplayed()));
+        floatingActionButton2.perform(click());
+
+        ViewInteraction floatingActionButton3 = onView(
+                allOf(withId(R.id.ic_center_map), isDisplayed()));
+        floatingActionButton3.perform(click());
+
+        ViewInteraction floatingActionButton4 = onView(
+                allOf(withId(R.id.ic_center_map), isDisplayed()));
+        floatingActionButton4.perform(click());
+
+        ViewInteraction floatingActionButton5 = onView(
+                allOf(withId(R.id.fab), isDisplayed()));
+        floatingActionButton5.perform(click());
+
+        ViewInteraction imageButton = onView(
+                allOf(withId(R.id.imageButton1), isDisplayed()));
+        imageButton.perform(click());
 
     }
 
